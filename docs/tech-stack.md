@@ -22,7 +22,7 @@ Este documento recoge las tecnologías, bibliotecas y decisiones arquitectónica
 
 El proyecto se organiza como un **workspace de Cargo** con tres crates:
 
-<div align = "center">
+
 
 ```
 terapia-visual
@@ -31,7 +31,7 @@ terapia-visual
 └── tauri-app/
 ```
 
-</div>
+
 
 - **core**: Puede compilarse y testearse sin interfaz gráfica ni sistema operativo. Contiene las reglas de negocio (terapias, layouts, colores) y los traits de los puertos.
 - **tauri-adapter**: Depende de `core` e implementa los traits con bibliotecas del sistema (ventanas, click-through, persistencia, bandeja).
