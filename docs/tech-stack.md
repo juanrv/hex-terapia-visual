@@ -22,16 +22,12 @@ Este documento recoge las tecnologías, bibliotecas y decisiones arquitectónica
 
 El proyecto se organiza como un **workspace de Cargo** con tres crates:
 
-
-
 ```
 terapia-visual
 ├── core/
 ├── tauri-adapter/
 └── tauri-app/
 ```
-
-
 
 - **core**: Puede compilarse y testearse sin interfaz gráfica ni sistema operativo. Contiene las reglas de negocio (terapias, layouts, colores) y los traits de los puertos.
 - **tauri-adapter**: Depende de `core` e implementa los traits con bibliotecas del sistema (ventanas, click-through, persistencia, bandeja).
@@ -54,13 +50,13 @@ Esta separación garantiza que se pueda cambiar la implementación de la persist
 
 | Crate                                                                                   | Uso                                                                      |
 | --------------------------------------------------------------------------------------- | ------------------------------------------------------------------------ |
-| `tauri` (con features `system-tray`, `window-all`)                                      | Gestión de ventanas, bandeja del sistema, eventos.                       |
+| `tauri` (`version = "2", features = ["tray-icon"]`)                                     | Framework principal. tray-icon es feature nativa                         |
 | `tokio` (con feature `full`)                                                            | Runtime asíncrono para manejar tareas de fondo (terapia, hotkeys).       |
 | `serde` + `serde_toml`                                                                  | Lectura/escritura del archivo `config.toml`.                             |
 | `tracing` + `tracing-subscriber`                                                        | Logging estructurado (sustituye a `env_logger`).                         |
 | `windows` (crate `0.52`, features `Win32_UI_WindowsAndMessaging`, `Win32_Graphics_Gdi`) | Para crear ventanas con click-through (transparencia) en Windows.        |
-| `global-hotkey`                                                                         | Atajos de teclado globales (en Windows funciona, en Linux requiere X11). |
-| `tao` / `wry` (indirecto a través de Tauri)                                             | Se usan si se necesita manipular ventanas de bajo nivel.                 |
+| `tauri-plugin-global-shortcut`                                                          | Atajos de teclado globales (en Windows funciona, en Linux requiere X11). |
+| `tauri-plugin-opener = "2"`                                                             | Abrir URLs/archivos con programa predeterminado (opcional).              |
 
 ### tauri-app/Cargo.toml
 
