@@ -1,0 +1,7 @@
+[workspace]
+members = [
+    "terapia_visual_domain",
+    "terapia_visual_adapter",
+    "terapia_visual_app/src-tauri"
+]
+resolver = "2"

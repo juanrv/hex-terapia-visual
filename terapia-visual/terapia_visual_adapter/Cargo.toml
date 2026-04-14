@@ -1,0 +1,16 @@
+[package]
+name = "terapia_visual_adapter"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+anyhow = "1.0.102"
+serde = "1.0.228"
+serde_toml = "0.0.1"
+tauri = "2.0.0"
+tauri-plugin-global-shortcut = "2.3.1"
+terapia_visual_domain = { version = "0.1.0", path = "../terapia_visual_domain" }
+tokio = { version = "1.51.1", features = ["full"] }
+tracing = "0.1.44"
+tracing-subscriber = "0.3.23"
+windows = { version = "0.62.2", features = ["Win32_UI_WindowsAndMessaging", "Win32_Graphics_Gdi"] }
