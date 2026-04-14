@@ -1,0 +1,36 @@
+# Rust
+/target/
+**/target/
+*.rs.bk
+*.pdb
+*.exe
+*.rlib
+*.lib
+*.dll
+*.so
+*.dylib
+
+# Tauri
+.tauri/
+**/src-tauri/target/
+
+# Node / Frontend
+node_modules/
+dist/
+dist-ssr/
+*.local
+npm-debug.log*
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Workspace específico
+terapia-visual/target/
+terapia-visual/**/target/
