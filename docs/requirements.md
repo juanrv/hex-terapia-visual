@@ -48,7 +48,7 @@ Crear una herramienta de terapia visual que funcione como una capa de software t
 
   No debe ser posible "iniciar" dos veces la misma terapia ni "detener" cuando ya está detenida.
 
-### Módulo de Layouts (nuevo)
+### Módulo de Layouts
 
 - **RF-11**: La aplicación debe soportar diferentes disposiciones de las zonas de color:
   - División vertical (izquierda/derecha)
@@ -58,6 +58,8 @@ Crear una herramienta de terapia visual que funcione como una capa de software t
 - **RF-12**: El usuario debe poder seleccionar el layout deseado desde la interfaz de control.
 
 - **RF-13**: Cada zona de color en cualquier layout debe mantener sus propios ajustes de color y opacidad independientes.
+
+- **RF-14**: La aplicación debe permitir modificar los parámetros de la terapia (colores, opacidades, layout) mientras está activa, aplicando los cambios en la superposición de forma inmediata.
 
 ## 3. Requisitos No Funcionales (RNF)
 
