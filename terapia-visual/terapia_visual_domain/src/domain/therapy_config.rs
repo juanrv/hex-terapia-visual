@@ -25,8 +25,8 @@ pub struct TherapyConfig {
 /// Configuracion de una zona dentro de la terapia, incluyendo su color y opacidad.
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct ZoneConfig {
-    color: Color,
-    opacity: Opacity,
+    pub color: Color,
+    pub opacity: Opacity,
 }
 
 impl TherapyConfig {
@@ -144,5 +144,21 @@ mod tests {
         assert_eq!(zones[1].rect().width, 960);
         assert_eq!(zones[0].color().as_str(), "#FF0000");
         assert_eq!(zones[1].color().as_str(), "#00FF00");
+    }
+}
+
+impl Default for TherapyConfig {
+    fn default() -> Self {
+        let default_zones = vec![
+            ZoneConfig {
+                color: Color::default(),
+                opacity: Opacity::default(),
+            },
+            ZoneConfig {
+                color: Color::default(),
+                opacity: Opacity::default(),
+            },
+        ];
+        Self::new(TherapyType::ColorDivision, Layout::Vertical, default_zones).unwrap()
     }
 }
