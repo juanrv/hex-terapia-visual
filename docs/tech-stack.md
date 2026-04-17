@@ -52,7 +52,7 @@ Esta separación garantiza que se pueda cambiar la implementación de la persist
 | --------------------------------------------------------------------------------------- | ------------------------------------------------------------------------ |
 | `tauri` (`version = "2", features = ["tray-icon"]`)                                     | Framework principal. tray-icon es feature nativa                         |
 | `tokio` (con feature `full`)                                                            | Runtime asíncrono para manejar tareas de fondo (terapia, hotkeys).       |
-| `serde` + `serde_toml`                                                                  | Lectura/escritura del archivo `config.toml`.                             |
+| `serde` + `toml`                                                                        | Lectura/escritura del archivo `config.toml`.                             |
 | `tracing` + `tracing-subscriber`                                                        | Logging estructurado (sustituye a `env_logger`).                         |
 | `windows` (crate `0.52`, features `Win32_UI_WindowsAndMessaging`, `Win32_Graphics_Gdi`) | Para crear ventanas con click-through (transparencia) en Windows.        |
 | `tauri-plugin-global-shortcut`                                                          | Atajos de teclado globales (en Windows funciona, en Linux requiere X11). |
