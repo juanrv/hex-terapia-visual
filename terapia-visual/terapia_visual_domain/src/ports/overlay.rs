@@ -7,6 +7,8 @@ use crate::domain::TherapyConfig;
 pub enum OverlayError {
     #[error("Error creando la ventana de overlay: {0}")]
     CreationError(String),
+    #[error("Error cerrando la ventana de overlay: {0}")]
+    CloseError(String),
     #[error("Error al actualizar las zonas de la ventana de overlay: {0}")]
     UpdateError(String),
     #[error("El overlay ya está activo")]
