@@ -29,9 +29,9 @@ terapia-visual
 └── terapia_visual_app/
 ```
 
-- **terapia_visua_domain**: Puede compilarse y testearse sin interfaz gráfica ni sistema operativo. Contiene las reglas de negocio (terapias, layouts, colores) y los traits de los puertos.
-- **terapia_visual_adapter**: Depende de `terapia_visua_domain` e implementa los traits con bibliotecas del sistema (ventanas, click-through, persistencia, bandeja).
-- **terapia_visual_app**: Depende de ambos. Sus comandos Tauri son cortos: solo obtienen el estado, llaman a los casos de uso del core y pasan los adaptadores.
+- **terapia_visua_domain**: Entidades, value objects, agregados, puertos (traits), casos de uso. Sin dependencias externas.
+- **terapia_visual_adapter**: Implementaciones de puertos usando Tauri, `toml`, `windows` (legado), y APIs del sistema.
+- **terapia_visual_app**: Configuración de Tauri, estado global, comandos que llaman a los casos de uso.
 
 Esta separación garantiza que se pueda cambiar la implementación de la persistencia (ej. de TOML a SQLite) o del overlay (ej. de WinAPI a `winit`) sin tocar el dominio.
 
