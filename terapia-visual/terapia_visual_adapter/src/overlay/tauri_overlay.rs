@@ -94,6 +94,7 @@ impl TauriOverlay {
     }
 }
 
+/// Implementación de la interfaz `OverlayPort` para TauriOverlay
 #[async_trait]
 impl OverlayPort for TauriOverlay {
     async fn show(

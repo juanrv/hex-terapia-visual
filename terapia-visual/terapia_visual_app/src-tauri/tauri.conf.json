@@ -13,9 +13,12 @@
     "withGlobalTauri": true,
     "windows": [
       {
-        "title": "terapia_visual_app",
+        "label": "main",
+        "title": "Terapia Visual",
         "width": 800,
-        "height": 600
+        "height": 600,
+        "resizable": true,
+        "center": true
       }
     ],
     "security": {
