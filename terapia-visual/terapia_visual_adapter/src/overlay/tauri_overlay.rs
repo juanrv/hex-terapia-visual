@@ -121,6 +121,7 @@ impl OverlayPort for TauriOverlay {
         .transparent(true)
         .skip_taskbar(true)
         .resizable(false)
+        .visible(false)
         .build()
         .map_err(|e| OverlayError::CreationError(e.to_string()))?;
 
@@ -131,6 +132,9 @@ impl OverlayPort for TauriOverlay {
 
         // Inyectar contenido HTML
         self.update_window_content(&window, config, screen_width, screen_height)?;
+
+        // Pausa para que el contenido se renderice antes de mostrar la ventana
+        tokio::time::sleep(tokio::time::Duration::from_millis(200)).await;
 
         // Mostrar ventana
         window
