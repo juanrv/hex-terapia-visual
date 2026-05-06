@@ -6,6 +6,7 @@ use std::sync::{
 };
 use tauri::{WebviewUrl, WebviewWindow, WebviewWindowBuilder};
 use tracing::info;
+use url::Url;
 
 use terapia_visual_domain::domain::{TherapyConfig, Zone};
 use terapia_visual_domain::ports::{OverlayError, OverlayPort};
@@ -90,7 +91,8 @@ impl TauriOverlay {
         let js = format!("document.body.innerHTML = `{}`;", html.replace('`', "\\`"));
         window
             .eval(&js)
-            .map_err(|e| OverlayError::UpdateError(e.to_string()))
+            .map_err(|e| OverlayError::UpdateError(e.to_string()))?;
+        Ok(())
     }
 }
 
@@ -107,21 +109,23 @@ impl OverlayPort for TauriOverlay {
             return Err(OverlayError::AlreadyActive);
         }
 
+        let blank_url = Url::parse("local://blank").unwrap();
+
         // Crear nueva ventana
         let window = WebviewWindowBuilder::new(
             &self.app_handle,
             "therapy_overlay",
-            WebviewUrl::App("overlay.html".into()),
+            WebviewUrl::CustomProtocol(blank_url),
         )
         .title("Visual Therapy Overlay")
         .inner_size(screen_width as f64, screen_height as f64)
         .position(0.0, 0.0)
-        .decorations(false)
-        .always_on_top(true)
-        .transparent(true)
-        .skip_taskbar(true)
-        .resizable(false)
-        .visible(false)
+        .decorations(false) // Sin Decoraciones
+        .always_on_top(true) // Siempre encima
+        .transparent(true) // Fondo transparente
+        .skip_taskbar(true) // No aparece en la barra de tareas
+        .resizable(false) // No se puede redimensionar
+        .visible(false) // Inicialmente invisible
         .build()
         .map_err(|e| OverlayError::CreationError(e.to_string()))?;
 
@@ -130,11 +134,14 @@ impl OverlayPort for TauriOverlay {
             .set_ignore_cursor_events(true)
             .map_err(|e| OverlayError::CreationError(e.to_string()))?;
 
-        // Inyectar contenido HTML
+        // Pausa de seguridad para el renderizado inicial
+        tokio::time::sleep(tokio::time::Duration::from_millis(100)).await;
+
+        // Inyectar HTML
         self.update_window_content(&window, config, screen_width, screen_height)?;
 
-        // Pausa para que el contenido se renderice antes de mostrar la ventana
-        tokio::time::sleep(tokio::time::Duration::from_millis(200)).await;
+        // Pausa para que el DOM se actualice
+        tokio::time::sleep(tokio::time::Duration::from_millis(50)).await;
 
         // Mostrar ventana
         window

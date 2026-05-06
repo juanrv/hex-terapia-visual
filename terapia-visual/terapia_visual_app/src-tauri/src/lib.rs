@@ -82,15 +82,29 @@ pub fn run() {
                 .build(app)?;
 
             // Obtener el directorio del ejecutable para el archivo config.toml
-            let config_dir = std::env::current_exe()
-                .ok()
-                .and_then(|exe| exe.parent().map(|p| p.to_path_buf()))
-                .unwrap_or_else(|| std::path::PathBuf::from("."));
+            let config_dir = app
+                .path()
+                .app_data_dir()
+                .expect("Fallo al obtener la ruta del directorio de datos");
+            // Crear el directorio en caso de que no exista
+            std::fs::create_dir_all(&config_dir)?;
 
             // Inicializar adaptadores
             let config_storage = TomlConfigStorage::new(&config_dir);
             let notifier = TauriSystemNotifier::new(app.handle().clone());
             let overlay = TauriOverlay::new(app.handle().clone());
+
+            // Guardar configuración inicial en el almacenamiento
+            let _initial_config = match async_runtime::block_on(config_storage.load()) {
+                Ok(cfg) => cfg,
+                Err(_) => {
+                    let default = TherapyConfig::default();
+                    if let Err(e) = async_runtime::block_on(config_storage.save(&default)) {
+                        eprintln!("Error al guardar la configuracion por defecto: {}", e);
+                    }
+                    default
+                }
+            };
 
             // Cargar configuracion inicial desde el almacenamiento (o usar default)
             let initial_config = async_runtime::block_on(config_storage.load())

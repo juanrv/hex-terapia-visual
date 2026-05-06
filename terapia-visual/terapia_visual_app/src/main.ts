@@ -5,7 +5,6 @@ async function getConfig() {
   try {
     const config = await invoke("cmd_get_config");
     console.log("Configuración actual:", config);
-    // Aquí puedes actualizar la UI con los valores
   } catch (error) {
     console.error("Error al obtener configuración:", error);
   }
@@ -14,7 +13,7 @@ async function getConfig() {
 // Iniciar terapia
 async function startTherapy() {
   try {
-    // Usar resolución de pantalla real (puedes obtenerla con window.screen)
+    // Usar resolución de pantalla real
     const screenWidth = window.screen.width;
     const screenHeight = window.screen.height;
     await invoke("cmd_start_therapy", { screenWidth, screenHeight });

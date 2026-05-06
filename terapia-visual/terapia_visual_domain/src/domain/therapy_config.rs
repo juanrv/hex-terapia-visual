@@ -151,14 +151,15 @@ impl Default for TherapyConfig {
     fn default() -> Self {
         let default_zones = vec![
             ZoneConfig {
-                color: Color::default(),
+                color: Color::new("#FF0000").unwrap(),
                 opacity: Opacity::default(),
             },
             ZoneConfig {
-                color: Color::default(),
+                color: Color::new("#00FF00").unwrap(),
                 opacity: Opacity::default(),
             },
         ];
-        Self::new(TherapyType::ColorDivision, Layout::Vertical, default_zones).unwrap()
+        Self::new(TherapyType::ColorDivision, Layout::Vertical, default_zones)
+            .expect("Configuracion por defecto")
     }
 }
