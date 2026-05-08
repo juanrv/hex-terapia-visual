@@ -61,7 +61,7 @@ Crear una herramienta de terapia visual que funcione como una capa de software t
 
 - **RF-14**: La aplicación debe permitir modificar los parámetros de la terapia (colores, opacidades, layout) mientras está activa, aplicando los cambios en la superposición de forma inmediata.
 
-- **RF-15**: La aplicación debe soportar internacionalización (idiomas español e inglés). Los mensajes mostrados al usuario (errores, notificaciones, tooltips) deben aparecer en el idioma configurado. La selección de idioma se guardará en la configuración.
+- **RF-15**: La aplicación debe soportar internacionalización (idiomas español e inglés). Esta se guarda en un archivo de configuracion de la app.
 
 ## 3. Requisitos No Funcionales (RNF)
 
