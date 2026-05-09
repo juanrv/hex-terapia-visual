@@ -7,15 +7,15 @@ use terapia_visual_domain::ports::{ConfigStorage, StorageError};
 use tracing::{error, info};
 
 /// Almacenamiento de configuracion basado en achivo TOML
-pub struct TomlConfigStorage {
+pub struct TomlTherapyConfigStorage {
     config_path: PathBuf,
 }
 
-impl TomlConfigStorage {
+impl TomlTherapyConfigStorage {
     /// Crea un nuevo almacenamiento de configuración, determinando la ruta del archivo de configuración.
     pub fn new(config_dir: impl AsRef<Path>) -> Self {
         let config_path = config_dir.as_ref().join("config.toml");
-        TomlConfigStorage { config_path }
+        TomlTherapyConfigStorage { config_path }
     }
 
     /// Intenta cargar la configuracion desde el archivo (version sincrona para uso interno).
@@ -44,12 +44,12 @@ impl TomlConfigStorage {
 }
 
 #[async_trait]
-impl ConfigStorage for TomlConfigStorage {
+impl ConfigStorage<TherapyConfig> for TomlTherapyConfigStorage {
     async fn load(&self) -> Result<TherapyConfig, StorageError> {
         info!("Cargando configuración desde {:?}", self.config_path);
         let config_path = self.config_path.clone();
         let result = tokio::task::spawn_blocking(move || {
-            let storage = TomlConfigStorage { config_path };
+            let storage = TomlTherapyConfigStorage { config_path };
             storage.load_sync()
         })
         .await;
@@ -68,7 +68,7 @@ impl ConfigStorage for TomlConfigStorage {
         let config_path = self.config_path.clone();
         let config = config.clone();
         let result = tokio::task::spawn_blocking(move || {
-            let storage = TomlConfigStorage { config_path };
+            let storage = TomlTherapyConfigStorage { config_path };
             storage.save_sync(&config)
         })
         .await;
@@ -87,14 +87,11 @@ impl ConfigStorage for TomlConfigStorage {
 mod tests {
     use tempfile::TempDir;
 
-    use terapia_visual_domain::domain::{
-        AppSettings, Color, Layout, Opacity, TherapyType, ZoneConfig,
-    };
+    use terapia_visual_domain::domain::{Color, Layout, Opacity, TherapyType, ZoneConfig};
 
     use super::*;
 
     fn sample_config() -> TherapyConfig {
-        let default_settings = Some(AppSettings::default());
         TherapyConfig::new(
             TherapyType::ColorDivision,
             Layout::Vertical,
@@ -108,7 +105,6 @@ mod tests {
                     opacity: Opacity::new(0.6).unwrap(),
                 },
             ],
-            default_settings,
         )
         .unwrap()
     }
@@ -116,7 +112,7 @@ mod tests {
     #[tokio::test]
     async fn test_save_an_load() {
         let dir = TempDir::new().unwrap();
-        let storage = TomlConfigStorage::new(dir.path());
+        let storage = TomlTherapyConfigStorage::new(dir.path());
         let config = sample_config();
 
         // Guardar
@@ -135,7 +131,7 @@ mod tests {
     #[tokio::test]
     async fn test_load_not_found() {
         let dir = TempDir::new().unwrap();
-        let storage = TomlConfigStorage::new(dir.path());
+        let storage = TomlTherapyConfigStorage::new(dir.path());
         // No hay archivo, debe devolver NotFound
         let result = storage.load().await;
         assert!(matches!(result, Err(StorageError::NotFound)));

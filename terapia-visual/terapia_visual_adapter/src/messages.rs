@@ -21,8 +21,8 @@ impl Language {
 
 /// Inicializa el idioma desde la configuracion de la app
 /// Se debe llamar una vez al inicio
-pub fn init_language(seettings: &AppSettings) {
-    let lang = Language::from_str(&seettings.language);
+pub fn init_language(settings: &AppSettings) {
+    let lang = Language::from_str(&settings.language);
     let _ = CURRENT_LANG.set(lang);
 }
 

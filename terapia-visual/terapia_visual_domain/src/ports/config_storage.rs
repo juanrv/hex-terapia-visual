@@ -1,5 +1,5 @@
-use crate::domain::TherapyConfig;
 use async_trait::async_trait;
+use serde::{Serialize, de::DeserializeOwned};
 
 /// Errores que pueden ocurrir al interactuar con la capa de almacenamiento de configuración.
 #[derive(Debug, thiserror::Error, PartialEq)]
@@ -16,10 +16,13 @@ pub enum StorageError {
 
 /// Puerto para almacenar y recuperar la configuración de la terapia visual.
 #[async_trait]
-pub trait ConfigStorage: Send + Sync {
+pub trait ConfigStorage<T>: Send + Sync
+where
+    T: Serialize + DeserializeOwned + Clone + Send + Sync,
+{
     /// Guarda la configuración de la terapia visual en un archivo o base de datos.
-    async fn save(&self, config: &TherapyConfig) -> Result<(), StorageError>;
+    async fn save(&self, config: &T) -> Result<(), StorageError>;
 
     /// Carga la configuración de la terapia visual desde un archivo o base de datos.
-    async fn load(&self) -> Result<TherapyConfig, StorageError>;
+    async fn load(&self) -> Result<T, StorageError>;
 }

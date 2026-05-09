@@ -1,7 +1,7 @@
 use async_trait::async_trait;
 
 use crate::{
-    domain::TherapyConfig,
+    domain::{AppSettings, TherapyConfig},
     ports::{
         ConfigStorage, NotifierError, OverlayError, OverlayPort, StorageError, SystemNotifier,
     },
@@ -69,9 +69,9 @@ impl OverlayPort for MockOverlay {
     }
 }
 
-/// Mock de ConfigStorage para pruebas
+/// Mock de TherapyConfigStorage para pruebas
 #[derive(Debug, Default)]
-pub struct MockConfigStorage {
+pub struct MockTherapyConfigStorage {
     pub config: Option<TherapyConfig>,
     pub load_called: bool,
     pub save_called: bool,
@@ -80,7 +80,7 @@ pub struct MockConfigStorage {
 }
 
 #[async_trait]
-impl ConfigStorage for MockConfigStorage {
+impl ConfigStorage<TherapyConfig> for MockTherapyConfigStorage {
     async fn load(&self) -> Result<TherapyConfig, StorageError> {
         if self.should_fail_load {
             Err(StorageError::NotFound)
@@ -91,6 +91,31 @@ impl ConfigStorage for MockConfigStorage {
 
     async fn save(&self, _config: &TherapyConfig) -> Result<(), StorageError> {
         if self.should_fail_save {
+            Err(StorageError::WriteError("forced error".into()))
+        } else {
+            Ok(())
+        }
+    }
+}
+
+/// Mock de AppConfigStorage para pruebas
+pub struct MockAppConfigStorage {
+    pub app_settings: Option<AppSettings>,
+    pub should_fail: bool,
+}
+
+#[async_trait]
+impl ConfigStorage<AppSettings> for MockAppConfigStorage {
+    async fn load(&self) -> Result<AppSettings, StorageError> {
+        if self.should_fail {
+            Err(StorageError::NotFound)
+        } else {
+            self.app_settings.clone().ok_or(StorageError::NotFound)
+        }
+    }
+
+    async fn save(&self, _config: &AppSettings) -> Result<(), StorageError> {
+        if self.should_fail {
             Err(StorageError::WriteError("forced error".into()))
         } else {
             Ok(())

@@ -81,6 +81,23 @@ impl TherapyConfig {
     }
 }
 
+impl Default for TherapyConfig {
+    fn default() -> Self {
+        let default_zones = vec![
+            ZoneConfig {
+                color: Color::new("#FF0000").unwrap(),
+                opacity: Opacity::default(),
+            },
+            ZoneConfig {
+                color: Color::new("#00FF00").unwrap(),
+                opacity: Opacity::default(),
+            },
+        ];
+        Self::new(TherapyType::ColorDivision, Layout::Vertical, default_zones)
+            .expect("Configuracion por defecto")
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -144,22 +161,5 @@ mod tests {
         assert_eq!(zones[1].rect().width, 960);
         assert_eq!(zones[0].color().as_str(), "#FF0000");
         assert_eq!(zones[1].color().as_str(), "#00FF00");
-    }
-}
-
-impl Default for TherapyConfig {
-    fn default() -> Self {
-        let default_zones = vec![
-            ZoneConfig {
-                color: Color::new("#FF0000").unwrap(),
-                opacity: Opacity::default(),
-            },
-            ZoneConfig {
-                color: Color::new("#00FF00").unwrap(),
-                opacity: Opacity::default(),
-            },
-        ];
-        Self::new(TherapyType::ColorDivision, Layout::Vertical, default_zones)
-            .expect("Configuracion por defecto")
     }
 }
