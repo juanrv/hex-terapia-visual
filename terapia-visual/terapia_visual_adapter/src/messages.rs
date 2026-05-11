@@ -44,22 +44,13 @@ macro_rules! messages {
 }
 
 messages!(
-    // Errores de overlay
-    error_overlay_creation: "Error creando la ventana de terapia. Detalle: ", "Error creating therapy window. Details: ";
-    error_overlay_update: "Error actualizando la ventana de terapia. Detalle: ", "Error updating therapy window. Details: ";
-    error_overlay_already_active: "La terapia ya está activa.", "Therapy already active.";
-    error_overlay_not_active: "La terapia no está activa.", "Therapy not active.";
+    info_therapy_started: "Terapia Iniciada.","Therapy Started.";
+    info_therapy_stopped: "Terapia Detenida.", "Therapy Stopped.";
+    info_config_updated: "Configuración Actualizada", "Configuration Updated";
 
-    // Errores de configuración
-    error_config_load: "No se pudo cargar la configuración. Usando valores por defecto.", "Failed to load configuration. Using defaults.";
-    error_config_save: "No se pudo guardar la configuración.", "Failed to save configuration.";
+    tooltip_therapy_active: "Terapia Activa", "Therapy Active";
+    tooltip_therapy_inactive: "Terapia Inactiva", "Therapy Inactive";
+    tooltip_app_name: "Terapia Visual", "Visual Therapy";
 
-    // Información general
-    info_therapy_started: "Terapia iniciada.", "Therapy started.";
-    info_therapy_stopped: "Terapia detenida.", "Therapy stopped.";
-    info_config_updated: "Configuración actualizada.", "Configuration updated.";
-
-    // Tooltips de la bandeja
-    tooltip_therapy_active: "Terapia activa", "Therapy active";
-    tooltip_therapy_inactive: "Terapia inactiva", "Therapy inactive";
+    error_generic: "Ha ocurrido un error inesperado", "An unexpected error ocurrred";
 );

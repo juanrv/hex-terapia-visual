@@ -5,15 +5,15 @@ use crate::domain::TherapyConfig;
 /// Errores que pueden ocurrir al interactuar con la capa de presentación (overlay).
 #[derive(Debug, thiserror::Error, PartialEq)]
 pub enum OverlayError {
-    #[error("Error creando la ventana de overlay: {0}")]
+    #[error("Error creating the overlay window: {0}")]
     CreationError(String),
-    #[error("Error cerrando la ventana de overlay: {0}")]
+    #[error("Error closing the overlay window: {0}")]
     CloseError(String),
-    #[error("Error al actualizar las zonas de la ventana de overlay: {0}")]
+    #[error("Error updating the regions of the overlay window: {0}")]
     UpdateError(String),
-    #[error("El overlay ya está activo")]
+    #[error("Overlay already active")]
     AlreadyActive,
-    #[error("El overlay no está activo")]
+    #[error("Overlay not active")]
     NotActive,
 }
 

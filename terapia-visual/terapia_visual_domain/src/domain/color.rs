@@ -4,14 +4,14 @@ use std::fmt;
 #[derive(Debug, thiserror::Error, PartialEq, Eq)]
 pub enum ColorError {
     #[error(
-        "El formato del color es inválido. Debe comenzar con '#' seguido de 6 dígitos hexadecimales."
+        "The color format is invalid. It must start with '#' followed by 6 hexadecimal digits."
     )]
     InvalidFormat,
     #[error(
-        "El color debe contener exactamente 6 dígitos hexadecimales después del '#'. (Ejemplo: '#RRGGBB')."
+        "The color must contain exactly 6 hexadecimal digits after the '#'. (For example: '#RRGGBB')."
     )]
     InvalidLength,
-    #[error("El color contiene dígitos hexadecimales inválidos.")]
+    #[error("The color contains invalid hexadecimal digits.")]
     InvalidHexDigit,
 }
 

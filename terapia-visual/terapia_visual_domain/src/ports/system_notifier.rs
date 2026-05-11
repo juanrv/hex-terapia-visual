@@ -3,9 +3,9 @@ use async_trait::async_trait;
 /// Errores que pueden ocurrir en las notificaciones del sistema.
 #[derive(Debug, thiserror::Error, PartialEq)]
 pub enum NotifierError {
-    #[error("Error al mostrar el mensaje del tray: {0}")]
+    #[error("Failed to display tray message: {0}")]
     TrayError(String),
-    #[error("Error al cargar el ícono del tray: {0}")]
+    #[error("Failed to load tray icon: {0}")]
     IconError(String),
 }
 

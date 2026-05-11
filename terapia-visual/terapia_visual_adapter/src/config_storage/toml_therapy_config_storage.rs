@@ -46,7 +46,7 @@ impl TomlTherapyConfigStorage {
 #[async_trait]
 impl ConfigStorage<TherapyConfig> for TomlTherapyConfigStorage {
     async fn load(&self) -> Result<TherapyConfig, StorageError> {
-        info!("Cargando configuración desde {:?}", self.config_path);
+        info!("Loading therapy configuration from: {:?}", self.config_path);
         let config_path = self.config_path.clone();
         let result = tokio::task::spawn_blocking(move || {
             let storage = TomlTherapyConfigStorage { config_path };
@@ -57,14 +57,14 @@ impl ConfigStorage<TherapyConfig> for TomlTherapyConfigStorage {
         match result {
             Ok(inner_result) => inner_result,
             Err(e) => {
-                error!("Error al cargar configuración: {}", e);
+                error!("Error while loading therapy configuration: {}", e);
                 Err(StorageError::ReadError(e.to_string()))
             }
         }
     }
 
     async fn save(&self, config: &TherapyConfig) -> Result<(), StorageError> {
-        info!("Guardando configuración en {:?}", self.config_path);
+        info!("Saving therapy configuration to: {:?}", self.config_path);
         let config_path = self.config_path.clone();
         let config = config.clone();
         let result = tokio::task::spawn_blocking(move || {
@@ -76,7 +76,7 @@ impl ConfigStorage<TherapyConfig> for TomlTherapyConfigStorage {
         match result {
             Ok(inner_result) => inner_result,
             Err(e) => {
-                error!("Error al guardar configuración: {}", e);
+                error!("Error while saving therapy configuration: {}", e);
                 Err(StorageError::WriteError(e.to_string()))
             }
         }

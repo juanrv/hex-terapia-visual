@@ -13,7 +13,7 @@ pub async fn start_therapy(
     if overlay.is_active() {
         return Err(OverlayError::AlreadyActive);
     } else {
-        // Si el overlay no está activo, lo mostramos con la configuración inicial
+        // Si el overlay no está activo, se muestra con la configuracion inicial
         overlay.show(config, screen_width, screen_height).await
     }
 }

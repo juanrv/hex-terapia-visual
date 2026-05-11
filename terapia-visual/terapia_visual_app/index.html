@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="UTF-8" />
-    <title>Terapia Visual</title>
+    <title data-i18n="app_title">Terapia Visual</title>
     <style>
       button {
         margin: 10px;
@@ -11,11 +11,20 @@
     </style>
   </head>
   <body>
-    <h1>Control de Terapia Visual</h1>
-    <button id="btn-start">Iniciar Terapia</button>
-    <button id="btn-stop">Detener Terapia</button>
-    <button id="btn-update">Actualizar Configuración (Rojo/Azul)</button>
-    <button id="btn-get">Mostrar Configuración en Consola</button>
+    <h1 data-i18n="app_title">Terapia Visual</h1>
+    <button id="btn-start" data-i18n="btn_start">Iniciar Terapia</button>
+    <button id="btn-stop" data-i18n="btn_stop">Detener Terapia</button>
+    <button id="btn-update" data-i18n="btn_update">
+      Actualizar Configuración
+    </button>
+    <button id="btn-get" data-i18n="btn_get">
+      Mostrar Configuración en Consola
+    </button>
+    <div>
+      <button id="btn-es" data-i18n="btn_spanish">Español</button>
+      <button id="btn-en" data-i18n="btn_english">English</button>
+    </div>
+    <div id="status"></div>
     <script type="module" src="/src/main.ts"></script>
   </body>
 </html>

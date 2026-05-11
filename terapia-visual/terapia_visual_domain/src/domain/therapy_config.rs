@@ -94,7 +94,7 @@ impl Default for TherapyConfig {
             },
         ];
         Self::new(TherapyType::ColorDivision, Layout::Vertical, default_zones)
-            .expect("Configuracion por defecto")
+            .expect("Default config")
     }
 }
 

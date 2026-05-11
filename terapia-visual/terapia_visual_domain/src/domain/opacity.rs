@@ -4,7 +4,7 @@ use serde::{Deserialize, Serialize};
 
 #[derive(Debug, thiserror::Error, PartialEq)]
 pub enum OpacityError {
-    #[error("El valor de opacidad debe estar entre 0.0 y 1.0.")]
+    #[error("Opacity value must be between 0.0 and 1.0")]
     OutOfRange(f32),
 }
 

@@ -4,13 +4,13 @@ use serde::{Serialize, de::DeserializeOwned};
 /// Errores que pueden ocurrir al interactuar con la capa de almacenamiento de configuración.
 #[derive(Debug, thiserror::Error, PartialEq)]
 pub enum StorageError {
-    #[error("Error al leer el archivo de configuración: {0}")]
+    #[error("Error reading the configuration file: {0}")]
     ReadError(String),
-    #[error("Error al escribir el archivo de configuración: {0}")]
+    #[error("Error writing the configuration file: {0}")]
     WriteError(String),
-    #[error("Error al parsear el archivo de configuración: {0}")]
+    #[error("Error parsing the configuration file: {0}")]
     ParseError(String),
-    #[error("Archivo de configuración no encontrado, usando configuración predeterminada")]
+    #[error("Configuration file not found, using default configuration")]
     NotFound,
 }
 

@@ -2,7 +2,7 @@
 
 use tauri::tray::TrayIconBuilder;
 use tauri::{async_runtime, Manager};
-use terapia_visual_adapter::messages::init_language;
+use terapia_visual_adapter::messages::{self, init_language};
 use terapia_visual_domain::ports::ConfigStorage;
 use tokio::sync::{Mutex, RwLock};
 
@@ -95,6 +95,15 @@ async fn cmd_update_app_settings(
     Ok(())
 }
 
+#[tauri::command]
+fn cmd_update_tray_tooltip(app_handle: tauri::AppHandle) -> Result<(), String> {
+    if let Some(tray) = app_handle.tray_by_id("main") {
+        tray.set_tooltip(Some(messages::tooltip_app_name()))
+            .map_err(|e| e.to_string())?;
+    }
+    Ok(())
+}
+
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     tauri::Builder::default()
@@ -102,7 +111,7 @@ pub fn run() {
             // Crear tray icon
             let _tray = TrayIconBuilder::with_id("main")
                 .icon(app.default_window_icon().unwrap().clone())
-                .tooltip("Terapia Visual")
+                .tooltip(messages::tooltip_app_name())
                 .build(app)?;
 
             // Obtener el directorio del ejecutable para el archivo config.toml
@@ -125,7 +134,7 @@ pub fn run() {
                 Err(_) => {
                     let default = TherapyConfig::default();
                     if let Err(e) = async_runtime::block_on(therapy_storage.save(&default)) {
-                        eprintln!("Error al guardar la configuracion por defecto: {}", e);
+                        eprintln!("Error while saving default config: {}", e);
                     }
                     default
                 }
@@ -164,7 +173,8 @@ pub fn run() {
             cmd_stop_therapy,
             cmd_update_therapy_config,
             cmd_get_app_settings,
-            cmd_update_app_settings
+            cmd_update_app_settings,
+            cmd_update_tray_tooltip,
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
