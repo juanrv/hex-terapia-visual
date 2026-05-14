@@ -1,10 +1,10 @@
-use std::sync::OnceLock;
+use std::sync::RwLock;
 
 use terapia_visual_domain::domain::AppSettings;
 
-static CURRENT_LANG: OnceLock<Language> = OnceLock::new();
+static CURRENT_LANG: RwLock<Language> = RwLock::new(Language::Spanish);
 
-#[derive(Clone, Copy, PartialEq, Eq)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum Language {
     Spanish,
     English,
@@ -23,11 +23,13 @@ impl Language {
 /// Se debe llamar una vez al inicio
 pub fn init_language(settings: &AppSettings) {
     let lang = Language::from_str(&settings.language);
-    let _ = CURRENT_LANG.set(lang);
+    let mut guard = CURRENT_LANG.write().unwrap();
+    *guard = lang;
+    println!("[DEBUG] init_language set to: {:?}", lang);
 }
 
 fn lang() -> Language {
-    *CURRENT_LANG.get().unwrap_or(&Language::Spanish)
+    *CURRENT_LANG.read().unwrap()
 }
 
 macro_rules! messages {
@@ -43,11 +45,13 @@ macro_rules! messages {
     };
 }
 
+// TODO: Enviar este message a un archivo por fuera del adaptador
 messages!(
     info_therapy_started: "Terapia Iniciada.","Therapy Started.";
     info_therapy_stopped: "Terapia Detenida.", "Therapy Stopped.";
     info_config_updated: "Configuración Actualizada", "Configuration Updated";
 
+    window_title: "Terapia Visual", "Visual Therapy";
     tooltip_therapy_active: "Terapia Activa", "Therapy Active";
     tooltip_therapy_inactive: "Terapia Inactiva", "Therapy Inactive";
     tooltip_app_name: "Terapia Visual", "Visual Therapy";

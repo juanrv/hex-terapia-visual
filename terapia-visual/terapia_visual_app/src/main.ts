@@ -24,7 +24,6 @@ async function loadSavedLanguage() {
 // Cambiar el idioma
 async function changeLanguage(lang: Language) {
   try {
-    await invoke("cmd_update_tray_tooltip");
     await invoke("cmd_update_app_settings", {
       // Tauri traduce el newSettings a new_settings
       newSettings: { language: lang },

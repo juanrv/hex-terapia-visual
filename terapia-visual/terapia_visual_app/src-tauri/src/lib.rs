@@ -3,7 +3,7 @@
 use tauri::tray::TrayIconBuilder;
 use tauri::{async_runtime, Manager};
 use terapia_visual_adapter::messages::{self, init_language};
-use terapia_visual_domain::ports::ConfigStorage;
+use terapia_visual_domain::ports::{ConfigStorage, SystemNotifier};
 use tokio::sync::{Mutex, RwLock};
 
 // Importaciones de dominio y adaptadores
@@ -24,6 +24,8 @@ pub struct AppState {
     pub current_config: RwLock<TherapyConfig>,
 }
 
+// TODO: Intentar limpiar el archivo lib.rs para que no todos los comandos se encuentren aqui y
+// hacer el archivo mas largo de lo que ya esta
 #[tauri::command]
 async fn cmd_get_therapy_config(
     state: tauri::State<'_, AppState>,
@@ -43,13 +45,29 @@ async fn cmd_start_therapy(
     let mut overlay = state.overlay.lock().await;
     start_therapy(&mut *overlay, &config, screen_width, screen_height)
         .await
-        .map_err(|e| e.to_string())
+        .map_err(|e| e.to_string())?;
+
+    state
+        .notifier
+        .set_tray_state(true)
+        .await
+        .map_err(|e| e.to_string())?;
+    Ok(())
 }
 
 #[tauri::command]
 async fn cmd_stop_therapy(state: tauri::State<'_, AppState>) -> Result<(), String> {
     let mut overlay = state.overlay.lock().await;
-    stop_therapy(&mut *overlay).await.map_err(|e| e.to_string())
+    stop_therapy(&mut *overlay)
+        .await
+        .map_err(|e| e.to_string())?;
+
+    state
+        .notifier
+        .set_tray_state(false)
+        .await
+        .map_err(|e| e.to_string())?;
+    Ok(())
 }
 
 #[tauri::command]
@@ -85,6 +103,7 @@ async fn cmd_get_app_settings(state: tauri::State<'_, AppState>) -> Result<AppSe
 
 #[tauri::command]
 async fn cmd_update_app_settings(
+    app_handle: tauri::AppHandle,
     state: tauri::State<'_, AppState>,
     new_settings: AppSettings,
 ) -> Result<(), String> {
@@ -92,15 +111,22 @@ async fn cmd_update_app_settings(
         .await
         .map_err(|e| e.to_string())?;
     init_language(&new_settings);
-    Ok(())
-}
 
-#[tauri::command]
-fn cmd_update_tray_tooltip(app_handle: tauri::AppHandle) -> Result<(), String> {
+    // Actualizar el tooltip del tray
+    let app_handle = app_handle.clone();
     if let Some(tray) = app_handle.tray_by_id("main") {
+        println!("[DEBUG] New tooltip name: {}", messages::tooltip_app_name());
         tray.set_tooltip(Some(messages::tooltip_app_name()))
             .map_err(|e| e.to_string())?;
     }
+
+    // Actualizar el titulo de la ventana
+    if let Some(main_window) = app_handle.get_webview_window("main") {
+        main_window
+            .set_title(messages::window_title())
+            .map_err(|e| e.to_string())?;
+    }
+
     Ok(())
 }
 
@@ -108,12 +134,6 @@ fn cmd_update_tray_tooltip(app_handle: tauri::AppHandle) -> Result<(), String> {
 pub fn run() {
     tauri::Builder::default()
         .setup(|app| {
-            // Crear tray icon
-            let _tray = TrayIconBuilder::with_id("main")
-                .icon(app.default_window_icon().unwrap().clone())
-                .tooltip(messages::tooltip_app_name())
-                .build(app)?;
-
             // Obtener el directorio del ejecutable para el archivo config.toml
             let config_dir = app
                 .path()
@@ -150,8 +170,23 @@ pub fn run() {
                 Err(_) => AppSettings::default(),
             };
 
-            // Iniciarlizar mensajes con el idioma cargado
+            // Inicializar mensajes con el idioma cargado
             init_language(&app_settings);
+            println!("[DEBUG] Tooltip name: {}", messages::tooltip_app_name());
+
+            // Inicializar el titulo de la ventana principal segun el idioma cargado
+
+            if let Some(main_window) = app.get_webview_window("main") {
+                let _ = main_window
+                    .set_title(messages::window_title())
+                    .map_err(|e| println!("Error setting window title: {}", e));
+            }
+
+            // Crear tray icon
+            let _tray = TrayIconBuilder::with_id("main")
+                .icon(app.default_window_icon().unwrap().clone())
+                .tooltip(messages::tooltip_app_name())
+                .build(app)?;
 
             // Crear el estado
             let state = AppState {
@@ -174,7 +209,6 @@ pub fn run() {
             cmd_update_therapy_config,
             cmd_get_app_settings,
             cmd_update_app_settings,
-            cmd_update_tray_tooltip,
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

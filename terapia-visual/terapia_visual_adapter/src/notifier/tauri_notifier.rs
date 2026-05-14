@@ -4,6 +4,8 @@ use tauri_plugin_notification::NotificationExt;
 use terapia_visual_domain::ports::{NotifierError, SystemNotifier};
 use tracing::info;
 
+use crate::messages;
+
 pub struct TauriSystemNotifier {
     app_handle: AppHandle,
 }
@@ -33,10 +35,11 @@ impl SystemNotifier for TauriSystemNotifier {
     async fn set_tray_state(&self, active: bool) -> Result<(), NotifierError> {
         if let Some(tray) = self.app_handle.tray_by_id("main") {
             let new_tooltip = if active {
-                "Terapia Activa"
+                messages::tooltip_therapy_active()
             } else {
-                "Terapia Inactiva"
+                messages::tooltip_therapy_inactive()
             };
+            println!("[DEBUG] Setting tray tooltip to: {}", new_tooltip);
             tray.set_tooltip(Some(new_tooltip))
                 .map_err(|e| NotifierError::IconError(e.to_string()))?;
 
