@@ -5,6 +5,7 @@ use serde::{Deserialize, Serialize};
 pub enum Layout {
     Vertical,
     Horizontal,
+    Checkboard,
 }
 
 impl Layout {
@@ -13,6 +14,7 @@ impl Layout {
         match self {
             Layout::Vertical => 2,
             Layout::Horizontal => 2,
+            Layout::Checkboard => 4,
         }
     }
 
@@ -34,6 +36,17 @@ impl Layout {
                     ZoneRect::new(0, half_height, width, height - half_height), // Zona inferior
                 ]
             }
+
+            Layout::Checkboard => {
+                let half_w = width / 2;
+                let half_h = height / 2;
+                vec![
+                    ZoneRect::new(0, 0, half_w, half_h), // superior izquierda
+                    ZoneRect::new(half_w, 0, width - half_w, half_h), // superior derecha
+                    ZoneRect::new(0, half_h, half_w, height - half_h), // inferior izquierda
+                    ZoneRect::new(half_w, half_h, width - half_w, height - half_h), // inferior derecha
+                ]
+            }
         }
     }
 }
@@ -43,13 +56,10 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_vertical_layout_zone_count() {
+    fn test_layout_zone_counts() {
         assert_eq!(Layout::Vertical.zone_count(), 2);
-    }
-
-    #[test]
-    fn test_horizontal_layout_zone_count() {
         assert_eq!(Layout::Horizontal.zone_count(), 2);
+        assert_eq!(Layout::Checkboard.zone_count(), 4);
     }
 
     #[test]
@@ -66,6 +76,20 @@ mod tests {
         assert_eq!(zones.len(), 2);
         assert_eq!(zones[0], ZoneRect::new(0, 0, 1920, 540));
         assert_eq!(zones[1], ZoneRect::new(0, 540, 1920, 540));
+    }
+
+    #[test]
+    fn test_checkerboard_layout_calculation() {
+        let zones = Layout::Checkboard.calculate_zones(1920, 1080);
+        assert_eq!(zones.len(), 4);
+        // Arriba - Izquierda (0)
+        assert_eq!(zones[0], ZoneRect::new(0, 0, 960, 540));
+        // Arriba - Derecha (1)
+        assert_eq!(zones[1], ZoneRect::new(960, 0, 960, 540));
+        // Abajo - Izquierda (2)
+        assert_eq!(zones[2], ZoneRect::new(0, 540, 960, 540));
+        // Abajo - Derecha (3)
+        assert_eq!(zones[3], ZoneRect::new(960, 540, 960, 540));
     }
 
     #[test]

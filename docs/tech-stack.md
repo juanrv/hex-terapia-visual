@@ -24,7 +24,7 @@ El proyecto se organiza como un **workspace de Cargo** con tres crates:
 
 ```
 terapia-visual
-├── terapia_visua_domain/
+├── terapia_visual_domain/
 ├── terapia_visual_adapter/
 └── terapia_visual_app/
 ```
@@ -61,6 +61,7 @@ Esta separación garantiza que se pueda cambiar la implementación de la persist
 | `tracing`                      | 0.1.44                    | Logging estructurado (info, warn, error)                                       | Mejor que `println!` para depuración y seguimiento.                             |
 | `anyhow `                      | 1.0.102                   | Manejo de errores en tests y código interno (opcional)                         | Simplifica la propagación de errores en el adaptador (no se expone al dominio). |
 | `tempfile`                     | 3.27.0 (dev-dependency)   | Crear directorios temporales para pruebas                                      | Usado en tests de `TomlConfigStorage`.                                          |
+| `url`                         | 2.5                       | Parsear `local://blank` para la ventana overlay                          | Necesario para `WebviewUrl::CustomProtocol` sin depender de archivos externos. |
 
 ### terapia_visual_app/Cargo.toml
 
@@ -80,7 +81,8 @@ Esta separación garantiza que se pueda cambiar la implementación de la persist
 
 | Puerto           | Adaptador             | Tegnología                                                                                                                                                   |
 | ---------------- | --------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `ConfigStorage`  | TomlConfigStorage     | `toml` + `tokio::fs` (operaciones bloqueantes en `spawn_blocking`)                                                                                           |
+| `ConfigStorage<TherapyConfig>`  | TomlTherapyConfigStorage     | `toml` + `tokio::fs` (operaciones bloqueantes en `spawn_blocking`)                                                                                           |
+| `ConfigStorage<AppSettings>`  | TomlAppConfigStorage     | `toml` + `tokio::fs` (operaciones bloqueantes en `spawn_blocking`)                                                                                           |
 | `OverlayPort`    | `TauriOverlay`        | Ventana transparente con `WebviewWindowBuilder`, click-through mediante `set_ignore_cursor_events(true)`, contenido HTML dinámico (CSS para zonas de color). |
 | `SystemNotifier` | `TauriSystemNotifier` | Notificaciones del sistema con `tauri-plugin-notification`; tooltip de bandeja con `tray_by_id("main")`.                                                     |
 
@@ -89,7 +91,7 @@ Esta separación garantiza que se pueda cambiar la implementación de la persist
 ## 6. Persistencia de configuración (RNF-06, RF-09)
 
 - **Formato**: TOML (archivo `config.toml`).
-- **Ubicación**: Directorio de la aplicación (para portabilidad). En Windows, junto al `.exe`.
+- **Ubicación**: Directorio de datos de la aplicación (`%APPDATA%\com.shiro.terapia-visual-app\data\`). En Windows, portable si se usa `app_data_dir()`.
 - **Contenido mínimo**:
 
   ```toml
@@ -139,7 +141,7 @@ Esta separación garantiza que se pueda cambiar la implementación de la persist
 
 ## 10. Distribución y portabilidad
 
-- **Windows**: Binario único `.exe` autónomo. No requiere instalador. Se asume que WebView2 está presente (Windows 10/11 lo incluye).
+- **Windows**: Binario único `.exe` autónomo o instaladores MSI/NSIS generados con `cargo tauri build` Se asume que WebView2 está presente (Windows 10/11 lo incluye).
 - **Linux**: Se genera un `.AppImage` que incluya los recursos necesarios, soporte para X11, Wayland puede tener limitaciones por el click-through.
 - **Configuración portable**: Archivo `config.toml` junto al ejecutable.
 

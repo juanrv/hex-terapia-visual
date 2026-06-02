@@ -1,28 +1,14 @@
 use std::sync::RwLock;
 
 use terapia_visual_domain::domain::AppSettings;
+use terapia_visual_domain::domain::app_settings::Language;
 
 static CURRENT_LANG: RwLock<Language> = RwLock::new(Language::Spanish);
-
-#[derive(Clone, Copy, Debug, PartialEq, Eq)]
-pub enum Language {
-    Spanish,
-    English,
-}
-
-impl Language {
-    pub fn from_str(s: &str) -> Self {
-        match s.to_lowercase().as_str() {
-            "en" => Language::English,
-            _ => Language::Spanish,
-        }
-    }
-}
 
 /// Inicializa el idioma desde la configuracion de la app
 /// Se debe llamar una vez al inicio
 pub fn init_language(settings: &AppSettings) {
-    let lang = Language::from_str(&settings.language);
+    let lang = settings.language();
     let mut guard = CURRENT_LANG.write().unwrap();
     *guard = lang;
     println!("[DEBUG] init_language set to: {:?}", lang);

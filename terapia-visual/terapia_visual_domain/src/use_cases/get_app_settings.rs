@@ -13,6 +13,7 @@ pub async fn get_app_settings(storage: &dyn ConfigStorage<AppSettings>) -> AppSe
 mod tests {
     use super::*;
     use crate::domain::AppSettings;
+    use crate::domain::app_settings::Language;
     use crate::use_cases::mocks::MockAppConfigStorage;
 
     #[tokio::test]
@@ -28,7 +29,7 @@ mod tests {
     #[tokio::test]
     async fn test_get_app_settings_returns_stored() {
         let expected = AppSettings {
-            language: "en".to_string(),
+            language: Language::English,
         };
         let storage = MockAppConfigStorage {
             app_settings: Some(expected.clone()),
