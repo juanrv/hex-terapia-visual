@@ -1,5 +1,6 @@
 // Learn more about Tauri commands at https://tauri.app/develop/calling-rust/
 
+use tauri::menu::{Menu, MenuItem};
 use tauri::tray::TrayIconBuilder;
 use tauri::{async_runtime, Manager};
 use terapia_visual_adapter::messages::{self, init_language};
@@ -130,6 +131,23 @@ async fn cmd_update_app_settings(
     Ok(())
 }
 
+// Funcion auxiliar de guardado
+fn save_configs(app_handle: &tauri::AppHandle) {
+    let state = app_handle.state::<AppState>();
+
+    let therapy_config = async_runtime::block_on(state.current_config.read());
+    println!("[DEBUG] Saving therapy config: {:?}", therapy_config);
+    if let Err(e) = async_runtime::block_on(state.therapy_storage.save(&therapy_config)) {
+        eprintln!("Error saving therapy config: {}", e);
+    }
+    // Guardar app_settings también
+    let app_settings = async_runtime::block_on(state.app_storage.load()).unwrap_or_default();
+    println!("[DEBUG] Saving app settings: {:?}", app_settings);
+    if let Err(e) = async_runtime::block_on(state.app_storage.save(&app_settings)) {
+        eprintln!("Error saving app config: {}", e);
+    }
+}
+
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     tauri::Builder::default()
@@ -175,7 +193,6 @@ pub fn run() {
             println!("[DEBUG] Tooltip name: {}", messages::tooltip_app_name());
 
             // Inicializar el titulo de la ventana principal segun el idioma cargado
-
             if let Some(main_window) = app.get_webview_window("main") {
                 let _ = main_window
                     .set_title(messages::window_title())
@@ -183,10 +200,29 @@ pub fn run() {
             }
 
             // Crear tray icon
-            let _tray = TrayIconBuilder::with_id("main")
+            let tray = TrayIconBuilder::with_id("main")
                 .icon(app.default_window_icon().unwrap().clone())
                 .tooltip(messages::tooltip_app_name())
                 .build(app)?;
+
+            let menu = Menu::new(app)?;
+            let quit_item = MenuItem::with_id(app, "quit", "Salir", true, None::<&str>)?;
+            menu.append(&quit_item)?;
+            tray.set_menu(Some(menu))?;
+
+            tray.on_tray_icon_event(|tray, event| {
+                if let tauri::tray::TrayIconEvent::DoubleClick { .. } = event {
+                    let app_handle = tray.app_handle();
+                    if let Some(main_window) = app_handle.get_webview_window("main") {
+                        // Si la ventana esta oculta, mostrarla y traerla al frente
+                        let _ = main_window.show();
+                        let _ = main_window.set_focus();
+
+                        // Tambien restaurar si estaba minimizada
+                        let _ = main_window.unminimize();
+                    }
+                }
+            });
 
             // Crear el estado
             let state = AppState {
@@ -210,6 +246,29 @@ pub fn run() {
             cmd_get_app_settings,
             cmd_update_app_settings,
         ])
+        .on_window_event(|window, event| {
+            if let tauri::WindowEvent::CloseRequested { api, .. } = event {
+                // Prevenir el cierre por defecto (la ventana se ocultará en lugar de destruirse)
+                api.prevent_close();
+
+                // Ocultar la ventana principal (simula minimizar a bandeja)
+                if let Err(e) = window.hide() {
+                    eprintln!("Error hiding main window: {}", e);
+                }
+
+                let app_handle = window.app_handle();
+
+                save_configs(&app_handle);
+            }
+        })
+        .on_menu_event(|app, event| {
+            if event.id.as_ref() == "quit" {
+                // Guardar configuración antes de salir
+                save_configs(app);
+                // Luego salir
+                std::process::exit(0);
+            }
+        })
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }

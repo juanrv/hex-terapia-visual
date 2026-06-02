@@ -101,6 +101,41 @@ async function updateTherapyConfig() {
   }
 }
 
+// Obtener la configuracion actual
+async function getCurrentTherapyConfig(): Promise<any> {
+  try {
+    return await invoke("cmd_get_therapy_config");
+  } catch (error) {
+    console.error("Error al obtener la configuracion:", error);
+    return null;
+  }
+}
+
+// Cambiar el layout actual
+async function setLayout(layout: "Vertical" | "Horizontal") {
+  const currentConfig = await getCurrentTherapyConfig();
+  if (!currentConfig) return;
+
+  const newConfig = {
+    ...currentConfig,
+    layout: layout,
+  };
+
+  const screenWidth = window.screen.width;
+  const screenHeight = window.screen.height;
+
+  try {
+    await invoke("cmd_update_therapy_config", {
+      newConfig,
+      screenWidth,
+      screenHeight,
+    });
+    console.log(`Layout cambiado a ${layout}`);
+  } catch (error) {
+    console.error("Error al cambiar layout:", error);
+  }
+}
+
 // Asignar eventos cuando el DOM esté listo y cargar el idioma actual
 window.addEventListener("DOMContentLoaded", async () => {
   await loadSavedLanguage();
@@ -111,6 +146,8 @@ window.addEventListener("DOMContentLoaded", async () => {
   const btnGet = document.getElementById("btn-get");
   const btnEn = document.getElementById("btn-en");
   const btnEs = document.getElementById("btn-es");
+  const btnVertical = document.getElementById("btn-layout-vertical");
+  const btnHorizontal = document.getElementById("btn-layout-horizontal");
 
   if (btnStart) btnStart.addEventListener("click", startTherapy);
   if (btnStop) btnStop.addEventListener("click", stopTherapy);
@@ -118,4 +155,8 @@ window.addEventListener("DOMContentLoaded", async () => {
   if (btnGet) btnGet.addEventListener("click", getTherapyConfig);
   if (btnEn) btnEn.addEventListener("click", () => changeLanguage("en"));
   if (btnEs) btnEs.addEventListener("click", () => changeLanguage("es"));
+  if (btnVertical)
+    btnVertical.addEventListener("click", () => setLayout("Vertical"));
+  if (btnHorizontal)
+    btnHorizontal.addEventListener("click", () => setLayout("Horizontal"));
 });

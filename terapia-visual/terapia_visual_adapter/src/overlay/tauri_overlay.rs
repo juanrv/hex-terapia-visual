@@ -109,6 +109,10 @@ impl OverlayPort for TauriOverlay {
             return Err(OverlayError::AlreadyActive);
         }
 
+        if let Some(old_window) = self.window.take() {
+            let _ = old_window.destroy();
+        }
+
         let blank_url = Url::parse("local://blank").unwrap();
 
         // Crear nueva ventana
@@ -158,7 +162,7 @@ impl OverlayPort for TauriOverlay {
     async fn hide(&mut self) -> Result<(), OverlayError> {
         if let Some(window) = self.window.take() {
             window
-                .close()
+                .destroy()
                 .map_err(|e| OverlayError::CloseError(e.to_string()))?;
             self.is_active.store(false, Ordering::SeqCst);
             info!("Tauri overlay hidden");
