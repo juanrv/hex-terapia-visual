@@ -4,7 +4,7 @@ use serde::{Deserialize, Serialize};
 
 #[derive(Debug, thiserror::Error, PartialEq)]
 pub enum OpacityError {
-    #[error("Opacity value must be between 0.0 and 1.0")]
+    #[error("Opacity value must be between 0.0 and 0.8")]
     OutOfRange(f32),
 }
 
@@ -13,9 +13,11 @@ pub enum OpacityError {
 pub struct Opacity(f32);
 
 impl Opacity {
+    pub const MAX_OPACITY: f32 = 0.8;
+
     /// Crea un nuevo valor de opacidad validando que esté en el rango permitido (0.0 a 1.0).
     pub fn new(value: f32) -> Result<Self, OpacityError> {
-        if (0.0..=1.0).contains(&value) {
+        if (0.0..=Self::MAX_OPACITY).contains(&value) {
             Ok(Opacity(value))
         } else {
             Err(OpacityError::OutOfRange(value))
@@ -54,7 +56,7 @@ mod tests {
     #[test]
     fn test_opacity_boundaries() {
         assert!(Opacity::new(0.0).is_ok());
-        assert!(Opacity::new(1.0).is_ok());
+        assert!(Opacity::new(0.8).is_ok());
     }
 
     #[test]
@@ -65,8 +67,11 @@ mod tests {
 
     #[test]
     fn test_invalid_opacity_too_high() {
-        let result = Opacity::new(1.1);
-        assert_eq!(result, Err(OpacityError::OutOfRange(1.1)));
+        let result = Opacity::new(0.81);
+        assert_eq!(result, Err(OpacityError::OutOfRange(0.81)));
+
+        let result_max = Opacity::new(1.0);
+        assert_eq!(result_max, Err(OpacityError::OutOfRange(1.0)));
     }
 
     #[test]

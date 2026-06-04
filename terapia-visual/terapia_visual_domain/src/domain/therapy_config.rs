@@ -63,19 +63,20 @@ impl TherapyConfig {
         let current_zones = self.zones_config.len();
 
         if expected_zones > current_zones {
-            for _ in current_zones..expected_zones {
-                self.zones_config.push(ZoneConfig {
-                    color: Color::default(),
-                    opacity: Opacity::default(),
-                });
+            let mut new_zones = self.zones_config.clone();
+            while new_zones.len() < expected_zones {
+                // Toma el indice de la zona que toca clonar (ciclicamente)
+                let source_index = new_zones.len() % current_zones;
+                new_zones.push(new_zones[source_index].clone());
             }
+            self.zones_config = new_zones;
         } else if expected_zones < current_zones {
             self.zones_config.truncate(expected_zones);
         }
 
         self.layout = new_layout;
 
-        if self.layout == Layout::Checkboard && self.zones_config.len() == 4 {
+        if self.layout == Layout::Checkerboard && self.zones_config.len() == 4 {
             self.zones_config[3] = self.zones_config[0].clone(); // Zona 4 comparte con Zona 1
             self.zones_config[2] = self.zones_config[1].clone(); // Zona 3 comparte con Zona 2
         }
@@ -94,7 +95,7 @@ impl TherapyConfig {
         self.zones_config[zone_index].color = new_color.clone();
 
         // Aplica sincronizacion si es Checkerboard (índices 0-3)
-        if self.layout == Layout::Checkboard {
+        if self.layout == Layout::Checkerboard {
             let paired_index = match zone_index {
                 0 => 3, // Si se toca la 0 (Top-Left), actualiza la 3 (Bottom-Right)
                 3 => 0, // Si se toca la 3, actualiza la 0
@@ -120,7 +121,7 @@ impl TherapyConfig {
 
         self.zones_config[zone_index].opacity = new_opacity;
 
-        if self.layout == Layout::Checkboard {
+        if self.layout == Layout::Checkerboard {
             let paired_index = match zone_index {
                 0 => 3,
                 3 => 0,
@@ -286,9 +287,9 @@ mod tests {
     fn test_change_layout_to_checkboard_expands_and_syncs() {
         let mut config = TherapyConfig::default(); // Empieza con 2 zonas (Vertical)
 
-        config.change_layout(Layout::Checkboard);
+        config.change_layout(Layout::Checkerboard);
 
-        assert_eq!(config.layout(), Layout::Checkboard);
+        assert_eq!(config.layout(), Layout::Checkerboard);
         assert_eq!(config.zones_config().len(), 4); // Crece a 4
 
         // Validar reglas de pares
@@ -305,7 +306,7 @@ mod tests {
     #[test]
     fn test_checkerboard_syncs_color_updates() {
         let mut config = TherapyConfig::default();
-        config.change_layout(Layout::Checkboard);
+        config.change_layout(Layout::Checkerboard);
 
         let new_color = Color::new("#FFFFFF").unwrap();
 

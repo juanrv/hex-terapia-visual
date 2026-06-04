@@ -5,7 +5,7 @@ use serde::{Deserialize, Serialize};
 pub enum Layout {
     Vertical,
     Horizontal,
-    Checkboard,
+    Checkerboard,
 }
 
 impl Layout {
@@ -14,7 +14,7 @@ impl Layout {
         match self {
             Layout::Vertical => 2,
             Layout::Horizontal => 2,
-            Layout::Checkboard => 4,
+            Layout::Checkerboard => 4,
         }
     }
 
@@ -37,7 +37,7 @@ impl Layout {
                 ]
             }
 
-            Layout::Checkboard => {
+            Layout::Checkerboard => {
                 let half_w = width / 2;
                 let half_h = height / 2;
                 vec![
@@ -59,7 +59,7 @@ mod tests {
     fn test_layout_zone_counts() {
         assert_eq!(Layout::Vertical.zone_count(), 2);
         assert_eq!(Layout::Horizontal.zone_count(), 2);
-        assert_eq!(Layout::Checkboard.zone_count(), 4);
+        assert_eq!(Layout::Checkerboard.zone_count(), 4);
     }
 
     #[test]
@@ -80,7 +80,7 @@ mod tests {
 
     #[test]
     fn test_checkerboard_layout_calculation() {
-        let zones = Layout::Checkboard.calculate_zones(1920, 1080);
+        let zones = Layout::Checkerboard.calculate_zones(1920, 1080);
         assert_eq!(zones.len(), 4);
         // Arriba - Izquierda (0)
         assert_eq!(zones[0], ZoneRect::new(0, 0, 960, 540));
