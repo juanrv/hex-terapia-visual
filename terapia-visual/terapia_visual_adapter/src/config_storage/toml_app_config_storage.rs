@@ -86,7 +86,7 @@ impl ConfigStorage<AppSettings> for TomlAppConfigStorage {
 mod tests {
     use tempfile::TempDir;
     use terapia_visual_domain::{
-        domain::AppSettings,
+        domain::{AppSettings, app_settings::Language},
         ports::{ConfigStorage, StorageError},
     };
 
@@ -94,7 +94,7 @@ mod tests {
 
     fn sample_app_settings() -> AppSettings {
         AppSettings {
-            language: "en".to_string(),
+            language: Language::English,
         }
     }
     #[tokio::test]

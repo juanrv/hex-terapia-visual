@@ -24,7 +24,7 @@ pub async fn update_app_settings(
 
 #[cfg(test)]
 mod tests {
-    use crate::use_cases::mocks::MockAppConfigStorage;
+    use crate::{domain::app_settings::Language, use_cases::mocks::MockAppConfigStorage};
 
     use super::*;
 
@@ -35,7 +35,7 @@ mod tests {
             should_fail: false,
         };
         let new = AppSettings {
-            language: "en".to_string(),
+            language: Language::English,
         };
         let result = update_app_settings(&storage, &new).await;
         assert!(result.is_ok());
