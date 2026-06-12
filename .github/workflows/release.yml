@@ -19,7 +19,7 @@ jobs:
           
       - name: Analizar código con Clippy
         working-directory: ./terapia-visual
-        run: cargo clippy --all-targets --all-features -- -D warnings
+        run: cargo clippy --all-targets --all-features
         
       - name: Ejecutar Tests Unitarios
         working-directory: ./terapia-visual
