@@ -191,3 +191,32 @@ pub async fn cmd_update_zone_opacity(
 
     Ok(())
 }
+
+#[tauri::command]
+pub async fn cmd_reset_therapy_config(
+    state: State<'_, AppState>,
+    screen_width: u32,
+    screen_height: u32,
+) -> Result<TherapyConfig, String> {
+    // Obtiene la configuracion segura por defecto del dominio
+    let default_config = TherapyConfig::default();
+
+    // Aplicarla al overlay y guardar en disco
+    let mut overlay = state.overlay.lock().await;
+    update_therapy_config(
+        &mut *overlay,
+        &state.therapy_storage,
+        &default_config,
+        screen_width,
+        screen_height,
+    )
+    .await
+    .map_err(|e| e.to_string())?;
+
+    // Actualizar en memoria
+    let mut current = state.current_config.write().await;
+    *current = default_config.clone();
+
+    // Retornar nueva configuracion
+    Ok(default_config)
+}

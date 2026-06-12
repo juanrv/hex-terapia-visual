@@ -76,9 +76,16 @@ impl TherapyConfig {
 
         self.layout = new_layout;
 
+        // Ajedrez
         if self.layout == Layout::Checkerboard && self.zones_config.len() == 4 {
             self.zones_config[3] = self.zones_config[0].clone(); // Zona 4 comparte con Zona 1
             self.zones_config[2] = self.zones_config[1].clone(); // Zona 3 comparte con Zona 2
+        }
+
+        // 4 columnas
+        if self.layout == Layout::Vertical4Columns && self.zones_config.len() == 4 {
+            self.zones_config[2] = self.zones_config[0].clone(); // Zona 3 comparte con Zona 1
+            self.zones_config[3] = self.zones_config[1].clone(); // Zona 4 comparte con Zona 2
         }
     }
 
@@ -94,16 +101,27 @@ impl TherapyConfig {
 
         self.zones_config[zone_index].color = new_color.clone();
 
-        // Aplica sincronizacion si es Checkerboard (índices 0-3)
-        if self.layout == Layout::Checkerboard {
-            let paired_index = match zone_index {
-                0 => 3, // Si se toca la 0 (Top-Left), actualiza la 3 (Bottom-Right)
-                3 => 0, // Si se toca la 3, actualiza la 0
-                1 => 2, // Si se toca la 1 (Top-Right), actualiza la 2 (Bottom-Left)
-                2 => 1, // Si se toca la 2, actualiza la 1
-                _ => zone_index,
-            };
-            self.zones_config[paired_index].color = new_color;
+        // Aplica sincronizacion en las layouts con 4 zonas
+        let paired_index = match self.layout {
+            Layout::Checkerboard => match zone_index {
+                0 => Some(3),
+                3 => Some(0),
+                1 => Some(2),
+                2 => Some(1),
+                _ => None,
+            },
+            Layout::Vertical4Columns => match zone_index {
+                0 => Some(2),
+                2 => Some(0), // 1 y 3 se sincronizan
+                1 => Some(3),
+                3 => Some(1), // 2 y 4 se sincronizan
+                _ => None,
+            },
+            _ => None, // Vertical y Horizontal no tienen pares automaticos
+        };
+
+        if let Some(pair) = paired_index {
+            self.zones_config[pair].color = new_color;
         }
 
         Ok(())
@@ -121,15 +139,26 @@ impl TherapyConfig {
 
         self.zones_config[zone_index].opacity = new_opacity;
 
-        if self.layout == Layout::Checkerboard {
-            let paired_index = match zone_index {
-                0 => 3,
-                3 => 0,
-                1 => 2,
-                2 => 1,
-                _ => zone_index,
-            };
-            self.zones_config[paired_index].opacity = new_opacity;
+        let paired_index = match self.layout {
+            Layout::Checkerboard => match zone_index {
+                0 => Some(3),
+                3 => Some(0),
+                1 => Some(2),
+                2 => Some(1),
+                _ => None,
+            },
+            Layout::Vertical4Columns => match zone_index {
+                0 => Some(2),
+                2 => Some(0),
+                1 => Some(3),
+                3 => Some(1),
+                _ => None,
+            },
+            _ => None,
+        };
+
+        if let Some(pair) = paired_index {
+            self.zones_config[pair].opacity = new_opacity;
         }
 
         Ok(())
@@ -320,5 +349,57 @@ mod tests {
         let another_color = Color::new("#123456").unwrap();
         let _ = config.update_zone_color(1, another_color.clone());
         assert_eq!(config.zones_config()[2].color, another_color);
+    }
+
+    #[test]
+    fn test_change_layout_to_vertical4_expands_and_syncs() {
+        let mut config = TherapyConfig::default(); // Inicia con 2 zonas
+
+        // Cambio al nuevo layout de 4 columnas
+        config.change_layout(Layout::Vertical4Columns);
+
+        assert_eq!(config.layout(), Layout::Vertical4Columns);
+        assert_eq!(config.zones_config().len(), 4);
+
+        // Validar la regla Col 1 (indice 0) comparte con Col 3 (indice 2)
+        assert_eq!(
+            config.zones_config()[0].color,
+            config.zones_config()[2].color
+        );
+        // Validar la regla Col 2 (indice 1) comparte con Col 4 (indice 3)
+        assert_eq!(
+            config.zones_config()[1].color,
+            config.zones_config()[3].color
+        );
+    }
+
+    #[test]
+    fn test_vertical4_syncs_color_updates() {
+        let mut config = TherapyConfig::default();
+        config.change_layout(Layout::Vertical4Columns);
+
+        let color_a = Color::new("#111111").unwrap();
+        let color_b = Color::new("#222222").unwrap();
+
+        // Si se actualiza la columna 1, la columna 3 debe actualizarse sola
+        let _ = config.update_zone_color(0, color_a.clone());
+        assert_eq!(config.zones_config()[2].color, color_a);
+
+        // Si se actualiza la columna 4, la columna 2 debe actualizarse sola
+        let _ = config.update_zone_color(3, color_b.clone());
+        assert_eq!(config.zones_config()[1].color, color_b);
+    }
+
+    #[test]
+    fn test_vertical4_syncs_opacity_updates() {
+        let mut config = TherapyConfig::default();
+        config.change_layout(Layout::Vertical4Columns);
+
+        let new_opacity = Opacity::new(0.4).unwrap();
+
+        // Si se actualiza la opacidad de la columna 3, la columna 1 debe seguirla
+        let _ = config.update_zone_opacity(2, new_opacity);
+
+        assert_eq!(config.zones_config()[0].opacity, new_opacity);
     }
 }

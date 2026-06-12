@@ -70,6 +70,10 @@ button {
   background-color: #e74c3c;
   color: white;
 }
+#btn-reset {
+  background-color: #95a5a6;
+  color: white;
+}
 
 button:hover {
   opacity: 0.9;
