@@ -8,11 +8,21 @@ use crate::messages;
 
 pub struct TauriSystemNotifier {
     app_handle: AppHandle,
+    icon_inactive_bytes: &'static [u8],
+    icon_active_bytes: &'static [u8],
 }
 
 impl TauriSystemNotifier {
-    pub fn new(app_handle: AppHandle) -> Self {
-        Self { app_handle }
+    pub fn new(
+        app_handle: AppHandle,
+        icon_inactive_bytes: &'static [u8],
+        icon_active_bytes: &'static [u8],
+    ) -> Self {
+        Self {
+            app_handle,
+            icon_inactive_bytes,
+            icon_active_bytes,
+        }
     }
 }
 
@@ -49,17 +59,18 @@ impl SystemNotifier for TauriSystemNotifier {
         tray.set_tooltip(Some(new_tooltip))
             .map_err(|e| NotifierError::IconError(format!("Error setting tooltip: {}", e)))?;
 
-        // 2. [OPCIONAL - PREPARADO PARA EL FUTURO] Actualizar el Ícono visual
-        // Cuando tengas dos íconos diferentes, puedes descomentar esto:
-        /*
-        let icon_path = if active {
-            "icons/icon_active.png"
+        // Actualizar icono
+        let bytes = if active {
+            self.icon_active_bytes
         } else {
-            "icons/icon.png"
+            self.icon_inactive_bytes
         };
-        // Dependiendo de cómo empaquetes los assets, cargarías el ícono aquí
-        // tray.set_icon(Some(tauri::image::Image::from_bytes(...)))?;
-        */
+
+        // Convertir bytes inscrustado a una imagen
+        if let Ok(icon) = tauri::image::Image::from_bytes(bytes) {
+            tray.set_icon(Some(icon))
+                .map_err(|e| NotifierError::IconError(format!("Error setting icon: {}", e)))?;
+        }
 
         info!("Tray status updated to: {}", active);
         Ok(())
