@@ -18,9 +18,11 @@ jobs:
           components: clippy
           
       - name: Analizar código con Clippy
-        run: cargo clippy --all-targets --all-features
+        working-directory: ./terapia-visual
+        run: cargo clippy --all-targets --all-features -- -D warnings
         
       - name: Ejecutar Tests Unitarios
+        working-directory: ./terapia-visual
         run: cargo test --workspace
 
   build-and-release:
@@ -38,7 +40,7 @@ jobs:
           node-version: 24
           
       - name: Instalar dependencias del Frontend
-        working-directory: ./terapia_visual_app
+        working-directory: ./terapia-visual/terapia_visual_app
         run: npm install
         
       - name: Instalar Rust
@@ -54,4 +56,4 @@ jobs:
           releaseBody: 'Versión 1.0.0 oficial de Terapia Visual.'
           releaseDraft: false
           prerelease: false
-          projectPath: ./terapia_visual_app
+          projectPath: ./terapia-visual/terapia_visual_app
