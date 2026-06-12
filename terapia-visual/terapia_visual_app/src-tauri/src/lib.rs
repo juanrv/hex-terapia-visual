@@ -11,6 +11,11 @@ pub fn run() {
         .setup(setup::init)
         .plugin(tauri_plugin_opener::init())
         .plugin(tauri_plugin_notification::init())
+        .plugin(
+            tauri_plugin_global_shortcut::Builder::new()
+                .with_handler(setup::global_shortcut_handler)
+                .build(),
+        )
         .invoke_handler(tauri::generate_handler![
             commands::cmd_get_therapy_config,
             commands::cmd_start_therapy,

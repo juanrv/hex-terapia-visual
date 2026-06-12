@@ -1,5 +1,8 @@
+use std::str::FromStr;
+
 use tauri::async_runtime;
 use tauri::{App, AppHandle, Manager};
+use tauri_plugin_global_shortcut::{GlobalShortcutExt, Shortcut, ShortcutEvent, ShortcutState};
 use tokio::sync::{Mutex, RwLock};
 
 use terapia_visual_adapter::config_storage::TomlStorage;
@@ -7,7 +10,8 @@ use terapia_visual_adapter::messages::{self, init_language};
 use terapia_visual_adapter::notifier::TauriSystemNotifier;
 use terapia_visual_adapter::overlay::TauriOverlay;
 use terapia_visual_domain::domain::{AppSettings, TherapyConfig};
-use terapia_visual_domain::ports::ConfigStorage;
+use terapia_visual_domain::ports::OverlayPort;
+use terapia_visual_domain::ports::{ConfigStorage, SystemNotifier};
 
 use crate::state::AppState;
 use crate::tray::create_tray;
@@ -45,6 +49,10 @@ pub fn init(app: &mut App) -> Result<(), Box<dyn std::error::Error>> {
     // Crear bandeja del sistema
     create_tray(app)?;
 
+    // Registrar atajo de teclado
+    let therapy_shortcut = Shortcut::from_str("Ctrl+Shift+T")?;
+    app.handle().global_shortcut().register(therapy_shortcut)?;
+
     // Inyectar estado a Tauri
     let state = AppState {
         therapy_storage,
@@ -56,6 +64,51 @@ pub fn init(app: &mut App) -> Result<(), Box<dyn std::error::Error>> {
     app.manage(state);
 
     Ok(())
+}
+
+/// Funcion para reaccionar a los atajos de teclado
+pub fn global_shortcut_handler(app: &AppHandle, shortcut: &Shortcut, event: ShortcutEvent) {
+    if event.state() == ShortcutState::Pressed {
+        let therapy_shortcut = Shortcut::from_str("Ctrl+Shift+T").unwrap();
+
+        if shortcut == &therapy_shortcut {
+            let app_handle = app.clone();
+
+            // Lanzar tarea asincrona para no bloquear el teclado
+            tauri::async_runtime::spawn(async move {
+                let state = app_handle.state::<AppState>();
+                let mut overlay = state.overlay.lock().await;
+
+                // Si esta activa, se detiene
+                if overlay.is_active() {
+                    if let Ok(_) =
+                        terapia_visual_domain::use_cases::stop_therapy(&mut *overlay).await
+                    {
+                        let _ = state.notifier.set_tray_state(false).await;
+                    }
+                }
+                // Si esta detenida, se inicia
+                else {
+                    // Calcular tamaño de pantlla
+                    if let Ok(Some(monitor)) = app_handle.primary_monitor() {
+                        let size = monitor.size();
+                        let config = state.current_config.read().await;
+
+                        if let Ok(_) = terapia_visual_domain::use_cases::start_therapy(
+                            &mut *overlay,
+                            &*&config,
+                            size.width,
+                            size.height,
+                        )
+                        .await
+                        {
+                            let _ = state.notifier.set_tray_state(true).await;
+                        }
+                    }
+                }
+            });
+        }
+    }
 }
 
 /// Funcion auxiliar para guardar configuracion
