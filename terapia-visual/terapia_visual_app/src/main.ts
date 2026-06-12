@@ -3,6 +3,7 @@ import { setLanguage, translate, type Language } from "./localization/i18n";
 
 // Variables globales de estado del Frontend
 let currentConfig: any = null;
+let statusTimeout: number | undefined;
 
 // Referencias a elementos del DOM
 const statusDiv = document.getElementById("status");
@@ -15,10 +16,28 @@ const zonesContainer = document.getElementById("zones-container");
 function showStatus(
   messageKey: keyof typeof import("./localization/i18n").translations.es,
 ) {
-  if (statusDiv) statusDiv.innerText = translate(messageKey);
-  setTimeout(() => {
-    if (statusDiv) statusDiv.innerText = "";
-  }, 3000); // Limpiar a los 3 seg
+  if (!statusDiv) return;
+  statusDiv.classList.remove("status-error");
+  statusDiv.innerText = translate(messageKey);
+
+  clearTimeout(statusTimeout);
+  statusTimeout = window.setTimeout(() => {
+    statusDiv.innerText = "";
+  }, 3000);
+}
+
+// Utilidad para mostrar errores
+function showError(errorMsg: string) {
+  if (!statusDiv) return;
+
+  statusDiv.classList.add("status-error");
+  statusDiv.innerText = `${translate("error_generic")}: ${errorMsg}`;
+
+  clearTimeout(statusTimeout);
+  statusTimeout = window.setTimeout(() => {
+    statusDiv.innerText = "";
+    statusDiv.classList.remove("status-error");
+  }, 3000);
 }
 
 async function loadInitialState() {
@@ -45,9 +64,9 @@ async function changeLanguage(lang: Language) {
     });
     setLanguage(lang);
     renderZoneControls(); // Re-renderizar para traducir las zonas
-  } catch (err) {
-    console.error("Error updating language: ", err);
-    showStatus("error_generic");
+  } catch (error) {
+    console.error("Error updating language: ", error);
+    showError(String(error));
   }
 }
 
@@ -125,7 +144,7 @@ async function startTherapy() {
     showStatus("status_started");
   } catch (error) {
     console.error("Error starting:", error);
-    showStatus("error_generic");
+    showError(String(error));
   }
 }
 
@@ -135,7 +154,7 @@ async function stopTherapy() {
     showStatus("status_stopped");
   } catch (error) {
     console.error("Error stopping:", error);
-    showStatus("error_generic");
+    showError(String(error));
   }
 }
 
@@ -156,7 +175,7 @@ async function resetTherapy() {
     showStatus("status_reset");
   } catch (error) {
     console.error("Error reseteando configuracion:", error);
-    showStatus("error_generic");
+    showError(String(error));
   }
 }
 
@@ -174,7 +193,7 @@ async function handleLayoutChange(e: Event) {
     showStatus("status_updated");
   } catch (error) {
     console.error("Error cambiando layout:", error);
-    showStatus("error_generic");
+    showError(String(error));
   }
 }
 
@@ -211,7 +230,7 @@ async function updateZoneConfig(
     showStatus("status_updated");
   } catch (error) {
     console.error("Error actualizando zona:", error);
-    showStatus("error_generic");
+    showError(String(error));
   }
 }
 

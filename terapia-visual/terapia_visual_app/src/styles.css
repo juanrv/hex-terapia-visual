@@ -154,6 +154,11 @@ input[type="range"] {
   min-height: 20px;
 }
 
+.status-error {
+  color: #e74c3c !important; /* Rojo fuerte */
+  font-weight: 600;
+}
+
 /* Modo oscuro */
 @media (prefers-color-scheme: dark) {
   :root {
