@@ -1,6 +1,6 @@
 [package]
 name = "terapia_visual_app"
-version = "0.1.0"
+version = "1.0.0"
 description = "A Tauri App"
 authors = ["you"]
 edition = "2021"
@@ -23,10 +23,10 @@ devtools = ["tauri/devtools"]
 
 [dependencies]
 # Locales
-terapia_visual_domain = { version = "0.1.0", path = "../../terapia_visual_domain" }
-terapia_visual_adapter = { version = "0.1.0", path = "../../terapia_visual_adapter" }
+terapia_visual_domain = { version = "1.0.0", path = "../../terapia_visual_domain" }
+terapia_visual_adapter = { version = "1.0.0", path = "../../terapia_visual_adapter" }
 
-tauri = { version = "2", features = ["tray-icon", "webview-data-url"] }
+tauri = { version = "2", features = ["tray-icon", "webview-data-url", "image-png"] }
 tauri-plugin-opener = "2"
 serde = { version = "1", features = ["derive"] }
 serde_json = "1"

@@ -35,6 +35,7 @@ pub fn run() {
             commands::cmd_change_layout,
             commands::cmd_update_zone_color,
             commands::cmd_update_zone_opacity,
+            commands::cmd_reset_therapy_config,
         ])
         .on_window_event(|window, event| {
             if let tauri::WindowEvent::CloseRequested { api, .. } = event {

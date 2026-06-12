@@ -6,6 +6,7 @@ pub enum Layout {
     Vertical,
     Horizontal,
     Checkerboard,
+    Vertical4Columns,
 }
 
 impl Layout {
@@ -15,6 +16,7 @@ impl Layout {
             Layout::Vertical => 2,
             Layout::Horizontal => 2,
             Layout::Checkerboard => 4,
+            Layout::Vertical4Columns => 4,
         }
     }
 
@@ -47,6 +49,17 @@ impl Layout {
                     ZoneRect::new(half_w, half_h, width - half_w, height - half_h), // inferior derecha
                 ]
             }
+
+            Layout::Vertical4Columns => {
+                let column_width = width / 4;
+
+                vec![
+                    ZoneRect::new(0, 0, column_width, height), // columna 1
+                    ZoneRect::new(column_width, 0, column_width, height), // Columna 2
+                    ZoneRect::new(column_width * 2, 0, column_width, height), // Columna 3
+                    ZoneRect::new(column_width * 3, 0, width - (column_width * 3), height), // columna 4, toma el ancho restante
+                ]
+            }
         }
     }
 }
@@ -60,6 +73,7 @@ mod tests {
         assert_eq!(Layout::Vertical.zone_count(), 2);
         assert_eq!(Layout::Horizontal.zone_count(), 2);
         assert_eq!(Layout::Checkerboard.zone_count(), 4);
+        assert_eq!(Layout::Vertical4Columns.zone_count(), 4);
     }
 
     #[test]
@@ -98,5 +112,33 @@ mod tests {
         // 1921 / 2 = 960 (división entera), la segunda zona toma el resto
         assert_eq!(zones[0].width, 960);
         assert_eq!(zones[1].width, 1921 - 960);
+    }
+
+    #[test]
+    fn test_vertical4columns_layout_calculation() {
+        // Pantalla de 1920x1080 (1920 / 4 = 480 por columna)
+        let zones = Layout::Vertical4Columns.calculate_zones(1920, 1080);
+        assert_eq!(zones.len(), 4);
+
+        // Columna 1
+        assert_eq!(zones[0], ZoneRect::new(0, 0, 480, 1080));
+        // Columna 2
+        assert_eq!(zones[1], ZoneRect::new(480, 0, 480, 1080));
+        // Columna 3
+        assert_eq!(zones[2], ZoneRect::new(960, 0, 480, 1080));
+        // Columna 4
+        assert_eq!(zones[3], ZoneRect::new(1440, 0, 480, 1080));
+    }
+
+    #[test]
+    fn test_vertical4columns_odd_width_handling() {
+        // Pantalla de 1922 de ancho. 1922 / 4 = 480 (sobran 2 pixeles)
+        let zones = Layout::Vertical4Columns.calculate_zones(1922, 1080);
+
+        assert_eq!(zones[0].width, 480);
+        assert_eq!(zones[1].width, 480);
+        assert_eq!(zones[2].width, 480);
+        // La última columna debe absorber los píxeles restantes para no dejar huecos
+        assert_eq!(zones[3].width, 1922 - (480 * 3)); // 482
     }
 }

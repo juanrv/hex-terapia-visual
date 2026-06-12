@@ -7,12 +7,14 @@ export const translations = {
     btn_stop: "Detener Terapia",
     btn_spanish: "Español",
     btn_english: "English",
+    btn_reset: "Restablecer",
 
     // Layouts
     layout_label: "Disposición (Layout)",
     layout_vertical: "Vertical",
     layout_horizontal: "Horizontal",
     layout_checkerboard: "Ajedrez",
+    layout_vertical4: "Vertical (4 Columnas)",
 
     // Zonas
     zone_title: "Zona",
@@ -23,6 +25,7 @@ export const translations = {
     status_started: "Terapia iniciada",
     status_stopped: "Terapia detenida",
     status_updated: "Configuración actualizada",
+    status_reset: "Valores por defecto restaurados",
     error_generic: "Ha ocurrido un error inesperado",
   },
   en: {
@@ -31,12 +34,14 @@ export const translations = {
     btn_stop: "Stop Therapy",
     btn_spanish: "Spanish",
     btn_english: "English",
+    btn_reset: "Reset Defaults",
 
     // Layouts
     layout_label: "Layout",
     layout_vertical: "Vertical",
     layout_horizontal: "Horizontal",
     layout_checkerboard: "Checkerboard",
+    layout_vertical4: "Vertical (4 Columns)",
 
     // Zonas
     zone_title: "Zone",
@@ -47,6 +52,7 @@ export const translations = {
     status_started: "Therapy started",
     status_stopped: "Therapy stopped",
     status_updated: "Configuration updated",
+    status_reset: "Default values restored",
     error_generic: "An unexpected error occurred",
   },
 };

@@ -25,10 +25,14 @@ pub fn init(app: &mut App) -> Result<(), Box<dyn std::error::Error>> {
         .expect("Failed to obtain app data dir");
     std::fs::create_dir_all(&config_dir)?;
 
+    // Cargar archivos en tiempo de compilacion
+    const ICON_ACTIVE: &[u8] = include_bytes!("../icons/tray_active.png");
+    const ICON_INACTIVE: &[u8] = include_bytes!("../icons/tray_inactive.png");
+
     // Inicializar adaptadores
     let therapy_storage = TomlStorage::new(&config_dir, "therapy_config.toml");
     let app_storage = TomlStorage::new(&config_dir, "app_config.toml");
-    let notifier = TauriSystemNotifier::new(app.handle().clone());
+    let notifier = TauriSystemNotifier::new(app.handle().clone(), ICON_INACTIVE, ICON_ACTIVE);
     let overlay = TauriOverlay::new(app.handle().clone());
 
     // Cargar configuraciones (con valores por defecto en caso de fallo)
@@ -81,7 +85,7 @@ pub fn global_shortcut_handler(app: &AppHandle, shortcut: &Shortcut, event: Shor
                 let state = app_handle.state::<AppState>();
 
                 if state.is_toggling.swap(true, Ordering::SeqCst) {
-                    tracing::warn!("El usuario presiono el atajao demasiado rapido, ignorando.");
+                    tracing::warn!("El usuario presiono el atajo demasiado rapido, ignorando.");
                     return;
                 }
 
