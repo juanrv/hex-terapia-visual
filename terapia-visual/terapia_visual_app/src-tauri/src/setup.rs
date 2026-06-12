@@ -1,4 +1,5 @@
 use std::str::FromStr;
+use std::sync::atomic::{AtomicBool, Ordering};
 
 use tauri::async_runtime;
 use tauri::{App, AppHandle, Manager};
@@ -60,6 +61,7 @@ pub fn init(app: &mut App) -> Result<(), Box<dyn std::error::Error>> {
         overlay: Mutex::new(overlay),
         notifier,
         current_config: RwLock::new(initial_config),
+        is_toggling: AtomicBool::new(false),
     };
     app.manage(state);
 
@@ -77,6 +79,12 @@ pub fn global_shortcut_handler(app: &AppHandle, shortcut: &Shortcut, event: Shor
             // Lanzar tarea asincrona para no bloquear el teclado
             tauri::async_runtime::spawn(async move {
                 let state = app_handle.state::<AppState>();
+
+                if state.is_toggling.swap(true, Ordering::SeqCst) {
+                    tracing::warn!("El usuario presiono el atajao demasiado rapido, ignorando.");
+                    return;
+                }
+
                 let mut overlay = state.overlay.lock().await;
 
                 // Si esta activa, se detiene
@@ -106,6 +114,9 @@ pub fn global_shortcut_handler(app: &AppHandle, shortcut: &Shortcut, event: Shor
                         }
                     }
                 }
+
+                // Cambiar la flag
+                state.is_toggling.store(false, Ordering::SeqCst);
             });
         }
     }

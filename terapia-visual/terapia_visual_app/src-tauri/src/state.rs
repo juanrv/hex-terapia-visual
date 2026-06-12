@@ -1,3 +1,5 @@
+use std::sync::atomic::AtomicBool;
+
 use terapia_visual_adapter::config_storage::TomlStorage;
 use terapia_visual_adapter::notifier::TauriSystemNotifier;
 use terapia_visual_adapter::overlay::TauriOverlay;
@@ -10,4 +12,5 @@ pub struct AppState {
     pub overlay: Mutex<TauriOverlay>,
     pub notifier: TauriSystemNotifier,
     pub current_config: RwLock<TherapyConfig>,
+    pub is_toggling: AtomicBool,
 }
