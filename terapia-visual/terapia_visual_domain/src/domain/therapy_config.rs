@@ -224,6 +224,10 @@ mod tests {
         ]
     }
 
+    // ==========================================
+    // CREACION Y GENERACION BASICA
+    // ==========================================
+
     #[test]
     fn test_new_config_valid() {
         let config = TherapyConfig::new(
@@ -255,46 +259,6 @@ mod tests {
     }
 
     #[test]
-    fn test_change_layout_same_zone_count() {
-        let mut config = TherapyConfig::default();
-
-        config.change_layout(Layout::Horizontal);
-
-        assert_eq!(config.layout(), Layout::Horizontal);
-        assert_eq!(config.zones_config().len(), 2);
-    }
-
-    #[test]
-    fn test_update_zone_color_success() {
-        let mut config = TherapyConfig::default();
-        let new_color = Color::new("#0000FF").unwrap(); // Azul
-
-        let result = config.update_zone_color(0, new_color.clone());
-        assert!(result.is_ok());
-        assert_eq!(config.zones_config()[0].color, new_color);
-    }
-
-    #[test]
-    fn test_update_zone_color_out_of_bounds() {
-        let mut config = TherapyConfig::default();
-        let new_color = Color::new("#0000FF").unwrap();
-
-        // Intentamos actualizar la zona 99
-        let result = config.update_zone_color(99, new_color);
-        assert_eq!(result, Err(ConfigError::InvalidZoneIndex(99)));
-    }
-
-    #[test]
-    fn test_update_zone_opacity_success() {
-        let mut config = TherapyConfig::default();
-        let new_opacity = Opacity::new(0.2).unwrap(); // Nueva opacidad
-
-        let result = config.update_zone_opacity(1, new_opacity);
-        assert!(result.is_ok());
-        assert_eq!(config.zones_config()[1].opacity, new_opacity);
-    }
-
-    #[test]
     fn test_generate_zones() {
         let config = TherapyConfig::new(
             TherapyType::ColorDivision,
@@ -312,16 +276,33 @@ mod tests {
         assert_eq!(zones[1].color().as_str(), "#00FF00");
     }
 
+    // ==========================================
+    // CAMBIOS DE LAYOUT
+    // ==========================================
+
+    #[test]
+    fn test_change_layout_same_zone_count() {
+        let mut config = TherapyConfig::default();
+        config.change_layout(Layout::Horizontal);
+        assert_eq!(config.layout(), Layout::Horizontal);
+        assert_eq!(config.zones_config().len(), 2);
+    }
+
+    #[test]
+    fn test_change_layout_truncates_when_reducing_zones() {
+        let mut config = TherapyConfig::default();
+        config.change_layout(Layout::Checkerboard); // Sube a 4
+        config.change_layout(Layout::Horizontal); // Baja a 2
+        assert_eq!(config.layout(), Layout::Horizontal);
+        assert_eq!(config.zones_config().len(), 2);
+    }
+
     #[test]
     fn test_change_layout_to_checkboard_expands_and_syncs() {
-        let mut config = TherapyConfig::default(); // Empieza con 2 zonas (Vertical)
-
+        let mut config = TherapyConfig::default();
         config.change_layout(Layout::Checkerboard);
-
         assert_eq!(config.layout(), Layout::Checkerboard);
-        assert_eq!(config.zones_config().len(), 4); // Crece a 4
-
-        // Validar reglas de pares
+        assert_eq!(config.zones_config().len(), 4);
         assert_eq!(
             config.zones_config()[0].color,
             config.zones_config()[3].color
@@ -331,47 +312,139 @@ mod tests {
             config.zones_config()[2].color
         );
     }
+
+    #[test]
+    fn test_change_layout_to_vertical4_expands_and_syncs() {
+        let mut config = TherapyConfig::default();
+        config.change_layout(Layout::Vertical4Columns);
+        assert_eq!(config.layout(), Layout::Vertical4Columns);
+        assert_eq!(config.zones_config().len(), 4);
+        assert_eq!(
+            config.zones_config()[0].color,
+            config.zones_config()[2].color
+        );
+        assert_eq!(
+            config.zones_config()[1].color,
+            config.zones_config()[3].color
+        );
+    }
+
+    // ==========================================
+    // 3ACTUALIZACIONES BASICAS Y ERRORES
+    // ==========================================
+
+    #[test]
+    fn test_update_zone_color_success() {
+        let mut config = TherapyConfig::default();
+        let new_color = Color::new("#0000FF").unwrap();
+        assert!(config.update_zone_color(0, new_color.clone()).is_ok());
+        assert_eq!(config.zones_config()[0].color, new_color);
+    }
+
+    #[test]
+    fn test_update_zone_color_out_of_bounds() {
+        let mut config = TherapyConfig::default();
+        let new_color = Color::new("#0000FF").unwrap();
+        assert_eq!(
+            config.update_zone_color(99, new_color),
+            Err(ConfigError::InvalidZoneIndex(99))
+        );
+    }
+
+    #[test]
+    fn test_update_zone_color_no_sync_for_vertical_layout() {
+        let mut config = TherapyConfig::default(); // Inicia Vertical
+        let new_color = Color::new("#FFFFFF").unwrap();
+        let _ = config.update_zone_color(0, new_color.clone());
+        assert_eq!(config.zones_config()[0].color, new_color);
+        assert_ne!(config.zones_config()[1].color, new_color); // No debe sincronizar
+    }
+
+    #[test]
+    fn test_update_zone_opacity_success() {
+        let mut config = TherapyConfig::default();
+        let new_opacity = Opacity::new(0.2).unwrap();
+        assert!(config.update_zone_opacity(1, new_opacity).is_ok());
+        assert_eq!(config.zones_config()[1].opacity, new_opacity);
+    }
+
+    #[test]
+    fn test_update_zone_opacity_out_of_bounds() {
+        let mut config = TherapyConfig::default();
+        let new_opacity = Opacity::new(0.5).unwrap();
+        // Intentamos actualizar una zona inexistente
+        assert_eq!(
+            config.update_zone_opacity(99, new_opacity),
+            Err(ConfigError::InvalidZoneIndex(99))
+        );
+    }
+
+    #[test]
+    fn test_update_zone_opacity_no_sync_for_vertical_layout() {
+        let mut config = TherapyConfig::default();
+        let new_opacity = Opacity::new(0.3).unwrap();
+        let _ = config.update_zone_opacity(0, new_opacity);
+        assert_eq!(config.zones_config()[0].opacity, new_opacity);
+        assert_ne!(config.zones_config()[1].opacity, new_opacity); // No debe sincronizar
+    }
+
+    // ==========================================
+    // REGLAS DE SINCRONIZACIIN (AJEDREZ)
+    // ==========================================
 
     #[test]
     fn test_checkerboard_syncs_color_updates() {
         let mut config = TherapyConfig::default();
         config.change_layout(Layout::Checkerboard);
 
-        let new_color = Color::new("#FFFFFF").unwrap();
+        let color_a = Color::new("#111111").unwrap();
+        let color_b = Color::new("#222222").unwrap();
+        let color_c = Color::new("#333333").unwrap();
+        let color_d = Color::new("#444444").unwrap();
 
-        // Actualizar la zona 0 (Top-Left)
-        let _ = config.update_zone_color(0, new_color.clone());
+        // Direcciones normales
+        let _ = config.update_zone_color(0, color_a.clone());
+        assert_eq!(config.zones_config()[3].color, color_a); // 0 actualiza 3
 
-        // Verificar la zona 3
-        assert_eq!(config.zones_config()[3].color, new_color);
+        let _ = config.update_zone_color(1, color_b.clone());
+        assert_eq!(config.zones_config()[2].color, color_b); // 1 actualiza 2
 
-        // Lo mismo con la zona 1 y 2
-        let another_color = Color::new("#123456").unwrap();
-        let _ = config.update_zone_color(1, another_color.clone());
-        assert_eq!(config.zones_config()[2].color, another_color);
+        // Direcciones inversas
+        let _ = config.update_zone_color(3, color_c.clone());
+        assert_eq!(config.zones_config()[0].color, color_c); // 3 actualiza 0
+
+        let _ = config.update_zone_color(2, color_d.clone());
+        assert_eq!(config.zones_config()[1].color, color_d); // 2 actualiza 1
     }
 
     #[test]
-    fn test_change_layout_to_vertical4_expands_and_syncs() {
-        let mut config = TherapyConfig::default(); // Inicia con 2 zonas
+    fn test_checkerboard_syncs_opacity_updates() {
+        let mut config = TherapyConfig::default();
+        config.change_layout(Layout::Checkerboard);
 
-        // Cambio al nuevo layout de 4 columnas
-        config.change_layout(Layout::Vertical4Columns);
+        let op_a = Opacity::new(0.1).unwrap();
+        let op_b = Opacity::new(0.2).unwrap();
+        let op_c = Opacity::new(0.3).unwrap();
+        let op_d = Opacity::new(0.4).unwrap();
 
-        assert_eq!(config.layout(), Layout::Vertical4Columns);
-        assert_eq!(config.zones_config().len(), 4);
+        // Direcciones normales
+        let _ = config.update_zone_opacity(0, op_a);
+        assert_eq!(config.zones_config()[3].opacity, op_a); // 0 actualiza 3
 
-        // Validar la regla Col 1 (indice 0) comparte con Col 3 (indice 2)
-        assert_eq!(
-            config.zones_config()[0].color,
-            config.zones_config()[2].color
-        );
-        // Validar la regla Col 2 (indice 1) comparte con Col 4 (indice 3)
-        assert_eq!(
-            config.zones_config()[1].color,
-            config.zones_config()[3].color
-        );
+        let _ = config.update_zone_opacity(1, op_b);
+        assert_eq!(config.zones_config()[2].opacity, op_b); // 1 actualiza 2
+
+        // Direcciones inversas
+        let _ = config.update_zone_opacity(3, op_c);
+        assert_eq!(config.zones_config()[0].opacity, op_c); // 3 actualiza 0
+
+        let _ = config.update_zone_opacity(2, op_d);
+        assert_eq!(config.zones_config()[1].opacity, op_d); // 2 actualiza 1
     }
+
+    // ==========================================
+    // REGLAS DE SINCRONIZACION (4 COLUMNAS)
+    // ==========================================
 
     #[test]
     fn test_vertical4_syncs_color_updates() {
@@ -380,14 +453,22 @@ mod tests {
 
         let color_a = Color::new("#111111").unwrap();
         let color_b = Color::new("#222222").unwrap();
+        let color_c = Color::new("#333333").unwrap();
+        let color_d = Color::new("#444444").unwrap();
 
-        // Si se actualiza la columna 1, la columna 3 debe actualizarse sola
+        // Direcciones normales
         let _ = config.update_zone_color(0, color_a.clone());
-        assert_eq!(config.zones_config()[2].color, color_a);
+        assert_eq!(config.zones_config()[2].color, color_a); // 0 actualiza 2
 
-        // Si se actualiza la columna 4, la columna 2 debe actualizarse sola
-        let _ = config.update_zone_color(3, color_b.clone());
-        assert_eq!(config.zones_config()[1].color, color_b);
+        let _ = config.update_zone_color(1, color_b.clone());
+        assert_eq!(config.zones_config()[3].color, color_b); // 1 actualiza 3
+
+        // Direcciones inversas
+        let _ = config.update_zone_color(2, color_c.clone());
+        assert_eq!(config.zones_config()[0].color, color_c); // 2 actualiza 0
+
+        let _ = config.update_zone_color(3, color_d.clone());
+        assert_eq!(config.zones_config()[1].color, color_d); // 3 actualiza 1
     }
 
     #[test]
@@ -395,11 +476,23 @@ mod tests {
         let mut config = TherapyConfig::default();
         config.change_layout(Layout::Vertical4Columns);
 
-        let new_opacity = Opacity::new(0.4).unwrap();
+        let op_a = Opacity::new(0.1).unwrap();
+        let op_b = Opacity::new(0.2).unwrap();
+        let op_c = Opacity::new(0.3).unwrap();
+        let op_d = Opacity::new(0.4).unwrap();
 
-        // Si se actualiza la opacidad de la columna 3, la columna 1 debe seguirla
-        let _ = config.update_zone_opacity(2, new_opacity);
+        // Direcciones normales
+        let _ = config.update_zone_opacity(0, op_a);
+        assert_eq!(config.zones_config()[2].opacity, op_a); // 0 actualiza 2
 
-        assert_eq!(config.zones_config()[0].opacity, new_opacity);
+        let _ = config.update_zone_opacity(1, op_b);
+        assert_eq!(config.zones_config()[3].opacity, op_b); // 1 actualiza 3
+
+        // Direcciones inversas
+        let _ = config.update_zone_opacity(2, op_c);
+        assert_eq!(config.zones_config()[0].opacity, op_c); // 2 actualiza 0
+
+        let _ = config.update_zone_opacity(3, op_d);
+        assert_eq!(config.zones_config()[1].opacity, op_d); // 3 actualiza 1
     }
 }

@@ -97,4 +97,11 @@ mod tests {
         let color = Color::default();
         assert_eq!(color.as_str(), "#000000");
     }
+
+    #[test]
+    fn test_color_display() {
+        let color = Color::new("#FF0000").unwrap();
+        // Al usar format!("{}", color), fuerza a Rust a ejecutar la funcion fmt::Display
+        assert_eq!(format!("{}", color), "#FF0000");
+    }
 }

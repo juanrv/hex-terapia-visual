@@ -3,10 +3,7 @@ use crate::{domain::AppSettings, ports::ConfigStorage};
 /// Obtiene la configuracion de la aplicacion desde el almacenamiento
 /// Si no existe o hay error, devuelve la configiracion por defecto
 pub async fn get_app_settings(storage: &dyn ConfigStorage<AppSettings>) -> AppSettings {
-    match storage.load().await {
-        Ok(settings) => settings,
-        Err(_) => AppSettings::default(),
-    }
+    storage.load().await.unwrap_or_default()
 }
 
 #[cfg(test)]
