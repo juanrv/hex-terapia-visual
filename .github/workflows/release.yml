@@ -25,6 +25,24 @@ jobs:
         working-directory: ./terapia-visual
         run: cargo test --workspace
 
+      - name: Instalar cargo-llvm-cov
+        uses: taiki-e/install-action@cargo-llvm-cov
+        
+      - name: Mostrar Cobertura del Dominio en Consola
+        working-directory: ./terapia-visual
+        run: cargo llvm-cov -p terapia_visual_domain
+        
+      - name: Generar Reporte Visual (HTML)
+        working-directory: ./terapia-visual
+        run: cargo llvm-cov -p terapia_visual_domain --html --output-dir coverage_report
+        
+      - name: Subir Reporte a GitHub (Artefacto)
+        uses: actions/upload-artifact@v4
+        with:
+          name: reporte-cobertura-dominio
+          path: ./terapia-visual/coverage_report/
+          retention-days: 14
+
   build-and-release:
     needs: analyze-and-test
     runs-on: windows-latest
