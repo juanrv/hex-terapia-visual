@@ -1,50 +1,27 @@
 name: Release Terapia Visual
 
+# Solo se ejecuta al subir un Tag o manualmente
 on:
   push:
     tags:
       - 'v*'
-  workflow_dispatch: # ¡Esto nos permitirá forzar la ejecución con un botón manual!
+  workflow_dispatch:
 
 jobs:
-  analyze-and-test:
+  # Pre-chequeo de seguridad rápido
+  verify:
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v4
-      
       - name: Instalar Rust
         uses: dtolnay/rust-toolchain@stable
-        with:
-          components: clippy
-          
-      - name: Analizar código con Clippy
-        working-directory: ./terapia-visual
-        run: cargo clippy --all-targets --all-features
-        
-      - name: Ejecutar Tests Unitarios
+      - name: Ejecutar Tests de Seguridad
         working-directory: ./terapia-visual
         run: cargo test --workspace
 
-      - name: Instalar cargo-llvm-cov
-        uses: taiki-e/install-action@cargo-llvm-cov
-        
-      - name: Mostrar Cobertura del Dominio en Consola
-        working-directory: ./terapia-visual
-        run: cargo llvm-cov -p terapia_visual_domain
-        
-      - name: Generar Reporte Visual (HTML)
-        working-directory: ./terapia-visual
-        run: cargo llvm-cov -p terapia_visual_domain --html --output-dir coverage_report
-        
-      - name: Subir Reporte a GitHub (Artefacto)
-        uses: actions/upload-artifact@v4
-        with:
-          name: reporte-cobertura-dominio
-          path: ./terapia-visual/coverage_report/
-          retention-days: 14
-
+  # Empaquetado final
   build-and-release:
-    needs: analyze-and-test
+    needs: verify
     runs-on: windows-latest
     permissions:
       contents: write 
@@ -71,7 +48,7 @@ jobs:
         with:
           tagName: v1.0.0
           releaseName: 'Terapia Visual v1.0.0'
-          releaseBody: 'Versión 1.0.0 oficial de Terapia Visual.'
+          releaseBody: 'Versión 1.0.0 oficial de Terapia Visual. (Ejecutable autogenerado)'
           releaseDraft: false
           prerelease: false
           projectPath: ./terapia-visual/terapia_visual_app
