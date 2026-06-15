@@ -1,0 +1,45 @@
+name: CI (Tests y Cobertura)
+
+# Se ejecuta con cada push a main o dev, y en los Pull Requests
+on:
+  push:
+    branches: [ "main", "dev" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  test-and-coverage:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Instalar Rust
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          components: clippy, llvm-tools-preview
+          
+      - name: Analizar código con Clippy
+        working-directory: ./terapia-visual
+        run: cargo clippy --all-targets --all-features
+        
+      - name: Ejecutar Todos los Tests
+        working-directory: ./terapia-visual
+        run: cargo test --workspace
+
+      - name: Instalar cargo-llvm-cov
+        uses: taiki-e/install-action@cargo-llvm-cov
+        
+      - name: Mostrar Cobertura en Consola
+        working-directory: ./terapia-visual
+        run: cargo llvm-cov -p terapia_visual_domain
+        
+      - name: Generar Reporte Visual (HTML)
+        working-directory: ./terapia-visual
+        run: cargo llvm-cov -p terapia_visual_domain --html --output-dir coverage_report
+        
+      - name: Subir Reporte a GitHub (Artefacto)
+        uses: actions/upload-artifact@v4
+        with:
+          name: reporte-cobertura-dominio
+          path: ./terapia-visual/coverage_report/
+          retention-days: 14
