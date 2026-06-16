@@ -1,0 +1,54 @@
+name: Release Terapia Visual
+
+# Solo se ejecuta al subir un Tag o manualmente
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+jobs:
+  # Pre-chequeo de seguridad rápido
+  verify:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Instalar Rust
+        uses: dtolnay/rust-toolchain@stable
+      - name: Ejecutar Tests de Seguridad
+        working-directory: ./terapia-visual
+        run: cargo test --workspace
+
+  # Empaquetado final
+  build-and-release:
+    needs: verify
+    runs-on: windows-latest
+    permissions:
+      contents: write 
+
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Instalar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          
+      - name: Instalar dependencias del Frontend
+        working-directory: ./terapia-visual/terapia_visual_app
+        run: npm install
+        
+      - name: Instalar Rust
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Compilar App y Crear Release en GitHub
+        uses: tauri-apps/tauri-action@v0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tagName: v1.0.0
+          releaseName: 'Terapia Visual v1.0.0'
+          releaseBody: 'Versión 1.0.0 oficial de Terapia Visual. (Ejecutable autogenerado)'
+          releaseDraft: false
+          prerelease: false
+          projectPath: ./terapia-visual/terapia_visual_app

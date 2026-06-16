@@ -11,7 +11,7 @@ pub async fn start_therapy(
     screen_height: u32,
 ) -> Result<(), overlay::OverlayError> {
     if overlay.is_active() {
-        return Err(OverlayError::AlreadyActive);
+        Err(OverlayError::AlreadyActive)
     } else {
         // Si el overlay no está activo, se muestra con la configuracion inicial
         overlay.show(config, screen_width, screen_height).await

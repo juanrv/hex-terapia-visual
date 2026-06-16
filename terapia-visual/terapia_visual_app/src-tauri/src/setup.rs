@@ -11,7 +11,6 @@ use terapia_visual_adapter::messages::{self, init_language};
 use terapia_visual_adapter::notifier::TauriSystemNotifier;
 use terapia_visual_adapter::overlay::TauriOverlay;
 use terapia_visual_domain::domain::{AppSettings, TherapyConfig};
-use terapia_visual_domain::ports::OverlayPort;
 use terapia_visual_domain::ports::{ConfigStorage, SystemNotifier};
 
 use crate::state::AppState;
@@ -92,12 +91,11 @@ pub fn global_shortcut_handler(app: &AppHandle, shortcut: &Shortcut, event: Shor
                 let mut overlay = state.overlay.lock().await;
 
                 // Si esta activa, se detiene
-                if overlay.is_active() {
-                    if let Ok(_) =
-                        terapia_visual_domain::use_cases::stop_therapy(&mut *overlay).await
-                    {
-                        let _ = state.notifier.set_tray_state(false).await;
-                    }
+                if terapia_visual_domain::use_cases::stop_therapy(&mut *overlay)
+                    .await
+                    .is_ok()
+                {
+                    let _ = state.notifier.set_tray_state(false).await;
                 }
                 // Si esta detenida, se inicia
                 else {
@@ -106,13 +104,14 @@ pub fn global_shortcut_handler(app: &AppHandle, shortcut: &Shortcut, event: Shor
                         let size = monitor.size();
                         let config = state.current_config.read().await;
 
-                        if let Ok(_) = terapia_visual_domain::use_cases::start_therapy(
+                        if terapia_visual_domain::use_cases::start_therapy(
                             &mut *overlay,
-                            &*&config,
+                            &config,
                             size.width,
                             size.height,
                         )
                         .await
+                        .is_ok()
                         {
                             let _ = state.notifier.set_tray_state(true).await;
                         }

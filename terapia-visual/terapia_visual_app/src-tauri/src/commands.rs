@@ -25,7 +25,7 @@ pub async fn cmd_start_therapy(
     let config = state.current_config.read().await;
     let mut overlay = state.overlay.lock().await;
 
-    start_therapy(&mut *overlay, &*config, screen_width, screen_height)
+    start_therapy(&mut *overlay, &config, screen_width, screen_height)
         .await
         .map_err(|e| e.to_string())?;
 
@@ -122,7 +122,7 @@ pub async fn cmd_change_layout(
     update_therapy_config(
         &mut *overlay,
         &state.therapy_storage,
-        &*current,
+        &current,
         screen_width,
         screen_height,
     )
@@ -152,7 +152,7 @@ pub async fn cmd_update_zone_color(
     update_therapy_config(
         &mut *overlay,
         &state.therapy_storage,
-        &*current,
+        &current,
         screen_width,
         screen_height,
     )
@@ -182,7 +182,7 @@ pub async fn cmd_update_zone_opacity(
     update_therapy_config(
         &mut *overlay,
         &state.therapy_storage,
-        &*current,
+        &current,
         screen_width,
         screen_height,
     )
