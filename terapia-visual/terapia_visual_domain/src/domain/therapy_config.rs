@@ -1,22 +1,97 @@
+//! # Módulo de Configuración de Terapia
+//!
+//! Define el agregado principal [`TherapyConfig`], que representa la configuración
+//! completa de una terapia visual.
+//!
+//! Una configuración incluye:
+//! - El tipo de terapia ([`TherapyType`]).
+//! - El layout de la pantalla ([`Layout`]).
+//! - La lista de zonas configuradas ([`ZoneConfig`]), con sus colores y opacidades.
+//!
+//! Este módulo también proporciona métodos para cambiar el layout, actualizar
+//! colores y opacidades, y generar las zonas reales para una resolución de pantalla.
+//!
+//! # Ejemplos
+//!
+//! ```
+//! use terapia_visual_domain::domain::{TherapyConfig, TherapyType, Layout, ZoneConfig, Color, Opacity};
+//!
+//! // Crear una configuración vertical con dos zonas (rojo y verde)
+//! let config = TherapyConfig::new(
+//!     TherapyType::ColorDivision,
+//!     Layout::Vertical,
+//!     vec![
+//!         ZoneConfig { color: Color::new("#FF0000").unwrap(), opacity: Opacity::new(0.8).unwrap() },
+//!         ZoneConfig { color: Color::new("#00FF00").unwrap(), opacity: Opacity::new(0.6).unwrap() },
+//!     ],
+//! )
+//! .unwrap();
+//!
+//! assert_eq!(config.layout(), Layout::Vertical);
+//! assert_eq!(config.zones_config().len(), 2);
+//!
+//! // Generar las zonas para una pantalla de 1920x1080
+//! let zones = config.generate_zones(1920, 1080);
+//! assert_eq!(zones.len(), 2);
+//! ```
+
 use serde::{Deserialize, Serialize};
 
 use crate::domain::{Color, Layout, Opacity, Zone};
 
+/// Errores que pueden ocurrir al crear o modificar una configuración de terapia.
 #[derive(Debug, thiserror::Error, PartialEq)]
 pub enum ConfigError {
+    /// El número de zonas no coincide con lo esperado por el layout seleccionado.
+    ///
+    /// Por ejemplo, un layout vertical requiere exactamente 2 zonas,
+    /// pero se proporcionaron 3 o 1.
     #[error("Zone count mismatch: expected {expected}, got {got}")]
-    ZoneCountMismatch { expected: usize, got: usize },
+    ZoneCountMismatch {
+        /// Número de zonas esperado para el layout.
+        expected: usize,
+        /// Número de zonas proporcionado.
+        got: usize,
+    },
+    /// Se intentó acceder a un índice de zona que no existe.
     #[error("Zone index {0} out of bounds")]
     InvalidZoneIndex(usize),
 }
 
-/// Tipo de terapia disponible. Actualmente solo se implementa la división de color, pero se pueden agregar más tipos en el futuro.
+/// Tipo de terapia disponible.
+///
+/// Actualmente solo se implementa la división de color, pero se pueden agregar
+/// más tipos en el futuro sin modificar el resto de la aplicación.
+///
+/// # Extensibilidad
+///
+/// Este enum está diseñado para ser extensible. Para añadir un nuevo tipo de terapia:
+/// 1. Añadir una nueva variante aquí.
+/// 2. Modificar el método [`TherapyConfig::new`] para manejar la nueva variante.
+/// 3. Implementar cualquier lógica específica del nuevo tipo.
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
 pub enum TherapyType {
+    /// Terapia de división de color, donde la pantalla se divide en zonas
+    /// con diferentes colores y opacidades.
     ColorDivision,
 }
 
-/// Configuracion completa para una terapia visual
+/// Configuración completa para una terapia visual.
+///
+/// Este es el agregado principal del dominio. Contiene toda la información
+/// necesaria para configurar y ejecutar una terapia visual.
+///
+/// # Campos
+///
+/// * `therapy_type` - El tipo de terapia (actualmente solo `ColorDivision`).
+/// * `layout` - El patrón de división de la pantalla (vertical, horizontal, etc.).
+/// * `zones_config` - La configuración de cada zona (color y opacidad).
+///
+/// # Invariantes
+///
+/// - El número de zonas en `zones_config` debe coincidir con el número esperado
+///   por el layout (ver [`Layout::zone_count`]).
+/// - Todos los colores y opacidades son válidos (garantizado por los constructores).
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct TherapyConfig {
     therapy_type: TherapyType,
@@ -24,7 +99,15 @@ pub struct TherapyConfig {
     zones_config: Vec<ZoneConfig>,
 }
 
-/// Configuracion de una zona dentro de la terapia, incluyendo su color y opacidad.
+/// Configuración de una zona dentro de la terapia.
+///
+/// Define el color y la opacidad de una zona. La posición y el tamaño
+/// de la zona son calculados por el layout.
+///
+/// # Campos
+///
+/// * `color` - El color que se muestra en la zona.
+/// * `opacity` - La opacidad de la zona (0.0 a 0.8).
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct ZoneConfig {
     pub color: Color,
@@ -32,7 +115,46 @@ pub struct ZoneConfig {
 }
 
 impl TherapyConfig {
-    /// Crea una nueva configuración de terapia, validando que la cantidad de zonas coincida con lo esperado por el layout.
+    /// Crea una nueva configuración de terapia, validando que la cantidad de zonas
+    /// coincida con lo esperado por el layout.
+    ///
+    /// # Argumentos
+    ///
+    /// * `therapy_type` - El tipo de terapia.
+    /// * `layout` - El layout de la pantalla.
+    /// * `zones_config` - La configuración de cada zona (color y opacidad).
+    ///
+    /// # Errores
+    ///
+    /// Devuelve [`ConfigError::ZoneCountMismatch`] si el número de zonas no coincide
+    /// con lo esperado por el layout.
+    ///
+    /// # Ejemplos
+    ///
+    /// ```
+    /// use terapia_visual_domain::domain::{TherapyConfig, TherapyType, Layout, ZoneConfig, Color, Opacity};
+    ///
+    /// // Configuración válida
+    /// let config = TherapyConfig::new(
+    ///     TherapyType::ColorDivision,
+    ///     Layout::Vertical,
+    ///     vec![
+    ///         ZoneConfig { color: Color::new("#FF0000").unwrap(), opacity: Opacity::new(0.8).unwrap() },
+    ///         ZoneConfig { color: Color::new("#0000FF").unwrap(), opacity: Opacity::new(0.6).unwrap() },
+    ///     ],
+    /// );
+    /// assert!(config.is_ok());
+    ///
+    /// // Configuración inválida (número incorrecto de zonas)
+    /// let invalid = TherapyConfig::new(
+    ///     TherapyType::ColorDivision,
+    ///     Layout::Vertical,
+    ///     vec![
+    ///         ZoneConfig { color: Color::default(), opacity: Opacity::default() },
+    ///     ],
+    /// );
+    /// assert!(invalid.is_err());
+    /// ```
     pub fn new(
         therapy_type: TherapyType,
         layout: Layout,
@@ -57,7 +179,32 @@ impl TherapyConfig {
         }
     }
 
-    /// Cambia el layout actual, adaptando la cantidad de zonas para cumplir con el nuevo layout.
+    /// Cambia el layout actual, adaptando automáticamente la cantidad de zonas.
+    ///
+    /// Si el nuevo layout requiere más zonas, se clonan las zonas existentes
+    /// de forma cíclica hasta alcanzar el número necesario.
+    /// Si requiere menos, se truncan las zonas sobrantes.
+    ///
+    /// **Nota**: Este método también aplica las reglas de sincronización específicas
+    /// de cada layout (por ejemplo, en `Checkerboard`, las zonas 0 y 3 se sincronizan,
+    /// y las zonas 1 y 2 se sincronizan).
+    ///
+    /// # Argumentos
+    ///
+    /// * `new_layout` - El nuevo layout que se quiere aplicar.
+    ///
+    /// # Ejemplos
+    ///
+    /// ```
+    /// use terapia_visual_domain::domain::{TherapyConfig, Layout};
+    ///
+    /// let mut config = TherapyConfig::default(); // Layout::Vertical (2 zonas)
+    ///
+    /// // Cambiar a Checkerboard (4 zonas)
+    /// config.change_layout(Layout::Checkerboard);
+    /// assert_eq!(config.layout(), Layout::Checkerboard);
+    /// assert_eq!(config.zones_config().len(), 4);
+    /// ```
     pub fn change_layout(&mut self, new_layout: Layout) {
         let expected_zones = new_layout.zone_count();
         let current_zones = self.zones_config.len();
@@ -76,20 +223,61 @@ impl TherapyConfig {
 
         self.layout = new_layout;
 
-        // Ajedrez
-        if self.layout == Layout::Checkerboard && self.zones_config.len() == 4 {
-            self.zones_config[3] = self.zones_config[0].clone(); // Zona 4 comparte con Zona 1
-            self.zones_config[2] = self.zones_config[1].clone(); // Zona 3 comparte con Zona 2
-        }
+        // Aplicar reglas de sincronizacion espeecificas de cada layout.
+        self.apply_sync_rules();
+    }
 
-        // 4 columnas
-        if self.layout == Layout::Vertical4Columns && self.zones_config.len() == 4 {
-            self.zones_config[2] = self.zones_config[0].clone(); // Zona 3 comparte con Zona 1
-            self.zones_config[3] = self.zones_config[1].clone(); // Zona 4 comparte con Zona 2
+    /// Aplica las reglas de sincronización de colores y opacidades según el layout actual.
+    ///
+    /// # Reglas implementadas
+    ///
+    /// - **Checkerboard**: Sincroniza colores y opacidades en pares diagonales:
+    ///   - Zona 0 ↔ Zona 3
+    ///   - Zona 1 ↔ Zona 2
+    ///
+    /// - **Vertical4Columns**: Sincroniza colores y opacidades en pares reflejados:
+    ///   - Zona 0 ↔ Zona 2
+    ///   - Zona 1 ↔ Zona 3
+    fn apply_sync_rules(&mut self) {
+        match (self.layout, self.zones_config.len()) {
+            (Layout::Checkerboard, 4) => {
+                self.zones_config[3] = self.zones_config[0].clone();
+                self.zones_config[2] = self.zones_config[1].clone();
+            }
+            (Layout::Vertical4Columns, 4) => {
+                self.zones_config[2] = self.zones_config[0].clone();
+                self.zones_config[3] = self.zones_config[1].clone();
+            }
+            _ => {}
         }
     }
 
-    /// Actualiza el color de una zona especifica de forma segura
+    /// Actualiza el color de una zona específica.
+    ///
+    /// Si el layout actual tiene reglas de sincronización (Checkerboard o Vertical4Columns),
+    /// los colores se sincronizan automáticamente entre las zonas emparejadas.
+    ///
+    /// # Argumentos
+    ///
+    /// * `zone_index` - Índice de la zona a actualizar (base 0).
+    /// * `new_color` - El nuevo color para la zona.
+    ///
+    /// # Errores
+    ///
+    /// Devuelve [`ConfigError::InvalidZoneIndex`] si el índice está fuera de rango.
+    ///
+    /// # Ejemplos
+    ///
+    /// ```
+    /// use terapia_visual_domain::domain::{TherapyConfig, Color};
+    ///
+    /// let mut config = TherapyConfig::default();
+    /// let new_color = Color::new("#0000FF").unwrap();
+    ///
+    /// // Cambiar el color de la primera zona a azul
+    /// config.update_zone_color(0, new_color).unwrap();
+    /// assert_eq!(config.zones_config()[0].color.as_str(), "#0000FF");
+    /// ```
     pub fn update_zone_color(
         &mut self,
         zone_index: usize,
@@ -101,33 +289,39 @@ impl TherapyConfig {
 
         self.zones_config[zone_index].color = new_color.clone();
 
-        // Aplica sincronizacion en las layouts con 4 zonas
-        let paired_index = match self.layout {
-            Layout::Checkerboard => match zone_index {
-                0 => Some(3),
-                3 => Some(0),
-                1 => Some(2),
-                2 => Some(1),
-                _ => None,
-            },
-            Layout::Vertical4Columns => match zone_index {
-                0 => Some(2),
-                2 => Some(0), // 1 y 3 se sincronizan
-                1 => Some(3),
-                3 => Some(1), // 2 y 4 se sincronizan
-                _ => None,
-            },
-            _ => None, // Vertical y Horizontal no tienen pares automaticos
-        };
-
-        if let Some(pair) = paired_index {
+        if let Some(pair) = self.get_sync_pair(zone_index) {
             self.zones_config[pair].color = new_color;
         }
 
         Ok(())
     }
 
-    /// Actualiza la opacidad de una zona especifica de forma segura
+    /// Actualiza la opacidad de una zona específica.
+    ///
+    /// Si el layout actual tiene reglas de sincronización (Checkerboard o Vertical4Columns),
+    /// las opacidades se sincronizan automáticamente entre las zonas emparejadas.
+    ///
+    /// # Argumentos
+    ///
+    /// * `zone_index` - Índice de la zona a actualizar (base 0).
+    /// * `new_opacity` - La nueva opacidad para la zona.
+    ///
+    /// # Errores
+    ///
+    /// Devuelve [`ConfigError::InvalidZoneIndex`] si el índice está fuera de rango.
+    ///
+    /// # Ejemplos
+    ///
+    /// ```
+    /// use terapia_visual_domain::domain::{TherapyConfig, Opacity};
+    ///
+    /// let mut config = TherapyConfig::default();
+    /// let new_opacity = Opacity::new(0.3).unwrap();
+    ///
+    /// // Cambiar la opacidad de la primera zona a 0.3
+    /// config.update_zone_opacity(0, new_opacity).unwrap();
+    /// assert_eq!(config.zones_config()[0].opacity.value(), 0.3);
+    /// ```
     pub fn update_zone_opacity(
         &mut self,
         zone_index: usize,
@@ -139,7 +333,21 @@ impl TherapyConfig {
 
         self.zones_config[zone_index].opacity = new_opacity;
 
-        let paired_index = match self.layout {
+        if let Some(pair) = self.get_sync_pair(zone_index) {
+            self.zones_config[pair].opacity = new_opacity;
+        }
+
+        Ok(())
+    }
+
+    /// Obtiene el índice de la zona emparejada para sincronización.
+    ///
+    /// # Retorno
+    ///
+    /// * `Some(pair_index)` - Si el layout actual tiene reglas de sincronización.
+    /// * `None` - Si el layout no tiene sincronización o el índice no está emparejado.
+    fn get_sync_pair(&self, zone_index: usize) -> Option<usize> {
+        match self.layout {
             Layout::Checkerboard => match zone_index {
                 0 => Some(3),
                 3 => Some(0),
@@ -155,13 +363,7 @@ impl TherapyConfig {
                 _ => None,
             },
             _ => None,
-        };
-
-        if let Some(pair) = paired_index {
-            self.zones_config[pair].opacity = new_opacity;
         }
-
-        Ok(())
     }
 
     /// Devuelve el tipo de terapia.
@@ -179,7 +381,30 @@ impl TherapyConfig {
         &self.zones_config
     }
 
-    /// Genera las zonas reales (con rectanculos calculados) para una resolución de pantalla dada.
+    /// Genera las zonas reales (con rectángulos calculados) para una resolución de pantalla dada.
+    ///
+    /// # Argumentos
+    ///
+    /// * `screen_width` - Ancho de la pantalla en píxeles.
+    /// * `screen_height` - Alto de la pantalla en píxeles.
+    ///
+    /// # Retorno
+    ///
+    /// Un vector de [`Zone`] con los rectángulos calculados según el layout actual
+    /// y las configuraciones de color y opacidad.
+    ///
+    /// # Ejemplos
+    ///
+    /// ```
+    /// use terapia_visual_domain::domain::TherapyConfig;
+    ///
+    /// let config = TherapyConfig::default(); // Layout::Vertical
+    /// let zones = config.generate_zones(1920, 1080);
+    ///
+    /// assert_eq!(zones.len(), 2);
+    /// assert_eq!(zones[0].rect().width, 960);
+    /// assert_eq!(zones[1].rect().x, 960);
+    /// ```
     pub fn generate_zones(&self, screen_width: u32, screen_height: u32) -> Vec<Zone> {
         let zone_rects = self.layout.calculate_zones(screen_width, screen_height);
         zone_rects
@@ -190,6 +415,22 @@ impl TherapyConfig {
     }
 }
 
+/// Proporciona una configuración predeterminada para la terapia.
+///
+/// La configuración predeterminada es:
+/// - Tipo: `ColorDivision`
+/// - Layout: `Vertical`
+/// - Dos zonas: roja (#FF0000) y verde (#00FF00), ambas con opacidad predeterminada (0.5)
+///
+/// # Ejemplos
+///
+/// ```
+/// use terapia_visual_domain::domain::{TherapyConfig, Layout};
+///
+/// let config = TherapyConfig::default();
+/// assert_eq!(config.layout(), Layout::Vertical);
+/// assert_eq!(config.zones_config().len(), 2);
+/// ```
 impl Default for TherapyConfig {
     fn default() -> Self {
         let default_zones = vec![

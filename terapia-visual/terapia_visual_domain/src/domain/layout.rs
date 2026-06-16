@@ -1,16 +1,96 @@
+//! # Módulo de Layouts
+//!
+//! Define los patrones de división de la pantalla para la terapia visual.
+//!
+//! Cada variante de [`Layout`] determina cómo se distribuyen las zonas de color
+//! sobre la pantalla del usuario. Actualmente se soportan:
+//!
+//! - **Vertical**: dos zonas (izquierda / derecha)
+//! - **Horizontal**: dos zonas (arriba / abajo)
+//! - **Checkerboard**: cuatro zonas en forma de tablero de ajedrez (2x2)
+//! - **Vertical4Columns**: cuatro zonas en columnas verticales
+//!
+//! Cada layout implementa la lógica para calcular sus zonas en función de las dimensiones
+//! de la pantalla, maneja correctamente las divisiones impares para evitar huecos,
+//! y expone la cantidad de zonas que genera para validar la configuración de la terapia.
+
 use crate::domain::ZoneRect;
 use serde::{Deserialize, Serialize};
 
+/// Patrones de distribución de zonas de color sobre la pantalla.
+///
+/// Determina cómo se organizan las áreas de color que el usuario ve durante la terapia.
+///
+/// # Ejemplos
+///
+/// ```
+/// use terapia_visual_domain::domain::Layout;
+///
+/// // Crear un layout vertical
+/// let layout = Layout::Vertical;
+/// assert_eq!(layout.zone_count(), 2);
+///
+/// // Calcular las zonas para una pantalla de 1920x1080
+/// let zones = layout.calculate_zones(1920, 1080);
+/// assert_eq!(zones.len(), 2);
+/// ```
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
 pub enum Layout {
+    /// División en dos mitades: izquierda y derecha.
+    ///
+    /// - Zona 0: mitad izquierda (x=0, ancho=screen_width/2)
+    /// - Zona 1: mitad derecha (x=screen_width/2, ancho=screen_width - screen_width/2)
     Vertical,
+
+    /// División en dos mitades: arriba y abajo.
+    ///
+    /// - Zona 0: mitad superior (y=0, alto=screen_height/2)
+    /// - Zona 1: mitad inferior (y=screen_height/2, alto=screen_height - screen_height/2)
     Horizontal,
+
+    /// Patrón de tablero de ajedrez (2x2).
+    ///
+    /// Las cuatro zonas se disponen en una cuadrícula de 2x2:
+    /// - Zona 0: superior izquierda
+    /// - Zona 1: superior derecha
+    /// - Zona 2: inferior izquierda
+    /// - Zona 3: inferior derecha
+    ///
+    /// **Nota**: Este layout impone una sincronización automática de colores y opacidades
+    /// entre las zonas opuestas:
+    /// - Zona 0 ↔ Zona 3 (diagonal principal)
+    /// - Zona 1 ↔ Zona 2 (diagonal secundaria)
     Checkerboard,
+
+    /// Cuatro columnas verticales de igual ancho.
+    ///
+    /// Las zonas se distribuyen de izquierda a derecha:
+    /// - Zona 0: columna 1 (x=0, ancho=screen_width/4)
+    /// - Zona 1: columna 2 (x=screen_width/4, ancho=screen_width/4)
+    /// - Zona 2: columna 3 (x=2*screen_width/4, ancho=screen_width/4)
+    /// - Zona 3: columna 4 (x=3*screen_width/4, ancho=screen_width - 3*screen_width/4)
+    ///
+    /// **Nota**: Este layout impone una sincronización automática de colores y opacidades
+    /// entre las zonas reflejadas horizontalmente:
+    /// - Zona 0 ↔ Zona 2
+    /// - Zona 1 ↔ Zona 3
     Vertical4Columns,
 }
 
 impl Layout {
-    /// Devuelve la cantidad de zonas que genera el layout.
+    /// Devuelve la cantidad de zonas que genera este layout.
+    ///
+    /// Este valor se usa para validar que la configuración de la terapia tenga el
+    /// número correcto de zonas de color.
+    ///
+    /// # Ejemplos
+    ///
+    /// ```
+    /// use terapia_visual_domain::domain::Layout;
+    ///
+    /// assert_eq!(Layout::Vertical.zone_count(), 2);
+    /// assert_eq!(Layout::Checkerboard.zone_count(), 4);
+    /// ```
     pub fn zone_count(&self) -> usize {
         match self {
             Layout::Vertical => 2,
@@ -20,8 +100,28 @@ impl Layout {
         }
     }
 
-    /// Calcula las zonas para una resolucion de pantalla dada.
-    /// Las zonas se devuelven en orden: [izquierda/arriba, derecha/abajo].
+    /// Calcula los rectángulos que ocupa cada zona para una resolución de pantalla dada.
+    ///
+    /// # Argumentos
+    ///
+    /// * `width` - Ancho de la pantalla (en píxeles)
+    /// * `height` - Alto de la pantalla (en píxeles)
+    ///
+    /// # Garantías
+    ///
+    /// - El número de rectángulos devueltos coincide con [`Layout::zone_count`].
+    /// - Las zonas cubren completamente el área de la pantalla, incluso cuando la división no es exacta.
+    /// - En divisiones impares, la última zona absorbe los píxeles restantes para evitar huecos.
+    ///
+    /// # Ejemplos
+    ///
+    /// ```
+    /// use terapia_visual_domain::domain::{Layout, ZoneRect};
+    ///
+    /// let zones = Layout::Vertical.calculate_zones(1920, 1080);
+    /// assert_eq!(zones[0], ZoneRect::new(0, 0, 960, 1080));
+    /// assert_eq!(zones[1], ZoneRect::new(960, 0, 960, 1080));
+    /// ```
     pub fn calculate_zones(&self, width: u32, height: u32) -> Vec<ZoneRect> {
         match self {
             Layout::Vertical => {
