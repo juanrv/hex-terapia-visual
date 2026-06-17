@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"enum":["UpdateConfigError"],"fn":["update_therapy_config"]};
