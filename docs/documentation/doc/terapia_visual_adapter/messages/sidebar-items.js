@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"fn":["error_generic","info_config_updated","info_therapy_started","info_therapy_stopped","init_language","tooltip_app_name","tooltip_therapy_active","tooltip_therapy_inactive","window_title"]};

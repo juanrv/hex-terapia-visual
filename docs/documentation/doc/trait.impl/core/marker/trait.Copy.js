@@ -1,9 +1,0 @@
-(function() {
-    const implementors = Object.fromEntries([["terapia_visual_domain",[["impl <a class=\"trait\" href=\"https://doc.rust-lang.org/1.96.0/core/marker/trait.Copy.html\" title=\"trait core::marker::Copy\">Copy</a> for <a class=\"enum\" href=\"terapia_visual_domain/domain/app_settings/enum.Language.html\" title=\"enum terapia_visual_domain::domain::app_settings::Language\">Language</a>",0],["impl <a class=\"trait\" href=\"https://doc.rust-lang.org/1.96.0/core/marker/trait.Copy.html\" title=\"trait core::marker::Copy\">Copy</a> for <a class=\"enum\" href=\"terapia_visual_domain/domain/layout/enum.Layout.html\" title=\"enum terapia_visual_domain::domain::layout::Layout\">Layout</a>",0],["impl <a class=\"trait\" href=\"https://doc.rust-lang.org/1.96.0/core/marker/trait.Copy.html\" title=\"trait core::marker::Copy\">Copy</a> for <a class=\"enum\" href=\"terapia_visual_domain/domain/therapy_config/enum.TherapyType.html\" title=\"enum terapia_visual_domain::domain::therapy_config::TherapyType\">TherapyType</a>",0],["impl <a class=\"trait\" href=\"https://doc.rust-lang.org/1.96.0/core/marker/trait.Copy.html\" title=\"trait core::marker::Copy\">Copy</a> for <a class=\"struct\" href=\"terapia_visual_domain/domain/geometry/struct.ZoneRect.html\" title=\"struct terapia_visual_domain::domain::geometry::ZoneRect\">ZoneRect</a>",0],["impl <a class=\"trait\" href=\"https://doc.rust-lang.org/1.96.0/core/marker/trait.Copy.html\" title=\"trait core::marker::Copy\">Copy</a> for <a class=\"struct\" href=\"terapia_visual_domain/domain/opacity/struct.Opacity.html\" title=\"struct terapia_visual_domain::domain::opacity::Opacity\">Opacity</a>",0]]]]);
-    if (window.register_implementors) {
-        window.register_implementors(implementors);
-    } else {
-        window.pending_implementors = implementors;
-    }
-})()
-//{"start":59,"fragment_lengths":[1603]}

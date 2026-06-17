@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"fn":["cmd_change_layout","cmd_get_app_settings","cmd_get_therapy_config","cmd_reset_therapy_config","cmd_start_therapy","cmd_stop_therapy","cmd_update_app_settings","cmd_update_therapy_config","cmd_update_zone_color","cmd_update_zone_opacity"]};

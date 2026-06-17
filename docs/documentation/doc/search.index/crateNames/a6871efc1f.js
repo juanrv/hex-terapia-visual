@@ -1,1 +1,0 @@
-rd_("Afterapia_visual_adapterAbterapia_visual_appAfterapia_visual_app_libAeterapia_visual_domain")
