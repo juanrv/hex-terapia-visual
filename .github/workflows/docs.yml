@@ -11,7 +11,7 @@ permissions:
 
 jobs:
   deploy-docs:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     steps:
       - name: Descargar el código
         uses: actions/checkout@v4
@@ -25,7 +25,7 @@ jobs:
         
       - name: Crear un Index Central (Punto de entrada)
         working-directory: ./terapia-visual/target/doc
-        # Inyectar un HTML directamente en la carpeta de docs antes de publicar
+        shell: bash 
         run: |
           cat <<EOF > index.html
           <!DOCTYPE html>
