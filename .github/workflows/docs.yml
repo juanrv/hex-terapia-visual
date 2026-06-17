@@ -1,0 +1,125 @@
+name: Publicar Documentacion en GitHub Pages
+
+# Se ejecuta automáticamente al hacer push a main o dev
+on:
+  push:
+    branches: ["main", "dev"]
+  workflow_dispatch: # Botón manual por si acaso
+
+permissions:
+  contents: write # Necesario para que el bot pueda subir código a la rama gh-pages
+
+jobs:
+  deploy-docs:
+    runs-on: windows-latest
+    steps:
+      - name: Descargar el código
+        uses: actions/checkout@v4
+      
+      - name: Instalar Rust
+        uses: dtolnay/rust-toolchain@stable
+        
+      - name: Generar Documentación (cargo doc)
+        working-directory: ./terapia-visual
+        run: cargo doc --workspace --no-deps
+        
+      - name: Crear un Index Central (Punto de entrada)
+        working-directory: ./terapia-visual/target/doc
+        shell: bash 
+        run: |
+          cat <<EOF > index.html
+           <!DOCTYPE html>
+          <html lang="es">
+          <head>
+              <meta charset="utf-8">
+              <meta name="viewport" content="width=device-width, initial-scale=1.0">
+              <title>Workspace - Terapia Visual</title>
+              <style>
+                  :root {
+                      --bg: #353636;
+                      --sidebar-bg: #505050;
+                      --text: #ddd;
+                      --link: #d2991d;
+                      --link-hover: #ffc66d;
+                      --border: #e0e0e0;
+                  }
+                  @media (prefers-color-scheme: light) {
+                      :root {
+                          --bg: #ffffff;
+                          --sidebar-bg: #f5f5f5;
+                          --text: #000000;
+                          --link: #3873ad;
+                          --link-hover: #000000;
+                          --border: #e0e0e0;
+                      }
+                  }
+                  body {
+                      font-family: "Fira Sans", Arial, NanumBarunGothic, sans-serif;
+                      background-color: var(--bg);
+                      color: var(--text);
+                      margin: 0;
+                      display: flex;
+                      min-height: 100vh;
+                  }
+                  .sidebar {
+                      width: 250px;
+                      background-color: var(--sidebar-bg);
+                      padding: 20px;
+                      box-sizing: border-box;
+                  }
+                  .sidebar h2 { margin-top: 0; font-size: 1.2rem; padding-bottom: 10px; border-bottom: 1px solid var(--border); }
+                  .sidebar ul { list-style: none; padding: 0; }
+                  .sidebar li { margin-bottom: 8px; }
+                  .main {
+                      flex-grow: 1;
+                      padding: 20px 40px;
+                      overflow-y: auto;
+                  }
+                  h1 { font-size: 1.8rem; border-bottom: 1px solid var(--border); padding-bottom: 10px; margin-top: 0; }
+                  .crate-list { margin-top: 30px; display: table; width: 100%; }
+                  .crate-item { display: table-row; }
+                  .crate-name, .desc { display: table-cell; padding: 10px 0; border-bottom: 1px dashed var(--sidebar-bg); }
+                  .crate-name { font-weight: 600; width: 250px; }
+                  a { color: var(--link); text-decoration: none; }
+                  a:hover { color: var(--link-hover); text-decoration: underline; }
+                  .desc { font-size: 1rem; opacity: 0.9; }
+              </style>
+          </head>
+          <body>
+              <nav class="sidebar">
+                  <h2>Terapia Visual</h2>
+                  <ul>
+                      <li><a href="terapia_visual_domain/index.html">terapia_visual_domain</a></li>
+                      <li><a href="terapia_visual_adapter/index.html">terapia_visual_adapter</a></li>
+                      <li><a href="terapia_visual_app_lib/index.html">terapia_visual_app_lib</a></li>
+                  </ul>
+              </nav>
+              <main class="main">
+                  <h1>Workspace: Terapia Visual</h1>
+                  <p>Documentación técnica de la Arquitectura Hexagonal y los componentes del sistema.</p>
+                  
+                  <div class="crate-list">
+                      <div class="crate-item">
+                          <div class="crate-name"><a href="terapia_visual_domain/index.html">terapia_visual_domain</a></div>
+                          <div class="desc">Núcleo del sistema, reglas de negocio y entidades puras (DDD).</div>
+                      </div>
+                      <div class="crate-item">
+                          <div class="crate-name"><a href="terapia_visual_adapter/index.html">terapia_visual_adapter</a></div>
+                          <div class="desc">Adaptadores de infraestructura (TOML, Tauri Overlay, Notificaciones).</div>
+                      </div>
+                      <div class="crate-item">
+                          <div class="crate-name"><a href="terapia_visual_app_lib/index.html">terapia_visual_app_lib</a></div>
+                          <div class="desc">Comandos de Tauri, Estado global y ciclo de vida de la aplicación.</div>
+                      </div>
+                  </div>
+              </main>
+          </body>
+          </html>
+          EOF
+
+      - name: Desplegar a la rama gh-pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./terapia-visual/target/doc
+          publish_branch: gh-pages
