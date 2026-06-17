@@ -5,8 +5,8 @@
 //!
 //! Este puerto utiliza un tipo genérico `T` para permitir almacenar
 //! diferentes tipos de configuración:
-//! - [`TherapyConfig`]: Configuración de la terapia (colores, layout, etc.)
-//! - [`AppSettings`]: Preferencias globales de la aplicación (idioma, etc.)
+//! - [`crate::domain::TherapyConfig`]: Configuración de la terapia (colores, layout, etc.)
+//! - [`crate::domain::AppSettings`]: Preferencias globales de la aplicación (idioma, etc.)
 //!
 //! # Ejemplos
 //!
