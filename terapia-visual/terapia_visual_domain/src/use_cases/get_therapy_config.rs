@@ -1,7 +1,52 @@
+//! # Caso de Uso: Obtener Configuración de Terapia
+//!
+//! Este caso de uso obtiene la configuración actual de la terapia
+//! desde el almacenamiento.
+//!
+//! # Comportamiento
+//!
+//! - Si existe una configuración guardada, la devuelve.
+//! - Si no existe o hay un error, devuelve la configuración por defecto.
+//!
+//! # Ejemplos
+//!
+//! ```
+//! use terapia_visual_domain::use_cases::get_therapy_config;
+//! use terapia_visual_domain::ports::ConfigStorage;
+//! use terapia_visual_domain::domain::TherapyConfig;
+//!
+//! # async fn example(storage: &dyn ConfigStorage<TherapyConfig>) {
+//! let config = get_therapy_config::get_therapy_config(storage).await;
+//! # }
+//! ```
+
 use crate::{domain::TherapyConfig, ports::ConfigStorage};
 
 /// Obtiene la configuración de terapia actual desde el almacenamiento.
-/// Si no se encuentra el archivo de configuración, devuelve una configuración predeterminada.
+///
+/// Si la carga falla (archivo no encontrado, error de parseo, etc.),
+/// devuelve la configuración por defecto.
+///
+/// # Argumentos
+///
+/// * `storage` - Adaptador que implementa `ConfigStorage<TherapyConfig>`.
+///
+/// # Retorno
+///
+/// La configuración actual o la configuración por defecto en caso de error.
+///
+/// # Ejemplos
+///
+/// ```
+/// use terapia_visual_domain::use_cases::get_therapy_config;
+/// use terapia_visual_domain::ports::ConfigStorage;
+/// use terapia_visual_domain::domain::TherapyConfig;
+///
+/// # async fn example(storage: &dyn ConfigStorage<TherapyConfig>) {
+/// let config = get_therapy_config::get_therapy_config(storage).await;
+/// assert_eq!(config, TherapyConfig::default());
+/// # }
+/// ```
 pub async fn get_therapy_config(storage: &dyn ConfigStorage<TherapyConfig>) -> TherapyConfig {
     storage.load().await.unwrap_or_default()
 }

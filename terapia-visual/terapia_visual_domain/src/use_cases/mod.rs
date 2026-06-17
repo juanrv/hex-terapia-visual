@@ -1,3 +1,43 @@
+//! # Casos de Uso
+//!
+//! Este módulo contiene los **casos de uso** (interactores) de la aplicación,
+//! que orquestan la lógica de negocio utilizando los puertos del dominio.
+//!
+//! Los casos de uso son el punto de entrada desde la capa de aplicación
+//! (adaptadores primarios) hacia el dominio.
+//!
+//! # Casos de uso disponibles
+//!
+//! | Caso de uso | Propósito |
+//! |-------------|-----------|
+//! | [`start_therapy()`] | Iniciar la terapia visual |
+//! | [`stop_therapy()`] | Detener la terapia visual |
+//! | [`update_therapy_config()`] | Actualizar la configuración de la terapia |
+//! | [`get_therapy_config()`] | Obtener la configuración de la terapia |
+//! | [`update_app_settings()`] | Actualizar la configuración de la aplicación |
+//! | [`get_app_settings()`] | Obtener la configuración de la aplicación |
+//!
+//! # Flujo típico
+//!
+//! 1. El **adaptador primario** (ej. comando Tauri) recibe una petición del usuario.
+//! 2. El adaptador llama al caso de uso correspondiente.
+//! 3. El caso de uso utiliza los **puertos** para interactuar con el exterior.
+//! 4. El caso de uso devuelve el resultado al adaptador.
+//!
+//! # Ejemplo
+//!
+//! ```
+//! use terapia_visual_domain::use_cases::start_therapy;
+//! use terapia_visual_domain::ports::OverlayPort;
+//! use terapia_visual_domain::domain::TherapyConfig;
+//!
+//! # async fn example(overlay: &mut dyn OverlayPort) -> Result<(), Box<dyn std::error::Error>> {
+//! let config = TherapyConfig::default();
+//! start_therapy::start_therapy(overlay, &config, 1920, 1080).await?;
+//! # Ok(())
+//! # }
+//! ```
+
 pub mod get_app_settings;
 pub mod get_therapy_config;
 pub mod start_therapy;

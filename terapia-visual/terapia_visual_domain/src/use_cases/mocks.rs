@@ -1,3 +1,39 @@
+//! # Mocks para pruebas unitarias
+//!
+//! Este módulo proporciona implementaciones falsas de los puertos del dominio
+//! para poder probar los casos de uso de forma aislada, sin depender de
+//! adaptadores reales (Tauri, sistema de archivos, etc.).
+//!
+//! # Mocks disponibles
+//!
+//! | Mock | Puerto que simula | Propósito |
+//! |------|-------------------|-----------|
+//! | `MockOverlay` | `OverlayPort` | Simula la ventana de overlay |
+//! | `MockTherapyConfigStorage` | `ConfigStorage<TherapyConfig>` | Simula el almacenamiento de configuración de terapia |
+//! | `MockAppConfigStorage` | `ConfigStorage<AppSettings>` | Simula el almacenamiento de configuración de la app |
+//! | `MockSystemNotifier` | `SystemNotifier` | Simula notificaciones y bandeja del sistema |
+//!
+//! # Ejemplo de uso
+//!
+//! ```
+//! use terapia_visual_domain::use_cases::mocks::MockOverlay;
+//! use terapia_visual_domain::ports::OverlayPort;
+//!
+//! # async fn example() {
+//! let mut overlay = MockOverlay::default();
+//!
+//! // Configurar el mock para simular un error
+//! overlay.should_fail = true;
+//!
+//! // Usar el mock en un caso de uso
+//! let result = some_use_case(&mut overlay).await;
+//! assert!(result.is_err());
+//! # }
+//! # async fn some_use_case(_: &mut dyn OverlayPort) -> Result<(), Box<dyn std::error::Error>> {
+//! # Ok(())
+//! # }
+//! ```
+
 use async_trait::async_trait;
 
 use crate::{
@@ -7,15 +43,25 @@ use crate::{
     },
 };
 
-/// Mock de overlay para pruebas
+/// Mock de overlay para pruebas.
+///
+/// Simula el comportamiento de un overlay sin crear ventanas reales.
+/// Permite verificar que los casos de uso llaman a los métodos correctos.
 #[derive(Debug, Default)]
 pub struct MockOverlay {
+    /// Indica si el overlay está activo (simulado).
     pub active: bool,
+    /// Se establece a `true` cuando se llama a `show()`.
     pub show_called: bool,
+    /// Se establece a `true` cuando se llama a `hide()`.
     pub hide_called: bool,
+    /// Se establece a `true` cuando se llama a `update_config()`.
     pub update_config_called: bool,
+    /// Última configuración recibida en `show()` o `update_config()`.
     pub last_config: Option<TherapyConfig>,
+    /// Últimas dimensiones de pantalla recibidas.
     pub last_screen_size: Option<(u32, u32)>,
+    /// Si es `true`, los métodos devuelven error.
     pub should_fail: bool,
 }
 
@@ -69,13 +115,20 @@ impl OverlayPort for MockOverlay {
     }
 }
 
-/// Mock de TherapyConfigStorage para pruebas
+/// Mock de almacenamiento de configuración de terapia.
+///
+/// Simula el almacenamiento sin tocar el sistema de archivos.
 #[derive(Debug, Default)]
 pub struct MockTherapyConfigStorage {
+    /// Configuración de terapia simulada (si existe).
     pub config: Option<TherapyConfig>,
+    /// Se establece a `true` cuando se llama a `load()`.
     pub load_called: bool,
+    /// Se establece a `true` cuando se llama a `save()`.
     pub save_called: bool,
+    /// Si es `true`, `load()` devuelve error.
     pub should_fail_load: bool,
+    /// Si es `true`, `save()` devuelve error.
     pub should_fail_save: bool,
 }
 
@@ -98,9 +151,13 @@ impl ConfigStorage<TherapyConfig> for MockTherapyConfigStorage {
     }
 }
 
-/// Mock de AppConfigStorage para pruebas
+/// Mock de almacenamiento de configuración de la aplicación.
+///
+/// Simula el almacenamiento de preferencias globales.
 pub struct MockAppConfigStorage {
+    /// Configuración de la app simulada (si existe).
     pub app_settings: Option<AppSettings>,
+    /// Si es `true`, `load()` y `save()` devuelven error.
     pub should_fail: bool,
 }
 
@@ -123,14 +180,22 @@ impl ConfigStorage<AppSettings> for MockAppConfigStorage {
     }
 }
 
-/// Mock de SystemNotifier para pruebas
+/// Mock de notificador del sistema.
+///
+/// Simula notificaciones y bandeja del sistema sin interfaz real.
 #[derive(Debug, Default)]
 pub struct MockSystemNotifier {
+    /// Último título recibido en `show_message()`.
     pub last_title: Option<String>,
+    /// Último mensaje recibido en `show_message()`.
     pub last_message: Option<String>,
+    /// Último estado recibido en `set_tray_state()`.
     pub last_state: Option<bool>,
+    /// Se establece a `true` cuando se llama a `show_message()`.
     pub show_message_called: bool,
+    /// Se establece a `true` cuando se llama a `set_tray_state()`.
     pub set_tray_state_called: bool,
+    /// Si es `true`, los métodos devuelven error.
     pub should_fail: bool,
 }
 

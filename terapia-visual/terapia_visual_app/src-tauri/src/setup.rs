@@ -1,3 +1,32 @@
+//! # Inicialización de la Aplicación
+//!
+//! Este módulo contiene toda la lógica de inicialización de la aplicación Tauri.
+//! Configura los adaptadores, carga la configuración, crea la bandeja del sistema,
+//! registra los atajos de teclado y prepara el estado global.
+//!
+//! # Flujo de inicialización
+//!
+//! 1. Obtener el directorio de datos de la aplicación.
+//! 2. Crear los adaptadores (almacenamiento, overlay, notificador).
+//! 3. Cargar la configuración de terapia y aplicación.
+//! 4. Inicializar el sistema de mensajes con el idioma guardado.
+//! 5. Configurar el título de la ventana principal.
+//! 6. Crear la bandeja del sistema.
+//! 7. Registrar el atajo de teclado global (Ctrl+Shift+T).
+//! 8. Crear el estado global e inyectarlo en Tauri.
+//!
+//! # Ejemplo de uso
+//!
+//! ```no_run
+//! use tauri::App;
+//! use terapia_visual_app_lib::setup::init;
+//!
+//! # fn example(app: &mut App) -> Result<(), Box<dyn std::error::Error>> {
+//! init(app)?;
+//! # Ok(())
+//! # }
+//! ```
+
 use std::str::FromStr;
 use std::sync::atomic::{AtomicBool, Ordering};
 
@@ -16,15 +45,42 @@ use terapia_visual_domain::ports::{ConfigStorage, SystemNotifier};
 use crate::state::AppState;
 use crate::tray::create_tray;
 
+/// Inicializa la aplicación Tauri.
+///
+/// Esta función se llama desde `lib.rs` en el `setup` del `tauri::Builder`.
+/// Configura todos los componentes necesarios para que la aplicación funcione.
+///
+/// # Argumentos
+///
+/// * `app` - La aplicación Tauri en construcción.
+///
+/// # Errores
+///
+/// Devuelve un error si falla la creación de directorios, la carga de configuración
+/// o la creación de la bandeja.
+///
+/// # Ejemplo
+///
+/// ```no_run
+/// use tauri::App;
+/// use terapia_visual_app_lib::setup::init;
+///
+/// # fn example(app: &mut App) -> Result<(), Box<dyn std::error::Error>> {
+/// init(app)?;
+/// # Ok(())
+/// # }
+/// ```
 pub fn init(app: &mut App) -> Result<(), Box<dyn std::error::Error>> {
-    // Configurar directorios
+    // Obtener el directorio de datos de la aplicación
+    // En Windows: %APPDATA%\com.terapia-visual-app\data
+    // En Linux: ~/.config/com.terapia-visual-app/data
     let config_dir = app
         .path()
         .app_data_dir()
         .expect("Failed to obtain app data dir");
     std::fs::create_dir_all(&config_dir)?;
 
-    // Cargar archivos en tiempo de compilacion
+    // Cargar iconos de la bandeja empaquetados en el binario
     const ICON_ACTIVE: &[u8] = include_bytes!("../icons/tray_active.png");
     const ICON_INACTIVE: &[u8] = include_bytes!("../icons/tray_inactive.png");
 
@@ -71,7 +127,34 @@ pub fn init(app: &mut App) -> Result<(), Box<dyn std::error::Error>> {
     Ok(())
 }
 
-/// Funcion para reaccionar a los atajos de teclado
+/// Manejador del atajo de teclado global (Ctrl+Shift+T).
+///
+/// Esta función se ejecuta cuando el usuario presiona el atajo de teclado.
+/// Alterna el estado de la terapia (inicia si está detenida, detiene si está activa).
+///
+/// # Comportamiento
+///
+/// 1. Si la terapia está activa, la detiene.
+/// 2. Si la terapia está inactiva, la inicia usando la configuración actual.
+/// 3. Utiliza un `AtomicBool` (`is_toggling`) para evitar múltiples activaciones rápidas.
+///
+/// # Argumentos
+///
+/// * `app` - Handle de la aplicación Tauri.
+/// * `shortcut` - El atajo que se presionó.
+/// * `event` - El evento del atajo (presionado o liberado).
+///
+/// # Ejemplo
+///
+/// ```no_run
+/// use tauri_plugin_global_shortcut::{Shortcut, ShortcutEvent};
+/// use terapia_visual_app_lib::setup::global_shortcut_handler;
+/// use tauri::AppHandle;
+///
+/// # fn example(app: &AppHandle, shortcut: &Shortcut, event: ShortcutEvent) {
+/// global_shortcut_handler(app, shortcut, event);
+/// # }
+/// ```
 pub fn global_shortcut_handler(app: &AppHandle, shortcut: &Shortcut, event: ShortcutEvent) {
     if event.state() == ShortcutState::Pressed {
         let therapy_shortcut = Shortcut::from_str("Ctrl+Shift+T").unwrap();
@@ -125,7 +208,26 @@ pub fn global_shortcut_handler(app: &AppHandle, shortcut: &Shortcut, event: Shor
     }
 }
 
-/// Funcion auxiliar para guardar configuracion
+/// Guarda la configuración actual en el almacenamiento.
+///
+/// Esta función se llama:
+/// - Al ocultar la ventana principal (minimizar a bandeja).
+/// - Al salir de la aplicación desde el menú de la bandeja.
+///
+/// # Argumentos
+///
+/// * `app_handle` - Handle de la aplicación Tauri.
+///
+/// # Ejemplo
+///
+/// ```no_run
+/// use terapia_visual_app_lib::setup::save_configs;
+/// use tauri::AppHandle;
+///
+/// # fn example(app_handle: &AppHandle) {
+/// save_configs(app_handle);
+/// # }
+/// ```
 pub fn save_configs(app_handle: &AppHandle) {
     let state = app_handle.state::<AppState>();
 

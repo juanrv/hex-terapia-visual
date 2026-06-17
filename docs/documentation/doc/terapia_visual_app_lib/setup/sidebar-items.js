@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["global_shortcut_handler","init","save_configs"]};
