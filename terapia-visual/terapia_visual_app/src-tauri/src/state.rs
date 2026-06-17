@@ -3,7 +3,7 @@
 //! Este módulo define la estructura [`AppState`], que contiene todo el estado
 //! compartido de la aplicación Tauri.
 //!
-//! El estado se inyecta en Tauri durante el [`setup::init`] y se accede desde
+//! El estado se inyecta en Tauri durante el [`crate::setup::init`] y se accede desde
 //! los comandos mediante `tauri::State<AppState>`.
 //!
 //! # Componentes del estado
@@ -21,7 +21,7 @@
 //!
 //! ```no_run
 //! use tauri::State;
-//! use crate::state::AppState;
+//! use terapia_visual_app_lib::state::AppState;
 //!
 //! #[tauri::command]
 //! async fn example_command(state: State<'_, AppState>) -> Result<(), String> {
@@ -57,7 +57,7 @@ use tokio::sync::{Mutex, RwLock};
 /// # Ejemplos
 ///
 /// ```no_run
-/// use crate::state::AppState;
+/// use terapia_visual_app_lib::state::AppState;
 /// use tauri::State;
 ///
 /// #[tauri::command]

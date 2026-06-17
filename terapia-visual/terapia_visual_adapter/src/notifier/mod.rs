@@ -1,6 +1,6 @@
 //! # Adaptadores de Notificaciones
 //!
-//! Este módulo contiene los adaptadores que implementan el puerto [`SystemNotifier`]
+//! Este módulo contiene los adaptadores que implementan el puerto [`terapia_visual_domain::ports::SystemNotifier`]
 //! para diferentes plataformas.
 //!
 //! Actualmente solo se proporciona la implementación para Tauri, que utiliza

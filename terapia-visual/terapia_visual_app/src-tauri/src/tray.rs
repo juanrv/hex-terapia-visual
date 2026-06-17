@@ -12,7 +12,7 @@
 //!
 //! # Flujo típico
 //!
-//! 1. [`create_tray()`] se llama desde [`setup::init`].
+//! 1. [`create_tray()`] se llama desde [`crate::setup::init`].
 //! 2. Se crea el icono de la bandeja con el ID `"main"`.
 //! 3. Se añade un menú contextual con la opción "Salir".
 //! 4. Se configura el evento de doble clic para restaurar la ventana.
@@ -21,7 +21,7 @@
 //!
 //! ```no_run
 //! use tauri::App;
-//! use crate::tray::create_tray;
+//! use terapia_visual_app_lib::tray::create_tray;
 //!
 //! # fn example(app: &mut App) -> Result<(), Box<dyn std::error::Error>> {
 //! create_tray(app)?;
@@ -58,7 +58,7 @@ use terapia_visual_adapter::messages;
 ///
 /// ```no_run
 /// use tauri::App;
-/// use crate::tray::create_tray;
+/// use terapia_visual_app_lib::tray::create_tray;
 ///
 /// # fn example(app: &mut App) -> Result<(), Box<dyn std::error::Error>> {
 /// create_tray(app)?;

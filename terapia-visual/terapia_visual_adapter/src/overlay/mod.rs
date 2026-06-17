@@ -1,6 +1,6 @@
 //! # Adaptadores de Overlay
 //!
-//! Este módulo contiene los adaptadores que implementan el puerto [`OverlayPort`]
+//! Este módulo contiene los adaptadores que implementan el puerto [`terapia_visual_domain::ports::OverlayPort`]
 //! para controlar la ventana de superposición (overlay) de la terapia visual.
 //!
 //! # Adaptadores disponibles

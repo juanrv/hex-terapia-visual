@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"mod":["config_storage","overlay","system_notifier"]};

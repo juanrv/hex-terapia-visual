@@ -19,7 +19,7 @@
 //!
 //! ```no_run
 //! use tauri::App;
-//! use crate::setup::init;
+//! use terapia_visual_app_lib::setup::init;
 //!
 //! # fn example(app: &mut App) -> Result<(), Box<dyn std::error::Error>> {
 //! init(app)?;
@@ -63,7 +63,7 @@ use crate::tray::create_tray;
 ///
 /// ```no_run
 /// use tauri::App;
-/// use crate::setup::init;
+/// use terapia_visual_app_lib::setup::init;
 ///
 /// # fn example(app: &mut App) -> Result<(), Box<dyn std::error::Error>> {
 /// init(app)?;
@@ -148,7 +148,7 @@ pub fn init(app: &mut App) -> Result<(), Box<dyn std::error::Error>> {
 ///
 /// ```no_run
 /// use tauri_plugin_global_shortcut::{Shortcut, ShortcutEvent};
-/// use crate::setup::global_shortcut_handler;
+/// use terapia_visual_app_lib::setup::global_shortcut_handler;
 /// use tauri::AppHandle;
 ///
 /// # fn example(app: &AppHandle, shortcut: &Shortcut, event: ShortcutEvent) {
@@ -221,7 +221,7 @@ pub fn global_shortcut_handler(app: &AppHandle, shortcut: &Shortcut, event: Shor
 /// # Ejemplo
 ///
 /// ```no_run
-/// use crate::setup::save_configs;
+/// use terapia_visual_app_lib::setup::save_configs;
 /// use tauri::AppHandle;
 ///
 /// # fn example(app_handle: &AppHandle) {
