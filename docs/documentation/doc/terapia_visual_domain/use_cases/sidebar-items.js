@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"mod":["get_app_settings","get_therapy_config","start_therapy","stop_therapy","update_app_settings","update_therapy_config"]};

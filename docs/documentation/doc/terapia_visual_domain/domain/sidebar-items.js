@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"mod":["app_settings","color","geometry","layout","opacity","therapy_config","zone"]};

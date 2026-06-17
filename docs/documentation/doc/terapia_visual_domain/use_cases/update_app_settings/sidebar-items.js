@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"enum":["UpdateAppSettingsError"],"fn":["update_app_settings"]};
