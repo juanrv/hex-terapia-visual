@@ -17,10 +17,10 @@
 <a href=#17 id=17 data-nosnippet>17</a>//!
 <a href=#18 id=18 data-nosnippet>18</a>//! ```
 <a href=#19 id=19 data-nosnippet>19</a>//! use terapia_visual_domain::ports::{OverlayPort, OverlayError};
-<a href=#20 id=20 data-nosnippet>20</a>//! use terapia_visual_domain::domain::TherapyConfig;
+<a href=#20 id=20 data-nosnippet>20</a>//! use terapia_visual_domain::domain::OverlayTherapyConfig;
 <a href=#21 id=21 data-nosnippet>21</a>//!
 <a href=#22 id=22 data-nosnippet>22</a>//! # async fn example(overlay: &amp;mut dyn OverlayPort) -&gt; Result&lt;(), OverlayError&gt; {
-<a href=#23 id=23 data-nosnippet>23</a>//! let config = TherapyConfig::default();
+<a href=#23 id=23 data-nosnippet>23</a>//! let config = OverlayTherapyConfig::default();
 <a href=#24 id=24 data-nosnippet>24</a>//! overlay.show(&amp;config, 1920, 1080).await?;
 <a href=#25 id=25 data-nosnippet>25</a>//! # Ok(())
 <a href=#26 id=26 data-nosnippet>26</a>//! # }
@@ -69,11 +69,11 @@
 <a href=#69 id=69 data-nosnippet>69</a>///
 <a href=#70 id=70 data-nosnippet>70</a>/// ```
 <a href=#71 id=71 data-nosnippet>71</a>/// use terapia_visual_domain::ports::{OverlayPort, OverlayError};
-<a href=#72 id=72 data-nosnippet>72</a>/// use terapia_visual_domain::domain::TherapyConfig;
+<a href=#72 id=72 data-nosnippet>72</a>/// use terapia_visual_domain::domain::OverlayTherapyConfig;
 <a href=#73 id=73 data-nosnippet>73</a>///
 <a href=#74 id=74 data-nosnippet>74</a>/// # async fn example(overlay: &amp;mut dyn OverlayPort) -&gt; Result&lt;(), OverlayError&gt; {
 <a href=#75 id=75 data-nosnippet>75</a>/// // Mostrar el overlay
-<a href=#76 id=76 data-nosnippet>76</a>/// let config = TherapyConfig::default();
+<a href=#76 id=76 data-nosnippet>76</a>/// let config = OverlayTherapyConfig::default();
 <a href=#77 id=77 data-nosnippet>77</a>/// overlay.show(&amp;config, 1920, 1080).await?;
 <a href=#78 id=78 data-nosnippet>78</a>///
 <a href=#79 id=79 data-nosnippet>79</a>/// // Verificar si está activo
@@ -105,9 +105,9 @@
 <a href=#105 id=105 data-nosnippet>105</a>    ///
 <a href=#106 id=106 data-nosnippet>106</a>    /// ```
 <a href=#107 id=107 data-nosnippet>107</a>    /// # use terapia_visual_domain::ports::OverlayPort;
-<a href=#108 id=108 data-nosnippet>108</a>    /// # use terapia_visual_domain::domain::TherapyConfig;
+<a href=#108 id=108 data-nosnippet>108</a>    /// # use terapia_visual_domain::domain::OverlayTherapyConfig;
 <a href=#109 id=109 data-nosnippet>109</a>    /// # async fn example(overlay: &amp;mut dyn OverlayPort) {
-<a href=#110 id=110 data-nosnippet>110</a>    /// let config = TherapyConfig::default();
+<a href=#110 id=110 data-nosnippet>110</a>    /// let config = OverlayTherapyConfig::default();
 <a href=#111 id=111 data-nosnippet>111</a>    /// if let Err(e) = overlay.show(&amp;config, 1920, 1080).await {
 <a href=#112 id=112 data-nosnippet>112</a>    ///     eprintln!("Failed to show overlay: {}", e);
 <a href=#113 id=113 data-nosnippet>113</a>    /// }
@@ -158,9 +158,9 @@
 <a href=#158 id=158 data-nosnippet>158</a>    ///
 <a href=#159 id=159 data-nosnippet>159</a>    /// ```
 <a href=#160 id=160 data-nosnippet>160</a>    /// # use terapia_visual_domain::ports::OverlayPort;
-<a href=#161 id=161 data-nosnippet>161</a>    /// # use terapia_visual_domain::domain::TherapyConfig;
+<a href=#161 id=161 data-nosnippet>161</a>    /// # use terapia_visual_domain::domain::OverlayTherapyConfig;
 <a href=#162 id=162 data-nosnippet>162</a>    /// # async fn example(overlay: &amp;mut dyn OverlayPort) {
-<a href=#163 id=163 data-nosnippet>163</a>    /// let mut config = TherapyConfig::default();
+<a href=#163 id=163 data-nosnippet>163</a>    /// let mut config = OverlayTherapyConfig::default();
 <a href=#164 id=164 data-nosnippet>164</a>    /// // ... modificar config ...
 <a href=#165 id=165 data-nosnippet>165</a>    /// if let Err(e) = overlay.update_config(&amp;config, 1920, 1080).await {
 <a href=#166 id=166 data-nosnippet>166</a>    ///     eprintln!("Failed to update overlay: {}", e);

@@ -12,7 +12,7 @@ de la terapia.</p>
 </ol>
 <h2 id="ejemplos"><a class="doc-anchor" href="#ejemplos">§</a>Ejemplos</h2>
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>terapia_visual_domain::ports::{OverlayPort, OverlayError};
-<span class="kw">use </span>terapia_visual_domain::domain::TherapyConfig;
+<span class="kw">use </span>terapia_visual_domain::domain::OverlayTherapyConfig;
 
-<span class="kw">let </span>config = TherapyConfig::default();
+<span class="kw">let </span>config = OverlayTherapyConfig::default();
 overlay.show(<span class="kw-2">&amp;</span>config, <span class="number">1920</span>, <span class="number">1080</span>).<span class="kw">await</span><span class="question-mark">?</span>;</code></pre></div></div></details><h2 id="enums" class="section-header">Enums<a href="#enums" class="anchor">§</a></h2><dl class="item-table"><dt><a class="enum" href="enum.OverlayError.html" title="enum terapia_visual_domain::ports::overlay::OverlayError">Overlay<wbr>Error</a></dt><dd>Errores que pueden ocurrir al interactuar con el overlay.</dd></dl><h2 id="traits" class="section-header">Traits<a href="#traits" class="anchor">§</a></h2><dl class="item-table"><dt><a class="trait" href="trait.OverlayPort.html" title="trait terapia_visual_domain::ports::overlay::OverlayPort">Overlay<wbr>Port</a></dt><dd>Puerto para controlar la ventana de overlay de la terapia visual.</dd></dl></section></div></main></body></html>

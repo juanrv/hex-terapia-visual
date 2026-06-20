@@ -31,13 +31,13 @@
 <a href=#31 id=31 data-nosnippet>31</a>//! import { invoke } from '@tauri-apps/api/core';
 <a href=#32 id=32 data-nosnippet>32</a>//!
 <a href=#33 id=33 data-nosnippet>33</a>//! // Iniciar la terapia
-<a href=#34 id=34 data-nosnippet>34</a>//! await invoke('cmd_start_therapy', { screenWidth: 1920, screenHeight: 1080 });
+<a href=#34 id=34 data-nosnippet>34</a>//! await invoke('cmd_start_overlay', { screenWidth: 1920, screenHeight: 1080 });
 <a href=#35 id=35 data-nosnippet>35</a>//!
 <a href=#36 id=36 data-nosnippet>36</a>//! // Detener la terapia
-<a href=#37 id=37 data-nosnippet>37</a>//! await invoke('cmd_stop_therapy');
+<a href=#37 id=37 data-nosnippet>37</a>//! await invoke('cmd_stop_overlay');
 <a href=#38 id=38 data-nosnippet>38</a>//!
 <a href=#39 id=39 data-nosnippet>39</a>//! // Obtener la configuración actual
-<a href=#40 id=40 data-nosnippet>40</a>//! const config = await invoke('cmd_get_therapy_config');
+<a href=#40 id=40 data-nosnippet>40</a>//! const config = await invoke('cmd_get_overlay_config');
 <a href=#41 id=41 data-nosnippet>41</a>//! ```
 <a href=#42 id=42 data-nosnippet>42</a>
 <a href=#43 id=43 data-nosnippet>43</a></span><span class="kw">pub mod </span>commands;
@@ -88,16 +88,16 @@
 <a href=#88 id=88 data-nosnippet>88</a>        }))
 <a href=#89 id=89 data-nosnippet>89</a>        <span class="comment">// Comandos expuestos al frontend
 <a href=#90 id=90 data-nosnippet>90</a>        </span>.invoke_handler(<span class="macro">tauri::generate_handler!</span>[
-<a href=#91 id=91 data-nosnippet>91</a>            commands::cmd_get_therapy_config,
-<a href=#92 id=92 data-nosnippet>92</a>            commands::cmd_start_therapy,
-<a href=#93 id=93 data-nosnippet>93</a>            commands::cmd_stop_therapy,
-<a href=#94 id=94 data-nosnippet>94</a>            commands::cmd_update_therapy_config,
+<a href=#91 id=91 data-nosnippet>91</a>            commands::cmd_get_overlay_config,
+<a href=#92 id=92 data-nosnippet>92</a>            commands::cmd_start_overlay,
+<a href=#93 id=93 data-nosnippet>93</a>            commands::cmd_stop_overlay,
+<a href=#94 id=94 data-nosnippet>94</a>            commands::cmd_update_overlay_config,
 <a href=#95 id=95 data-nosnippet>95</a>            commands::cmd_get_app_settings,
 <a href=#96 id=96 data-nosnippet>96</a>            commands::cmd_update_app_settings,
-<a href=#97 id=97 data-nosnippet>97</a>            commands::cmd_change_layout,
-<a href=#98 id=98 data-nosnippet>98</a>            commands::cmd_update_zone_color,
-<a href=#99 id=99 data-nosnippet>99</a>            commands::cmd_update_zone_opacity,
-<a href=#100 id=100 data-nosnippet>100</a>            commands::cmd_reset_therapy_config,
+<a href=#97 id=97 data-nosnippet>97</a>            commands::cmd_change_overlay_layout,
+<a href=#98 id=98 data-nosnippet>98</a>            commands::cmd_update_overlay_zone_color,
+<a href=#99 id=99 data-nosnippet>99</a>            commands::cmd_update_overlay_zone_opacity,
+<a href=#100 id=100 data-nosnippet>100</a>            commands::cmd_reset_overlay_config,
 <a href=#101 id=101 data-nosnippet>101</a>        ])
 <a href=#102 id=102 data-nosnippet>102</a>        <span class="comment">// Evento de cierre de ventana
 <a href=#103 id=103 data-nosnippet>103</a>        </span>.on_window_event(|window, event| {

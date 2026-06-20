@@ -5,14 +5,14 @@ configuraciones en archivos TOML.</p>
 cualquier estructura que implemente <code>Serialize</code> y <code>DeserializeOwned</code>.</p>
 <h2 id="uso-típico"><a class="doc-anchor" href="#uso-típico">§</a>Uso típico</h2>
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>terapia_visual_adapter::config_storage::TomlStorage;
-<span class="kw">use </span>terapia_visual_domain::domain::TherapyConfig;
+<span class="kw">use </span>terapia_visual_domain::domain::OverlayTherapyConfig;
 <span class="kw">use </span>terapia_visual_domain::ports::ConfigStorage;
 
-<span class="comment">// Crear un almacenamiento para TherapyConfig en "therapy_config.toml"
+<span class="comment">// Crear un almacenamiento para OverlayTherapyConfig en "therapy_config.toml"
 </span><span class="kw">let </span>storage = TomlStorage::new(<span class="string">"./config"</span>, <span class="string">"therapy_config.toml"</span>);
 
 <span class="comment">// Cargar la configuración (con fallback a default si no existe)
-</span><span class="kw">let </span>config: TherapyConfig = storage.load().<span class="kw">await</span>.unwrap_or_default();
+</span><span class="kw">let </span>config: OverlayTherapyConfig = storage.load().<span class="kw">await</span>.unwrap_or_default();
 
 <span class="comment">// Guardar la configuración
 </span>storage.save(<span class="kw-2">&amp;</span>config).<span class="kw">await</span><span class="question-mark">?</span>;</code></pre></div><h2 id="características"><a class="doc-anchor" href="#características">§</a>Características</h2>

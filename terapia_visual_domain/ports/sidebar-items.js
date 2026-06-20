@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"mod":["config_storage","overlay","system_notifier"]};
+window.SIDEBAR_ITEMS = {"mod":["config_storage","overlay","reading_window","system_notifier"]};

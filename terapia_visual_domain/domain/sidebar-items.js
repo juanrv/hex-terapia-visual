@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"mod":["app_settings","color","geometry","layout","opacity","overlay_therapy_config","zone"]};
+window.SIDEBAR_ITEMS = {"mod":["app_settings","color","geometry","layout","opacity","overlay_therapy_config","reading_settings","reading_therapy_config","zone"]};

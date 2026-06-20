@@ -23,7 +23,7 @@ segura para operaciones atómicas sin bloqueos.</li>
 
 <span class="attr">#[tauri::command]
 </span><span class="kw">async fn </span>get_layout(state: State&lt;<span class="lifetime">'_</span>, AppState&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;String, String&gt; {
-    <span class="kw">let </span>config = state.current_config.read().<span class="kw">await</span>;
+    <span class="kw">let </span>config = state.overlay_config.read().<span class="kw">await</span>;
     <span class="prelude-val">Ok</span>(<span class="macro">format!</span>(<span class="string">"{:?}"</span>, config.layout()))
 }</code></pre></div></div></details><h2 id="fields" class="fields section-header">Fields<a href="#fields" class="anchor">§</a></h2><span id="structfield.overlay_storage" class="structfield section-header"><a href="#structfield.overlay_storage" class="anchor field">§</a><code>overlay_storage: <a class="struct" href="../../terapia_visual_adapter/config_storage/toml_storage/struct.TomlStorage.html" title="struct terapia_visual_adapter::config_storage::toml_storage::TomlStorage">TomlStorage</a></code></span><div class="docblock"><p>Almacenamiento de configuración de terapia (colores, layout, opacidades).</p>
 </div><span id="structfield.app_storage" class="structfield section-header"><a href="#structfield.app_storage" class="anchor field">§</a><code>app_storage: <a class="struct" href="../../terapia_visual_adapter/config_storage/toml_storage/struct.TomlStorage.html" title="struct terapia_visual_adapter::config_storage::toml_storage::TomlStorage">TomlStorage</a></code></span><div class="docblock"><p>Almacenamiento de configuración de la aplicación (idioma, etc.).</p>

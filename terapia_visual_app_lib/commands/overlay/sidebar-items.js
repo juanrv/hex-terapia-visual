@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["cmd_change_overlay_layout","cmd_get_overlay_config","cmd_reset_overlay_config","cmd_start_overlay","cmd_stop_overlay","cmd_update_overlay_config","cmd_update_overlay_zone_color","cmd_update_overlay_zone_opacity"]};

@@ -49,7 +49,7 @@
 <li><a href="../../../terapia_visual_domain/ports/overlay/enum.OverlayError.html#variant.CreationError" title="variant terapia_visual_domain::ports::overlay::OverlayError::CreationError"><code>OverlayError::CreationError</code></a> si falla la creación de la ventana.</li>
 </ul>
 <h5 id="ejemplos-2"><a class="doc-anchor" href="#ejemplos-2">§</a>Ejemplos</h5>
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">let </span>config = TherapyConfig::default();
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">let </span>config = OverlayTherapyConfig::default();
 overlay.show(<span class="kw-2">&amp;</span>config, <span class="number">1920</span>, <span class="number">1080</span>).<span class="kw">await</span><span class="question-mark">?</span>;</code></pre></div></div></details><details class="toggle method-toggle" open><summary><section id="method.hide" class="method trait-impl"><a class="src rightside" href="../../../src/terapia_visual_adapter/overlay/tauri_overlay.rs.html#344-355">Source</a><a href="#method.hide" class="anchor">§</a><h4 class="code-header">fn <a href="../../../terapia_visual_domain/ports/overlay/trait.OverlayPort.html#tymethod.hide" class="fn">hide</a>&lt;'life0, 'async_trait&gt;(
     &amp;'life0 mut self,
 ) -&gt; <a class="struct" href="https://doc.rust-lang.org/1.96.0/core/pin/struct.Pin.html" title="struct core::pin::Pin">Pin</a>&lt;<a class="struct" href="https://doc.rust-lang.org/1.96.0/alloc/boxed/struct.Box.html" title="struct alloc::boxed::Box">Box</a>&lt;dyn <a class="trait" href="https://doc.rust-lang.org/1.96.0/core/future/future/trait.Future.html" title="trait core::future::future::Future">Future</a>&lt;Output = <a class="enum" href="https://doc.rust-lang.org/1.96.0/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/1.96.0/std/primitive.unit.html">()</a>, <a class="enum" href="../../../terapia_visual_domain/ports/overlay/enum.OverlayError.html" title="enum terapia_visual_domain::ports::overlay::OverlayError">OverlayError</a>&gt;&gt; + <a class="trait" href="https://doc.rust-lang.org/1.96.0/core/marker/trait.Send.html" title="trait core::marker::Send">Send</a> + 'async_trait&gt;&gt;<div class="where">where
@@ -84,7 +84,7 @@ Si el overlay está inactivo, esta operación no tiene efecto.</p>
 </ul>
 <h5 id="ejemplos-4"><a class="doc-anchor" href="#ejemplos-4">§</a>Ejemplos</h5>
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="comment">// Configuración inicial
-</span><span class="kw">let </span><span class="kw-2">mut </span>config = TherapyConfig::default();
+</span><span class="kw">let </span><span class="kw-2">mut </span>config = OverlayTherapyConfig::default();
 <span class="comment">// Cambiar colores y layout en tiempo real
 </span><span class="kw">let </span><span class="kw-2">mut </span>new_config = config.clone();
 new_config.change_layout(Layout::Horizontal);

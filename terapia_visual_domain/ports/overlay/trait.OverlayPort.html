@@ -35,10 +35,10 @@ y actualizar la ventana de superposición.</p>
 </ul>
 <h2 id="ejemplos"><a class="doc-anchor" href="#ejemplos">§</a>Ejemplos</h2>
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>terapia_visual_domain::ports::{OverlayPort, OverlayError};
-<span class="kw">use </span>terapia_visual_domain::domain::TherapyConfig;
+<span class="kw">use </span>terapia_visual_domain::domain::OverlayTherapyConfig;
 
 <span class="comment">// Mostrar el overlay
-</span><span class="kw">let </span>config = TherapyConfig::default();
+</span><span class="kw">let </span>config = OverlayTherapyConfig::default();
 overlay.show(<span class="kw-2">&amp;</span>config, <span class="number">1920</span>, <span class="number">1080</span>).<span class="kw">await</span><span class="question-mark">?</span>;
 
 <span class="comment">// Verificar si está activo
@@ -67,7 +67,7 @@ overlay.show(<span class="kw-2">&amp;</span>config, <span class="number">1920</s
 <li><a href="enum.OverlayError.html#variant.CreationError" title="variant terapia_visual_domain::ports::overlay::OverlayError::CreationError"><code>OverlayError::CreationError</code></a> si falla la creación de la ventana.</li>
 </ul>
 <h5 id="ejemplos-1"><a class="doc-anchor" href="#ejemplos-1">§</a>Ejemplos</h5>
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">let </span>config = TherapyConfig::default();
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">let </span>config = OverlayTherapyConfig::default();
 <span class="kw">if let </span><span class="prelude-val">Err</span>(e) = overlay.show(<span class="kw-2">&amp;</span>config, <span class="number">1920</span>, <span class="number">1080</span>).<span class="kw">await </span>{
     <span class="macro">eprintln!</span>(<span class="string">"Failed to show overlay: {}"</span>, e);
 }</code></pre></div></div></details><details class="toggle method-toggle" open><summary><section id="tymethod.hide" class="method"><a class="src rightside" href="../../../src/terapia_visual_domain/ports/overlay.rs.html#140">Source</a><h4 class="code-header">fn <a href="#tymethod.hide" class="fn">hide</a>&lt;'life0, 'async_trait&gt;(
@@ -105,7 +105,7 @@ Si el overlay está inactivo, esta operación no tiene efecto.</p>
 <li><a href="enum.OverlayError.html#variant.UpdateError" title="variant terapia_visual_domain::ports::overlay::OverlayError::UpdateError"><code>OverlayError::UpdateError</code></a> si falla la actualización de la ventana.</li>
 </ul>
 <h5 id="ejemplos-3"><a class="doc-anchor" href="#ejemplos-3">§</a>Ejemplos</h5>
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">let </span><span class="kw-2">mut </span>config = TherapyConfig::default();
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">let </span><span class="kw-2">mut </span>config = OverlayTherapyConfig::default();
 <span class="comment">// ... modificar config ...
 </span><span class="kw">if let </span><span class="prelude-val">Err</span>(e) = overlay.update_config(<span class="kw-2">&amp;</span>config, <span class="number">1920</span>, <span class="number">1080</span>).<span class="kw">await </span>{
     <span class="macro">eprintln!</span>(<span class="string">"Failed to update overlay: {}"</span>, e);

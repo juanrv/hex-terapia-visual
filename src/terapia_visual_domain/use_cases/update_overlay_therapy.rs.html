@@ -11,16 +11,16 @@
 <a href=#11 id=11 data-nosnippet>11</a>//! # Ejemplos
 <a href=#12 id=12 data-nosnippet>12</a>//!
 <a href=#13 id=13 data-nosnippet>13</a>//! ```
-<a href=#14 id=14 data-nosnippet>14</a>//! use terapia_visual_domain::use_cases::update_therapy_config;
+<a href=#14 id=14 data-nosnippet>14</a>//! use terapia_visual_domain::use_cases::update_overlay_therapy;
 <a href=#15 id=15 data-nosnippet>15</a>//! use terapia_visual_domain::ports::{ConfigStorage, OverlayPort};
-<a href=#16 id=16 data-nosnippet>16</a>//! use terapia_visual_domain::domain::TherapyConfig;
+<a href=#16 id=16 data-nosnippet>16</a>//! use terapia_visual_domain::domain::OverlayTherapyConfig;
 <a href=#17 id=17 data-nosnippet>17</a>//!
 <a href=#18 id=18 data-nosnippet>18</a>//! # async fn example(
 <a href=#19 id=19 data-nosnippet>19</a>//! #     overlay: &amp;mut dyn OverlayPort,
-<a href=#20 id=20 data-nosnippet>20</a>//! #     storage: &amp;dyn ConfigStorage&lt;TherapyConfig&gt;,
+<a href=#20 id=20 data-nosnippet>20</a>//! #     storage: &amp;dyn ConfigStorage&lt;OverlayTherapyConfig&gt;,
 <a href=#21 id=21 data-nosnippet>21</a>//! # ) -&gt; Result&lt;(), Box&lt;dyn std::error::Error&gt;&gt; {
-<a href=#22 id=22 data-nosnippet>22</a>//! let config = TherapyConfig::default();
-<a href=#23 id=23 data-nosnippet>23</a>//! update_therapy_config::update_therapy_config(overlay, storage, &amp;config, 1920, 1080).await?;
+<a href=#22 id=22 data-nosnippet>22</a>//! let config = OverlayTherapyConfig::default();
+<a href=#23 id=23 data-nosnippet>23</a>//! update_overlay_therapy::update_overlay_therapy(overlay, storage, &amp;config, 1920, 1080).await?;
 <a href=#24 id=24 data-nosnippet>24</a>//! # Ok(())
 <a href=#25 id=25 data-nosnippet>25</a>//! # }
 <a href=#26 id=26 data-nosnippet>26</a>//! ```
@@ -50,7 +50,7 @@
 <a href=#50 id=50 data-nosnippet>50</a>/// # Argumentos
 <a href=#51 id=51 data-nosnippet>51</a>///
 <a href=#52 id=52 data-nosnippet>52</a>/// * `overlay` - Adaptador que implementa `OverlayPort`.
-<a href=#53 id=53 data-nosnippet>53</a>/// * `storage` - Adaptador que implementa `ConfigStorage&lt;TherapyConfig&gt;`.
+<a href=#53 id=53 data-nosnippet>53</a>/// * `storage` - Adaptador que implementa `ConfigStorage&lt;OverlayTherapyConfig&gt;`.
 <a href=#54 id=54 data-nosnippet>54</a>/// * `new_config` - La nueva configuración de la terapia.
 <a href=#55 id=55 data-nosnippet>55</a>/// * `screen_width` - Ancho de la pantalla en píxeles.
 <a href=#56 id=56 data-nosnippet>56</a>/// * `screen_height` - Alto de la pantalla en píxeles.
@@ -63,16 +63,16 @@
 <a href=#63 id=63 data-nosnippet>63</a>/// # Ejemplos
 <a href=#64 id=64 data-nosnippet>64</a>///
 <a href=#65 id=65 data-nosnippet>65</a>/// ```
-<a href=#66 id=66 data-nosnippet>66</a>/// use terapia_visual_domain::use_cases::update_therapy_config;
+<a href=#66 id=66 data-nosnippet>66</a>/// use terapia_visual_domain::use_cases::update_overlay_therapy;
 <a href=#67 id=67 data-nosnippet>67</a>/// use terapia_visual_domain::ports::{ConfigStorage, OverlayPort};
-<a href=#68 id=68 data-nosnippet>68</a>/// use terapia_visual_domain::domain::TherapyConfig;
+<a href=#68 id=68 data-nosnippet>68</a>/// use terapia_visual_domain::domain::OverlayTherapyConfig;
 <a href=#69 id=69 data-nosnippet>69</a>///
 <a href=#70 id=70 data-nosnippet>70</a>/// # async fn example(
 <a href=#71 id=71 data-nosnippet>71</a>/// #     overlay: &amp;mut dyn OverlayPort,
-<a href=#72 id=72 data-nosnippet>72</a>/// #     storage: &amp;dyn ConfigStorage&lt;TherapyConfig&gt;,
+<a href=#72 id=72 data-nosnippet>72</a>/// #     storage: &amp;dyn ConfigStorage&lt;OverlayTherapyConfig&gt;,
 <a href=#73 id=73 data-nosnippet>73</a>/// # ) -&gt; Result&lt;(), Box&lt;dyn std::error::Error&gt;&gt; {
-<a href=#74 id=74 data-nosnippet>74</a>/// let config = TherapyConfig::default();
-<a href=#75 id=75 data-nosnippet>75</a>/// update_therapy_config::update_therapy_config(overlay, storage, &amp;config, 1920, 1080).await?;
+<a href=#74 id=74 data-nosnippet>74</a>/// let config = OverlayTherapyConfig::default();
+<a href=#75 id=75 data-nosnippet>75</a>/// update_overlay_therapy::update_overlay_therapy(overlay, storage, &amp;config, 1920, 1080).await?;
 <a href=#76 id=76 data-nosnippet>76</a>/// # Ok(())
 <a href=#77 id=77 data-nosnippet>77</a>/// # }
 <a href=#78 id=78 data-nosnippet>78</a>/// ```

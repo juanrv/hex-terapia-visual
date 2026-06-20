@@ -29,10 +29,10 @@ coincida con lo esperado por el layout.</p>
 <p>Devuelve <a href="enum.ConfigError.html#variant.ZoneCountMismatch" title="variant terapia_visual_domain::domain::overlay_therapy_config::ConfigError::ZoneCountMismatch"><code>ConfigError::ZoneCountMismatch</code></a> si el número de zonas no coincide
 con lo esperado por el layout.</p>
 <h5 id="ejemplos"><a class="doc-anchor" href="#ejemplos">§</a>Ejemplos</h5>
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>terapia_visual_domain::domain::{TherapyConfig, TherapyType, Layout, ZoneConfig, Color, Opacity};
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>terapia_visual_domain::domain::{OverlayTherapyConfig, TherapyType, Layout, ZoneConfig, Color, Opacity};
 
 <span class="comment">// Configuración válida
-</span><span class="kw">let </span>config = TherapyConfig::new(
+</span><span class="kw">let </span>config = OverlayTherapyConfig::new(
     TherapyType::ColorDivision,
     Layout::Vertical,
     <span class="macro">vec!</span>[
@@ -43,7 +43,7 @@ con lo esperado por el layout.</p>
 <span class="macro">assert!</span>(config.is_ok());
 
 <span class="comment">// Configuración inválida (número incorrecto de zonas)
-</span><span class="kw">let </span>invalid = TherapyConfig::new(
+</span><span class="kw">let </span>invalid = OverlayTherapyConfig::new(
     TherapyType::ColorDivision,
     Layout::Vertical,
     <span class="macro">vec!</span>[
@@ -62,9 +62,9 @@ y las zonas 1 y 2 se sincronizan).</p>
 <li><code>new_layout</code> - El nuevo layout que se quiere aplicar.</li>
 </ul>
 <h5 id="ejemplos-1"><a class="doc-anchor" href="#ejemplos-1">§</a>Ejemplos</h5>
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>terapia_visual_domain::domain::{TherapyConfig, Layout};
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>terapia_visual_domain::domain::{OverlayTherapyConfig, Layout};
 
-<span class="kw">let </span><span class="kw-2">mut </span>config = TherapyConfig::default(); <span class="comment">// Layout::Vertical (2 zonas)
+<span class="kw">let </span><span class="kw-2">mut </span>config = OverlayTherapyConfig::default(); <span class="comment">// Layout::Vertical (2 zonas)
 
 // Cambiar a Checkerboard (4 zonas)
 </span>config.change_layout(Layout::Checkerboard);
@@ -84,9 +84,9 @@ los colores se sincronizan automáticamente entre las zonas emparejadas.</p>
 <h5 id="errores-1"><a class="doc-anchor" href="#errores-1">§</a>Errores</h5>
 <p>Devuelve <a href="enum.ConfigError.html#variant.InvalidZoneIndex" title="variant terapia_visual_domain::domain::overlay_therapy_config::ConfigError::InvalidZoneIndex"><code>ConfigError::InvalidZoneIndex</code></a> si el índice está fuera de rango.</p>
 <h5 id="ejemplos-2"><a class="doc-anchor" href="#ejemplos-2">§</a>Ejemplos</h5>
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>terapia_visual_domain::domain::{TherapyConfig, Color};
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>terapia_visual_domain::domain::{OverlayTherapyConfig, Color};
 
-<span class="kw">let </span><span class="kw-2">mut </span>config = TherapyConfig::default();
+<span class="kw">let </span><span class="kw-2">mut </span>config = OverlayTherapyConfig::default();
 <span class="kw">let </span>new_color = Color::new(<span class="string">"#0000FF"</span>).unwrap();
 
 <span class="comment">// Cambiar el color de la primera zona a azul
@@ -106,9 +106,9 @@ las opacidades se sincronizan automáticamente entre las zonas emparejadas.</p>
 <h5 id="errores-2"><a class="doc-anchor" href="#errores-2">§</a>Errores</h5>
 <p>Devuelve <a href="enum.ConfigError.html#variant.InvalidZoneIndex" title="variant terapia_visual_domain::domain::overlay_therapy_config::ConfigError::InvalidZoneIndex"><code>ConfigError::InvalidZoneIndex</code></a> si el índice está fuera de rango.</p>
 <h5 id="ejemplos-3"><a class="doc-anchor" href="#ejemplos-3">§</a>Ejemplos</h5>
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>terapia_visual_domain::domain::{TherapyConfig, Opacity};
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>terapia_visual_domain::domain::{OverlayTherapyConfig, Opacity};
 
-<span class="kw">let </span><span class="kw-2">mut </span>config = TherapyConfig::default();
+<span class="kw">let </span><span class="kw-2">mut </span>config = OverlayTherapyConfig::default();
 <span class="kw">let </span>new_opacity = Opacity::new(<span class="number">0.3</span>).unwrap();
 
 <span class="comment">// Cambiar la opacidad de la primera zona a 0.3
@@ -126,9 +126,9 @@ las opacidades se sincronizan automáticamente entre las zonas emparejadas.</p>
 <p>Un vector de <a href="../zone/struct.Zone.html" title="struct terapia_visual_domain::domain::zone::Zone"><code>Zone</code></a> con los rectángulos calculados según el layout actual
 y las configuraciones de color y opacidad.</p>
 <h5 id="ejemplos-4"><a class="doc-anchor" href="#ejemplos-4">§</a>Ejemplos</h5>
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>terapia_visual_domain::domain::TherapyConfig;
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>terapia_visual_domain::domain::OverlayTherapyConfig;
 
-<span class="kw">let </span>config = TherapyConfig::default(); <span class="comment">// Layout::Vertical
+<span class="kw">let </span>config = OverlayTherapyConfig::default(); <span class="comment">// Layout::Vertical
 </span><span class="kw">let </span>zones = config.generate_zones(<span class="number">1920</span>, <span class="number">1080</span>);
 
 <span class="macro">assert_eq!</span>(zones.len(), <span class="number">2</span>);
@@ -141,9 +141,9 @@ y las configuraciones de color y opacidad.</p>
 <li>Dos zonas: roja (#FF0000) y verde (#00FF00), ambas con opacidad predeterminada (0.5)</li>
 </ul>
 <h4 id="ejemplos-5"><a class="doc-anchor" href="#ejemplos-5">§</a>Ejemplos</h4>
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>terapia_visual_domain::domain::{TherapyConfig, Layout};
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>terapia_visual_domain::domain::{OverlayTherapyConfig, Layout};
 
-<span class="kw">let </span>config = TherapyConfig::default();
+<span class="kw">let </span>config = OverlayTherapyConfig::default();
 <span class="macro">assert_eq!</span>(config.layout(), Layout::Vertical);
 <span class="macro">assert_eq!</span>(config.zones_config().len(), <span class="number">2</span>);</code></pre></div></div><div class="impl-items"><details class="toggle method-toggle" open><summary><section id="method.default" class="method trait-impl"><a class="src rightside" href="../../../src/terapia_visual_domain/domain/overlay_therapy_config.rs.html#435-448">Source</a><a href="#method.default" class="anchor">§</a><h4 class="code-header">fn <a href="https://doc.rust-lang.org/1.96.0/core/default/trait.Default.html#tymethod.default" class="fn">default</a>() -&gt; Self</h4></section></summary><div class='docblock'>Returns the “default value” for a type. <a href="https://doc.rust-lang.org/1.96.0/core/default/trait.Default.html#tymethod.default">Read more</a></div></details></div></details><details class="toggle implementors-toggle" open><summary><section id="impl-Deserialize%3C'de%3E-for-OverlayTherapyConfig" class="impl"><a class="src rightside" href="../../../src/terapia_visual_domain/domain/overlay_therapy_config.rs.html#95">Source</a><a href="#impl-Deserialize%3C'de%3E-for-OverlayTherapyConfig" class="anchor">§</a><h3 class="code-header">impl&lt;'de&gt; <a class="trait" href="https://docs.rs/serde_core/1.0.228/serde_core/de/trait.Deserialize.html" title="trait serde_core::de::Deserialize">Deserialize</a>&lt;'de&gt; for <a class="struct" href="struct.OverlayTherapyConfig.html" title="struct terapia_visual_domain::domain::overlay_therapy_config::OverlayTherapyConfig">OverlayTherapyConfig</a></h3></section></summary><div class="impl-items"><details class="toggle method-toggle" open><summary><section id="method.deserialize" class="method trait-impl"><a class="src rightside" href="../../../src/terapia_visual_domain/domain/overlay_therapy_config.rs.html#95">Source</a><a href="#method.deserialize" class="anchor">§</a><h4 class="code-header">fn <a href="https://docs.rs/serde_core/1.0.228/serde_core/de/trait.Deserialize.html#tymethod.deserialize" class="fn">deserialize</a>&lt;__D&gt;(__deserializer: __D) -&gt; <a class="enum" href="https://doc.rust-lang.org/1.96.0/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;Self, __D::<a class="associatedtype" href="https://docs.rs/serde_core/1.0.228/serde_core/de/trait.Deserializer.html#associatedtype.Error" title="type serde_core::de::Deserializer::Error">Error</a>&gt;<div class="where">where
     __D: <a class="trait" href="https://docs.rs/serde_core/1.0.228/serde_core/de/trait.Deserializer.html" title="trait serde_core::de::Deserializer">Deserializer</a>&lt;'de&gt;,</div></h4></section></summary><div class='docblock'>Deserialize this value from the given Serde deserializer. <a href="https://docs.rs/serde_core/1.0.228/serde_core/de/trait.Deserialize.html#tymethod.deserialize">Read more</a></div></details></div></details><details class="toggle implementors-toggle" open><summary><section id="impl-PartialEq-for-OverlayTherapyConfig" class="impl"><a class="src rightside" href="../../../src/terapia_visual_domain/domain/overlay_therapy_config.rs.html#95">Source</a><a href="#impl-PartialEq-for-OverlayTherapyConfig" class="anchor">§</a><h3 class="code-header">impl <a class="trait" href="https://doc.rust-lang.org/1.96.0/core/cmp/trait.PartialEq.html" title="trait core::cmp::PartialEq">PartialEq</a> for <a class="struct" href="struct.OverlayTherapyConfig.html" title="struct terapia_visual_domain::domain::overlay_therapy_config::OverlayTherapyConfig">OverlayTherapyConfig</a></h3></section></summary><div class="impl-items"><details class="toggle method-toggle" open><summary><section id="method.eq" class="method trait-impl"><a class="src rightside" href="../../../src/terapia_visual_domain/domain/overlay_therapy_config.rs.html#95">Source</a><a href="#method.eq" class="anchor">§</a><h4 class="code-header">fn <a href="https://doc.rust-lang.org/1.96.0/core/cmp/trait.PartialEq.html#tymethod.eq" class="fn">eq</a>(&amp;self, other: &amp;<a class="struct" href="struct.OverlayTherapyConfig.html" title="struct terapia_visual_domain::domain::overlay_therapy_config::OverlayTherapyConfig">OverlayTherapyConfig</a>) -&gt; <a class="primitive" href="https://doc.rust-lang.org/1.96.0/std/primitive.bool.html">bool</a></h4></section></summary><div class='docblock'>Tests for <code>self</code> and <code>other</code> values to be equal, and is used by <code>==</code>.</div></details><details class="toggle method-toggle" open><summary><section id="method.ne" class="method trait-impl"><span class="rightside"><span class="since" title="Stable since Rust version 1.0.0">1.0.0</span> · <a class="src" href="https://doc.rust-lang.org/1.96.0/src/core/cmp.rs.html#263">Source</a></span><a href="#method.ne" class="anchor">§</a><h4 class="code-header">fn <a href="https://doc.rust-lang.org/1.96.0/core/cmp/trait.PartialEq.html#method.ne" class="fn">ne</a>(&amp;self, other: <a class="primitive" href="https://doc.rust-lang.org/1.96.0/std/primitive.reference.html">&amp;Rhs</a>) -&gt; <a class="primitive" href="https://doc.rust-lang.org/1.96.0/std/primitive.bool.html">bool</a></h4></section></summary><div class='docblock'>Tests for <code>!=</code>. The default implementation is almost always sufficient,

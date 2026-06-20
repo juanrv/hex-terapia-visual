@@ -10,7 +10,7 @@ si la terapia está activa, actualiza el overlay en tiempo real.</p>
 <h2 id="argumentos"><a class="doc-anchor" href="#argumentos">§</a>Argumentos</h2>
 <ul>
 <li><code>overlay</code> - Adaptador que implementa <code>OverlayPort</code>.</li>
-<li><code>storage</code> - Adaptador que implementa <code>ConfigStorage&lt;TherapyConfig&gt;</code>.</li>
+<li><code>storage</code> - Adaptador que implementa <code>ConfigStorage&lt;OverlayTherapyConfig&gt;</code>.</li>
 <li><code>new_config</code> - La nueva configuración de la terapia.</li>
 <li><code>screen_width</code> - Ancho de la pantalla en píxeles.</li>
 <li><code>screen_height</code> - Alto de la pantalla en píxeles.</li>
@@ -21,9 +21,9 @@ si la terapia está activa, actualiza el overlay en tiempo real.</p>
 <li><a href="enum.UpdateConfigError.html#variant.Overlay" title="variant terapia_visual_domain::use_cases::update_overlay_therapy::UpdateConfigError::Overlay"><code>UpdateConfigError::Overlay</code></a> si falla al actualizar el overlay.</li>
 </ul>
 <h2 id="ejemplos"><a class="doc-anchor" href="#ejemplos">§</a>Ejemplos</h2>
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>terapia_visual_domain::use_cases::update_therapy_config;
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>terapia_visual_domain::use_cases::update_overlay_therapy;
 <span class="kw">use </span>terapia_visual_domain::ports::{ConfigStorage, OverlayPort};
-<span class="kw">use </span>terapia_visual_domain::domain::TherapyConfig;
+<span class="kw">use </span>terapia_visual_domain::domain::OverlayTherapyConfig;
 
-<span class="kw">let </span>config = TherapyConfig::default();
-update_therapy_config::update_therapy_config(overlay, storage, <span class="kw-2">&amp;</span>config, <span class="number">1920</span>, <span class="number">1080</span>).<span class="kw">await</span><span class="question-mark">?</span>;</code></pre></div></div></details></section></div></main></body></html>
+<span class="kw">let </span>config = OverlayTherapyConfig::default();
+update_overlay_therapy::update_overlay_therapy(overlay, storage, <span class="kw-2">&amp;</span>config, <span class="number">1920</span>, <span class="number">1080</span>).<span class="kw">await</span><span class="question-mark">?</span>;</code></pre></div></div></details></section></div></main></body></html>

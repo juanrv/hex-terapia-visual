@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["cmd_get_app_settings","cmd_update_app_settings"]};

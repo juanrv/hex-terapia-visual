@@ -26,11 +26,11 @@ lugar de recrearla.</li>
 <h2 id="ejemplos"><a class="doc-anchor" href="#ejemplos">§</a>Ejemplos</h2>
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>terapia_visual_adapter::overlay::TauriOverlay;
 <span class="kw">use </span>terapia_visual_domain::ports::OverlayPort;
-<span class="kw">use </span>terapia_visual_domain::domain::TherapyConfig;
+<span class="kw">use </span>terapia_visual_domain::domain::OverlayTherapyConfig;
 <span class="kw">use </span>tauri::AppHandle;
 
 <span class="kw">let </span><span class="kw-2">mut </span>overlay = TauriOverlay::new(app_handle);
-<span class="kw">let </span>config = TherapyConfig::default();
+<span class="kw">let </span>config = OverlayTherapyConfig::default();
 
 <span class="comment">// Mostrar el overlay
 </span>overlay.show(<span class="kw-2">&amp;</span>config, <span class="number">1920</span>, <span class="number">1080</span>).<span class="kw">await</span><span class="question-mark">?</span>;

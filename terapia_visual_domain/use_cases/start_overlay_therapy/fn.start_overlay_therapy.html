@@ -19,9 +19,9 @@ y muestra la ventana de superposición si no está ya activa.</p>
 <li><a href="../../ports/overlay/enum.OverlayError.html#variant.CreationError" title="variant terapia_visual_domain::ports::overlay::OverlayError::CreationError"><code>OverlayError::CreationError</code></a> si falla la creación de la ventana.</li>
 </ul>
 <h2 id="ejemplos"><a class="doc-anchor" href="#ejemplos">§</a>Ejemplos</h2>
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>terapia_visual_domain::use_cases::start_therapy;
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>terapia_visual_domain::use_cases::start_overlay_therapy;
 <span class="kw">use </span>terapia_visual_domain::ports::{OverlayPort, OverlayError};
-<span class="kw">use </span>terapia_visual_domain::domain::TherapyConfig;
+<span class="kw">use </span>terapia_visual_domain::domain::OverlayTherapyConfig;
 
-<span class="kw">let </span>config = TherapyConfig::default();
-start_therapy::start_therapy(overlay, <span class="kw-2">&amp;</span>config, <span class="number">1920</span>, <span class="number">1080</span>).<span class="kw">await</span><span class="question-mark">?</span>;</code></pre></div></div></details></section></div></main></body></html>
+<span class="kw">let </span>config = OverlayTherapyConfig::default();
+start_overlay_therapy::start_overlay_therapy(overlay, <span class="kw-2">&amp;</span>config, <span class="number">1920</span>, <span class="number">1080</span>).<span class="kw">await</span><span class="question-mark">?</span>;</code></pre></div></div></details></section></div></main></body></html>

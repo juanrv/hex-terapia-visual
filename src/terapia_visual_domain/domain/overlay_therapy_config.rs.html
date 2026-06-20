@@ -1,6 +1,6 @@
 <!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `terapia_visual_domain\src\domain\overlay_therapy_config.rs`."><title>overlay_therapy_config.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2"href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../../static.files/rustdoc-17e0aaed.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="terapia_visual_domain" data-themes="" data-resource-suffix="" data-rustdoc-version="1.96.0 (ac68faa20 2026-05-25)" data-channel="1.96.0" data-search-js="search-b5634cc7.js" data-stringdex-js="stringdex-2da4960a.js" data-settings-js="settings-170eb4bf.js" ><script src="../../../static.files/storage-41dd4d93.js"></script><script defer src="../../../static.files/src-script-813739b1.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-5013f961.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-f7c3ffd8.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-eab170b8.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><a class="skip-main-content" href="#main-content">Skip to main content</a><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer" title="Drag to resize sidebar"></div><main><section id="main-content" class="content" tabindex="-1"><div class="main-heading"><h1><div class="sub-heading">terapia_visual_domain\domain/</div>overlay_therapy_config.rs</h1><rustdoc-toolbar></rustdoc-toolbar></div><div class="example-wrap digits-3"><pre class="rust"><code><a href=#1 id=1 data-nosnippet>1</a><span class="doccomment">//! # Módulo de Configuración de Terapia
 <a href=#2 id=2 data-nosnippet>2</a>//!
-<a href=#3 id=3 data-nosnippet>3</a>//! Define el agregado principal [`TherapyConfig`], que representa la configuración
+<a href=#3 id=3 data-nosnippet>3</a>//! Define el agregado principal [`OverlayTherapyConfig`], que representa la configuración
 <a href=#4 id=4 data-nosnippet>4</a>//! completa de una terapia visual.
 <a href=#5 id=5 data-nosnippet>5</a>//!
 <a href=#6 id=6 data-nosnippet>6</a>//! Una configuración incluye:
@@ -14,10 +14,10 @@
 <a href=#14 id=14 data-nosnippet>14</a>//! # Ejemplos
 <a href=#15 id=15 data-nosnippet>15</a>//!
 <a href=#16 id=16 data-nosnippet>16</a>//! ```
-<a href=#17 id=17 data-nosnippet>17</a>//! use terapia_visual_domain::domain::{TherapyConfig, TherapyType, Layout, ZoneConfig, Color, Opacity};
+<a href=#17 id=17 data-nosnippet>17</a>//! use terapia_visual_domain::domain::{OverlayTherapyConfig, TherapyType, Layout, ZoneConfig, Color, Opacity};
 <a href=#18 id=18 data-nosnippet>18</a>//!
 <a href=#19 id=19 data-nosnippet>19</a>//! // Crear una configuración vertical con dos zonas (rojo y verde)
-<a href=#20 id=20 data-nosnippet>20</a>//! let config = TherapyConfig::new(
+<a href=#20 id=20 data-nosnippet>20</a>//! let config = OverlayTherapyConfig::new(
 <a href=#21 id=21 data-nosnippet>21</a>//!     TherapyType::ColorDivision,
 <a href=#22 id=22 data-nosnippet>22</a>//!     Layout::Vertical,
 <a href=#23 id=23 data-nosnippet>23</a>//!     vec![
@@ -67,7 +67,7 @@
 <a href=#67 id=67 data-nosnippet>67</a>///
 <a href=#68 id=68 data-nosnippet>68</a>/// Este enum está diseñado para ser extensible. Para añadir un nuevo tipo de terapia:
 <a href=#69 id=69 data-nosnippet>69</a>/// 1. Añadir una nueva variante aquí.
-<a href=#70 id=70 data-nosnippet>70</a>/// 2. Modificar el método [`TherapyConfig::new`] para manejar la nueva variante.
+<a href=#70 id=70 data-nosnippet>70</a>/// 2. Modificar el método [`OverlayTherapyConfig::new`] para manejar la nueva variante.
 <a href=#71 id=71 data-nosnippet>71</a>/// 3. Implementar cualquier lógica específica del nuevo tipo.
 <a href=#72 id=72 data-nosnippet>72</a></span><span class="attr">#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
 <a href=#73 id=73 data-nosnippet>73</a></span><span class="kw">pub enum </span>TherapyType {
@@ -132,10 +132,10 @@
 <a href=#132 id=132 data-nosnippet>132</a>    /// # Ejemplos
 <a href=#133 id=133 data-nosnippet>133</a>    ///
 <a href=#134 id=134 data-nosnippet>134</a>    /// ```
-<a href=#135 id=135 data-nosnippet>135</a>    /// use terapia_visual_domain::domain::{TherapyConfig, TherapyType, Layout, ZoneConfig, Color, Opacity};
+<a href=#135 id=135 data-nosnippet>135</a>    /// use terapia_visual_domain::domain::{OverlayTherapyConfig, TherapyType, Layout, ZoneConfig, Color, Opacity};
 <a href=#136 id=136 data-nosnippet>136</a>    ///
 <a href=#137 id=137 data-nosnippet>137</a>    /// // Configuración válida
-<a href=#138 id=138 data-nosnippet>138</a>    /// let config = TherapyConfig::new(
+<a href=#138 id=138 data-nosnippet>138</a>    /// let config = OverlayTherapyConfig::new(
 <a href=#139 id=139 data-nosnippet>139</a>    ///     TherapyType::ColorDivision,
 <a href=#140 id=140 data-nosnippet>140</a>    ///     Layout::Vertical,
 <a href=#141 id=141 data-nosnippet>141</a>    ///     vec![
@@ -146,7 +146,7 @@
 <a href=#146 id=146 data-nosnippet>146</a>    /// assert!(config.is_ok());
 <a href=#147 id=147 data-nosnippet>147</a>    ///
 <a href=#148 id=148 data-nosnippet>148</a>    /// // Configuración inválida (número incorrecto de zonas)
-<a href=#149 id=149 data-nosnippet>149</a>    /// let invalid = TherapyConfig::new(
+<a href=#149 id=149 data-nosnippet>149</a>    /// let invalid = OverlayTherapyConfig::new(
 <a href=#150 id=150 data-nosnippet>150</a>    ///     TherapyType::ColorDivision,
 <a href=#151 id=151 data-nosnippet>151</a>    ///     Layout::Vertical,
 <a href=#152 id=152 data-nosnippet>152</a>    ///     vec![
@@ -196,9 +196,9 @@
 <a href=#196 id=196 data-nosnippet>196</a>    /// # Ejemplos
 <a href=#197 id=197 data-nosnippet>197</a>    ///
 <a href=#198 id=198 data-nosnippet>198</a>    /// ```
-<a href=#199 id=199 data-nosnippet>199</a>    /// use terapia_visual_domain::domain::{TherapyConfig, Layout};
+<a href=#199 id=199 data-nosnippet>199</a>    /// use terapia_visual_domain::domain::{OverlayTherapyConfig, Layout};
 <a href=#200 id=200 data-nosnippet>200</a>    ///
-<a href=#201 id=201 data-nosnippet>201</a>    /// let mut config = TherapyConfig::default(); // Layout::Vertical (2 zonas)
+<a href=#201 id=201 data-nosnippet>201</a>    /// let mut config = OverlayTherapyConfig::default(); // Layout::Vertical (2 zonas)
 <a href=#202 id=202 data-nosnippet>202</a>    ///
 <a href=#203 id=203 data-nosnippet>203</a>    /// // Cambiar a Checkerboard (4 zonas)
 <a href=#204 id=204 data-nosnippet>204</a>    /// config.change_layout(Layout::Checkerboard);
@@ -269,9 +269,9 @@
 <a href=#269 id=269 data-nosnippet>269</a>    /// # Ejemplos
 <a href=#270 id=270 data-nosnippet>270</a>    ///
 <a href=#271 id=271 data-nosnippet>271</a>    /// ```
-<a href=#272 id=272 data-nosnippet>272</a>    /// use terapia_visual_domain::domain::{TherapyConfig, Color};
+<a href=#272 id=272 data-nosnippet>272</a>    /// use terapia_visual_domain::domain::{OverlayTherapyConfig, Color};
 <a href=#273 id=273 data-nosnippet>273</a>    ///
-<a href=#274 id=274 data-nosnippet>274</a>    /// let mut config = TherapyConfig::default();
+<a href=#274 id=274 data-nosnippet>274</a>    /// let mut config = OverlayTherapyConfig::default();
 <a href=#275 id=275 data-nosnippet>275</a>    /// let new_color = Color::new("#0000FF").unwrap();
 <a href=#276 id=276 data-nosnippet>276</a>    ///
 <a href=#277 id=277 data-nosnippet>277</a>    /// // Cambiar el color de la primera zona a azul
@@ -313,9 +313,9 @@
 <a href=#313 id=313 data-nosnippet>313</a>    /// # Ejemplos
 <a href=#314 id=314 data-nosnippet>314</a>    ///
 <a href=#315 id=315 data-nosnippet>315</a>    /// ```
-<a href=#316 id=316 data-nosnippet>316</a>    /// use terapia_visual_domain::domain::{TherapyConfig, Opacity};
+<a href=#316 id=316 data-nosnippet>316</a>    /// use terapia_visual_domain::domain::{OverlayTherapyConfig, Opacity};
 <a href=#317 id=317 data-nosnippet>317</a>    ///
-<a href=#318 id=318 data-nosnippet>318</a>    /// let mut config = TherapyConfig::default();
+<a href=#318 id=318 data-nosnippet>318</a>    /// let mut config = OverlayTherapyConfig::default();
 <a href=#319 id=319 data-nosnippet>319</a>    /// let new_opacity = Opacity::new(0.3).unwrap();
 <a href=#320 id=320 data-nosnippet>320</a>    ///
 <a href=#321 id=321 data-nosnippet>321</a>    /// // Cambiar la opacidad de la primera zona a 0.3
@@ -396,9 +396,9 @@
 <a href=#396 id=396 data-nosnippet>396</a>    /// # Ejemplos
 <a href=#397 id=397 data-nosnippet>397</a>    ///
 <a href=#398 id=398 data-nosnippet>398</a>    /// ```
-<a href=#399 id=399 data-nosnippet>399</a>    /// use terapia_visual_domain::domain::TherapyConfig;
+<a href=#399 id=399 data-nosnippet>399</a>    /// use terapia_visual_domain::domain::OverlayTherapyConfig;
 <a href=#400 id=400 data-nosnippet>400</a>    ///
-<a href=#401 id=401 data-nosnippet>401</a>    /// let config = TherapyConfig::default(); // Layout::Vertical
+<a href=#401 id=401 data-nosnippet>401</a>    /// let config = OverlayTherapyConfig::default(); // Layout::Vertical
 <a href=#402 id=402 data-nosnippet>402</a>    /// let zones = config.generate_zones(1920, 1080);
 <a href=#403 id=403 data-nosnippet>403</a>    ///
 <a href=#404 id=404 data-nosnippet>404</a>    /// assert_eq!(zones.len(), 2);
@@ -425,9 +425,9 @@
 <a href=#425 id=425 data-nosnippet>425</a>/// # Ejemplos
 <a href=#426 id=426 data-nosnippet>426</a>///
 <a href=#427 id=427 data-nosnippet>427</a>/// ```
-<a href=#428 id=428 data-nosnippet>428</a>/// use terapia_visual_domain::domain::{TherapyConfig, Layout};
+<a href=#428 id=428 data-nosnippet>428</a>/// use terapia_visual_domain::domain::{OverlayTherapyConfig, Layout};
 <a href=#429 id=429 data-nosnippet>429</a>///
-<a href=#430 id=430 data-nosnippet>430</a>/// let config = TherapyConfig::default();
+<a href=#430 id=430 data-nosnippet>430</a>/// let config = OverlayTherapyConfig::default();
 <a href=#431 id=431 data-nosnippet>431</a>/// assert_eq!(config.layout(), Layout::Vertical);
 <a href=#432 id=432 data-nosnippet>432</a>/// assert_eq!(config.zones_config().len(), 2);
 <a href=#433 id=433 data-nosnippet>433</a>/// ```
@@ -736,5 +736,55 @@
 <a href=#736 id=736 data-nosnippet>736</a>        </span><span class="kw">let _ </span>= config.update_zone_opacity(<span class="number">3</span>, op_d);
 <a href=#737 id=737 data-nosnippet>737</a>        <span class="macro">assert_eq!</span>(config.zones_config()[<span class="number">1</span>].opacity, op_d); <span class="comment">// 3 actualiza 1
 <a href=#738 id=738 data-nosnippet>738</a>    </span>}
-<a href=#739 id=739 data-nosnippet>739</a>}
+<a href=#739 id=739 data-nosnippet>739</a>    <span class="comment">// ==========================================
+<a href=#740 id=740 data-nosnippet>740</a>    // REGLAS DE SINCRONIZACIÓN - CASOS NONE
+<a href=#741 id=741 data-nosnippet>741</a>    // ==========================================
+<a href=#742 id=742 data-nosnippet>742</a>
+<a href=#743 id=743 data-nosnippet>743</a>    </span><span class="attr">#[test]
+<a href=#744 id=744 data-nosnippet>744</a>    </span><span class="kw">fn </span>test_get_sync_pair_returns_none_for_vertical_layout() {
+<a href=#745 id=745 data-nosnippet>745</a>        <span class="kw">let </span>config = OverlayTherapyConfig::default(); <span class="comment">// Layout::Vertical
+<a href=#746 id=746 data-nosnippet>746</a>        // Verificar que para cualquier índice en Vertical, get_sync_pair retorna None
+<a href=#747 id=747 data-nosnippet>747</a>        </span><span class="kw">for </span>i <span class="kw">in </span><span class="number">0</span>..config.zones_config().len() {
+<a href=#748 id=748 data-nosnippet>748</a>            <span class="macro">assert_eq!</span>(config.get_sync_pair(i), <span class="prelude-val">None</span>);
+<a href=#749 id=749 data-nosnippet>749</a>        }
+<a href=#750 id=750 data-nosnippet>750</a>    }
+<a href=#751 id=751 data-nosnippet>751</a>
+<a href=#752 id=752 data-nosnippet>752</a>    <span class="attr">#[test]
+<a href=#753 id=753 data-nosnippet>753</a>    </span><span class="kw">fn </span>test_get_sync_pair_returns_none_for_horizontal_layout() {
+<a href=#754 id=754 data-nosnippet>754</a>        <span class="kw">let </span><span class="kw-2">mut </span>config = OverlayTherapyConfig::default();
+<a href=#755 id=755 data-nosnippet>755</a>        config.change_layout(Layout::Horizontal);
+<a href=#756 id=756 data-nosnippet>756</a>        <span class="kw">for </span>i <span class="kw">in </span><span class="number">0</span>..config.zones_config().len() {
+<a href=#757 id=757 data-nosnippet>757</a>            <span class="macro">assert_eq!</span>(config.get_sync_pair(i), <span class="prelude-val">None</span>);
+<a href=#758 id=758 data-nosnippet>758</a>        }
+<a href=#759 id=759 data-nosnippet>759</a>    }
+<a href=#760 id=760 data-nosnippet>760</a>
+<a href=#761 id=761 data-nosnippet>761</a>    <span class="attr">#[test]
+<a href=#762 id=762 data-nosnippet>762</a>    </span><span class="kw">fn </span>test_get_sync_pair_returns_none_for_out_of_range_index() {
+<a href=#763 id=763 data-nosnippet>763</a>        <span class="kw">let </span>config = OverlayTherapyConfig::default();
+<a href=#764 id=764 data-nosnippet>764</a>        <span class="comment">// Intentar con índices fuera del rango de zonas
+<a href=#765 id=765 data-nosnippet>765</a>        // (aunque el método no valida el índice, el match lo maneja con _)
+<a href=#766 id=766 data-nosnippet>766</a>        </span><span class="macro">assert_eq!</span>(config.get_sync_pair(<span class="number">99</span>), <span class="prelude-val">None</span>);
+<a href=#767 id=767 data-nosnippet>767</a>        <span class="macro">assert_eq!</span>(config.get_sync_pair(<span class="number">100</span>), <span class="prelude-val">None</span>);
+<a href=#768 id=768 data-nosnippet>768</a>    }
+<a href=#769 id=769 data-nosnippet>769</a>
+<a href=#770 id=770 data-nosnippet>770</a>    <span class="attr">#[test]
+<a href=#771 id=771 data-nosnippet>771</a>    </span><span class="kw">fn </span>test_get_sync_pair_returns_none_for_unpaired_index_in_checkerboard() {
+<a href=#772 id=772 data-nosnippet>772</a>        <span class="kw">let </span><span class="kw-2">mut </span>config = OverlayTherapyConfig::default();
+<a href=#773 id=773 data-nosnippet>773</a>        config.change_layout(Layout::Checkerboard);
+<a href=#774 id=774 data-nosnippet>774</a>        <span class="comment">// En Checkerboard, los índices válidos son 0,1,2,3
+<a href=#775 id=775 data-nosnippet>775</a>        // Los índices fuera de ese rango retornan None
+<a href=#776 id=776 data-nosnippet>776</a>        </span><span class="macro">assert_eq!</span>(config.get_sync_pair(<span class="number">4</span>), <span class="prelude-val">None</span>);
+<a href=#777 id=777 data-nosnippet>777</a>        <span class="macro">assert_eq!</span>(config.get_sync_pair(<span class="number">5</span>), <span class="prelude-val">None</span>);
+<a href=#778 id=778 data-nosnippet>778</a>    }
+<a href=#779 id=779 data-nosnippet>779</a>
+<a href=#780 id=780 data-nosnippet>780</a>    <span class="attr">#[test]
+<a href=#781 id=781 data-nosnippet>781</a>    </span><span class="kw">fn </span>test_get_sync_pair_returns_none_for_unpaired_index_in_vertical4() {
+<a href=#782 id=782 data-nosnippet>782</a>        <span class="kw">let </span><span class="kw-2">mut </span>config = OverlayTherapyConfig::default();
+<a href=#783 id=783 data-nosnippet>783</a>        config.change_layout(Layout::Vertical4Columns);
+<a href=#784 id=784 data-nosnippet>784</a>        <span class="comment">// En Vertical4Columns, los índices válidos son 0,1,2,3
+<a href=#785 id=785 data-nosnippet>785</a>        // Los índices fuera de ese rango retornan None
+<a href=#786 id=786 data-nosnippet>786</a>        </span><span class="macro">assert_eq!</span>(config.get_sync_pair(<span class="number">4</span>), <span class="prelude-val">None</span>);
+<a href=#787 id=787 data-nosnippet>787</a>        <span class="macro">assert_eq!</span>(config.get_sync_pair(<span class="number">5</span>), <span class="prelude-val">None</span>);
+<a href=#788 id=788 data-nosnippet>788</a>    }
+<a href=#789 id=789 data-nosnippet>789</a>}
 </code></pre></div></section></main></body></html>

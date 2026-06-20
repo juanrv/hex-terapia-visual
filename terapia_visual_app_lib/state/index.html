@@ -8,7 +8,7 @@ los comandos mediante <code>tauri::State&lt;AppState&gt;</code>.</p>
 <tr><td><code>app_storage</code></td><td><code>TomlStorage</code></td><td>Almacenamiento de configuración de la aplicación</td></tr>
 <tr><td><code>overlay</code></td><td><code>Mutex&lt;TauriOverlay&gt;</code></td><td>Control de la ventana de superposición</td></tr>
 <tr><td><code>notifier</code></td><td><code>TauriSystemNotifier</code></td><td>Notificaciones y bandeja del sistema</td></tr>
-<tr><td><code>current_config</code></td><td><code>RwLock&lt;TherapyConfig&gt;</code></td><td>Configuración actual de la terapia (en memoria)</td></tr>
+<tr><td><code>overlay_config</code></td><td><code>RwLock&lt;TherapyConfig&gt;</code></td><td>Configuración actual de la terapia (en memoria)</td></tr>
 <tr><td><code>is_toggling</code></td><td><code>AtomicBool</code></td><td>Bandera para evitar múltiples pulsaciones del atajo</td></tr>
 </tbody></table>
 </div><h2 id="ejemplo-de-acceso-al-estado"><a class="doc-anchor" href="#ejemplo-de-acceso-al-estado">§</a>Ejemplo de acceso al estado</h2>
@@ -18,7 +18,7 @@ los comandos mediante <code>tauri::State&lt;AppState&gt;</code>.</p>
 <span class="attr">#[tauri::command]
 </span><span class="kw">async fn </span>example_command(state: State&lt;<span class="lifetime">'_</span>, AppState&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;(), String&gt; {
     <span class="comment">// Leer la configuración actual
-    </span><span class="kw">let </span>config = state.current_config.read().<span class="kw">await</span>;
+    </span><span class="kw">let </span>config = state.overlay_config.read().<span class="kw">await</span>;
     <span class="macro">println!</span>(<span class="string">"Layout actual: {:?}"</span>, config.layout());
     <span class="prelude-val">Ok</span>(())
 }</code></pre></div></div></details><h2 id="structs" class="section-header">Structs<a href="#structs" class="anchor">§</a></h2><dl class="item-table"><dt><a class="struct" href="struct.AppState.html" title="struct terapia_visual_app_lib::state::AppState">AppState</a></dt><dd>Estado global de la aplicación Tauri.</dd></dl></section></div></main></body></html>

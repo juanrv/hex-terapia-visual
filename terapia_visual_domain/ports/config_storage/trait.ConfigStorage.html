@@ -16,7 +16,7 @@
 }</code></pre><details class="toggle top-doc" open><summary class="hideme"><span>Expand description</span></summary><div class="docblock"><p>Puerto para guardar y cargar la configuración de la terapia visual.</p>
 <p>Este trait es genérico para soportar diferentes tipos de configuración:</p>
 <ul>
-<li><code>ConfigStorage&lt;TherapyConfig&gt;</code> para la configuración de la terapia.</li>
+<li><code>ConfigStorage&lt;OverlayTherapyConfig&gt;</code> para la configuración de la terapia.</li>
 <li><code>ConfigStorage&lt;AppSettings&gt;</code> para las preferencias globales.</li>
 </ul>
 <h2 id="requisitos-del-tipo-t"><a class="doc-anchor" href="#requisitos-del-tipo-t">§</a>Requisitos del tipo <code>T</code></h2>
@@ -27,11 +27,11 @@
 </ul>
 <h2 id="ejemplos"><a class="doc-anchor" href="#ejemplos">§</a>Ejemplos</h2>
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>terapia_visual_domain::ports::{ConfigStorage, StorageError};
-<span class="kw">use </span>terapia_visual_domain::domain::TherapyConfig;
+<span class="kw">use </span>terapia_visual_domain::domain::OverlayTherapyConfig;
 
 <span class="kw">async fn </span>save_and_load(
-    storage: <span class="kw-2">&amp;</span><span class="kw">dyn </span>ConfigStorage&lt;TherapyConfig&gt;,
-    config: <span class="kw-2">&amp;</span>TherapyConfig,
+    storage: <span class="kw-2">&amp;</span><span class="kw">dyn </span>ConfigStorage&lt;OverlayTherapyConfig&gt;,
+    config: <span class="kw-2">&amp;</span>OverlayTherapyConfig,
 ) -&gt; <span class="prelude-ty">Result</span>&lt;(), StorageError&gt; {
     storage.save(config).<span class="kw">await</span><span class="question-mark">?</span>;
     <span class="kw">let </span>loaded = storage.load().<span class="kw">await</span><span class="question-mark">?</span>;
@@ -51,9 +51,9 @@
 <h5 id="errores"><a class="doc-anchor" href="#errores">§</a>Errores</h5>
 <p>Devuelve <a href="enum.StorageError.html#variant.WriteError" title="variant terapia_visual_domain::ports::config_storage::StorageError::WriteError"><code>StorageError::WriteError</code></a> si falla la escritura.</p>
 <h5 id="ejemplos-1"><a class="doc-anchor" href="#ejemplos-1">§</a>Ejemplos</h5>
-<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>terapia_visual_domain::domain::TherapyConfig;
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>terapia_visual_domain::domain::OverlayTherapyConfig;
 
-<span class="kw">let </span>config = TherapyConfig::default();
+<span class="kw">let </span>config = OverlayTherapyConfig::default();
 storage.save(<span class="kw-2">&amp;</span>config).<span class="kw">await</span>.unwrap();</code></pre></div></div></details><details class="toggle method-toggle" open><summary><section id="tymethod.load" class="method"><a class="src rightside" href="../../../src/terapia_visual_domain/ports/config_storage.rs.html#122">Source</a><h4 class="code-header">fn <a href="#tymethod.load" class="fn">load</a>&lt;'life0, 'async_trait&gt;(
     &amp;'life0 self,
 ) -&gt; <a class="struct" href="https://doc.rust-lang.org/1.96.0/core/pin/struct.Pin.html" title="struct core::pin::Pin">Pin</a>&lt;<a class="struct" href="https://doc.rust-lang.org/1.96.0/alloc/boxed/struct.Box.html" title="struct alloc::boxed::Box">Box</a>&lt;dyn <a class="trait" href="https://doc.rust-lang.org/1.96.0/core/future/future/trait.Future.html" title="trait core::future::future::Future">Future</a>&lt;Output = <a class="enum" href="https://doc.rust-lang.org/1.96.0/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;T, <a class="enum" href="enum.StorageError.html" title="enum terapia_visual_domain::ports::config_storage::StorageError">StorageError</a>&gt;&gt; + <a class="trait" href="https://doc.rust-lang.org/1.96.0/core/marker/trait.Send.html" title="trait core::marker::Send">Send</a> + 'async_trait&gt;&gt;<div class="where">where
@@ -67,4 +67,4 @@ storage.save(<span class="kw-2">&amp;</span>config).<span class="kw">await</span
 </ul>
 <h5 id="ejemplos-2"><a class="doc-anchor" href="#ejemplos-2">§</a>Ejemplos</h5>
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code>
-<span class="kw">let </span>config = storage.load().<span class="kw">await</span>.unwrap_or_else(|<span class="kw">_</span>| TherapyConfig::default());</code></pre></div></div></details></div><h2 id="implementors" class="section-header">Implementors<a href="#implementors" class="anchor">§</a></h2><div id="implementors-list"></div><script src="../../../trait.impl/terapia_visual_domain/ports/config_storage/trait.ConfigStorage.js" async></script></section></div></main></body></html>
+<span class="kw">let </span>config = storage.load().<span class="kw">await</span>.unwrap_or_else(|<span class="kw">_</span>| OverlayTherapyConfig::default());</code></pre></div></div></details></div><h2 id="implementors" class="section-header">Implementors<a href="#implementors" class="anchor">§</a></h2><div id="implementors-list"></div><script src="../../../trait.impl/terapia_visual_domain/ports/config_storage/trait.ConfigStorage.js" async></script></section></div></main></body></html>
