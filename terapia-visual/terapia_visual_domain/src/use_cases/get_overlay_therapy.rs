@@ -11,12 +11,12 @@
 //! # Ejemplos
 //!
 //! ```
-//! use terapia_visual_domain::use_cases::get_therapy_config;
+//! use terapia_visual_domain::use_cases::get_overlay_therapy;
 //! use terapia_visual_domain::ports::ConfigStorage;
-//! use terapia_visual_domain::domain::TherapyConfig;
+//! use terapia_visual_domain::domain::OverlayTherapyConfig;
 //!
-//! # async fn example(storage: &dyn ConfigStorage<TherapyConfig>) {
-//! let config = get_therapy_config::get_therapy_config(storage).await;
+//! # async fn example(storage: &dyn ConfigStorage<OverlayTherapyConfig>) {
+//! let config = get_overlay_therapy::get_overlay_therapy(storage).await;
 //! # }
 //! ```
 
@@ -29,7 +29,7 @@ use crate::{domain::OverlayTherapyConfig, ports::ConfigStorage};
 ///
 /// # Argumentos
 ///
-/// * `storage` - Adaptador que implementa `ConfigStorage<TherapyConfig>`.
+/// * `storage` - Adaptador que implementa `ConfigStorage<OverlayTherapyConfig>`.
 ///
 /// # Retorno
 ///
@@ -38,13 +38,13 @@ use crate::{domain::OverlayTherapyConfig, ports::ConfigStorage};
 /// # Ejemplos
 ///
 /// ```
-/// use terapia_visual_domain::use_cases::get_therapy_config;
+/// use terapia_visual_domain::use_cases::get_overlay_therapy;
 /// use terapia_visual_domain::ports::ConfigStorage;
-/// use terapia_visual_domain::domain::TherapyConfig;
+/// use terapia_visual_domain::domain::OverlayTherapyConfig;
 ///
-/// # async fn example(storage: &dyn ConfigStorage<TherapyConfig>) {
-/// let config = get_therapy_config::get_therapy_config(storage).await;
-/// assert_eq!(config, TherapyConfig::default());
+/// # async fn example(storage: &dyn ConfigStorage<OverlayTherapyConfig>) {
+/// let config = get_overlay_therapy::get_overlay_therapy(storage).await;
+/// assert_eq!(config, OverlayTherapyConfig::default());
 /// # }
 /// ```
 pub async fn get_overlay_therapy(

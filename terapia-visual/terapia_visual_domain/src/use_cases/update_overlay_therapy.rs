@@ -11,16 +11,16 @@
 //! # Ejemplos
 //!
 //! ```
-//! use terapia_visual_domain::use_cases::update_therapy_config;
+//! use terapia_visual_domain::use_cases::update_overlay_therapy;
 //! use terapia_visual_domain::ports::{ConfigStorage, OverlayPort};
-//! use terapia_visual_domain::domain::TherapyConfig;
+//! use terapia_visual_domain::domain::OverlayTherapyConfig;
 //!
 //! # async fn example(
 //! #     overlay: &mut dyn OverlayPort,
-//! #     storage: &dyn ConfigStorage<TherapyConfig>,
+//! #     storage: &dyn ConfigStorage<OverlayTherapyConfig>,
 //! # ) -> Result<(), Box<dyn std::error::Error>> {
-//! let config = TherapyConfig::default();
-//! update_therapy_config::update_therapy_config(overlay, storage, &config, 1920, 1080).await?;
+//! let config = OverlayTherapyConfig::default();
+//! update_overlay_therapy::update_overlay_therapy(overlay, storage, &config, 1920, 1080).await?;
 //! # Ok(())
 //! # }
 //! ```
@@ -50,7 +50,7 @@ pub enum UpdateConfigError {
 /// # Argumentos
 ///
 /// * `overlay` - Adaptador que implementa `OverlayPort`.
-/// * `storage` - Adaptador que implementa `ConfigStorage<TherapyConfig>`.
+/// * `storage` - Adaptador que implementa `ConfigStorage<OverlayTherapyConfig>`.
 /// * `new_config` - La nueva configuración de la terapia.
 /// * `screen_width` - Ancho de la pantalla en píxeles.
 /// * `screen_height` - Alto de la pantalla en píxeles.
@@ -63,16 +63,16 @@ pub enum UpdateConfigError {
 /// # Ejemplos
 ///
 /// ```
-/// use terapia_visual_domain::use_cases::update_therapy_config;
+/// use terapia_visual_domain::use_cases::update_overlay_therapy;
 /// use terapia_visual_domain::ports::{ConfigStorage, OverlayPort};
-/// use terapia_visual_domain::domain::TherapyConfig;
+/// use terapia_visual_domain::domain::OverlayTherapyConfig;
 ///
 /// # async fn example(
 /// #     overlay: &mut dyn OverlayPort,
-/// #     storage: &dyn ConfigStorage<TherapyConfig>,
+/// #     storage: &dyn ConfigStorage<OverlayTherapyConfig>,
 /// # ) -> Result<(), Box<dyn std::error::Error>> {
-/// let config = TherapyConfig::default();
-/// update_therapy_config::update_therapy_config(overlay, storage, &config, 1920, 1080).await?;
+/// let config = OverlayTherapyConfig::default();
+/// update_overlay_therapy::update_overlay_therapy(overlay, storage, &config, 1920, 1080).await?;
 /// # Ok(())
 /// # }
 /// ```

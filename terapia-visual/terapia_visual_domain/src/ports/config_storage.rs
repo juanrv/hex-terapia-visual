@@ -5,16 +5,16 @@
 //!
 //! Este puerto utiliza un tipo genérico `T` para permitir almacenar
 //! diferentes tipos de configuración:
-//! - [`crate::domain::TherapyConfig`]: Configuración de la terapia (colores, layout, etc.)
+//! - [`crate::domain::OverlayTherapyConfig`]: Configuración de la terapia (colores, layout, etc.)
 //! - [`crate::domain::AppSettings`]: Preferencias globales de la aplicación (idioma, etc.)
 //!
 //! # Ejemplos
 //!
 //! ```
 //! use terapia_visual_domain::ports::{ConfigStorage, StorageError};
-//! use terapia_visual_domain::domain::TherapyConfig;
+//! use terapia_visual_domain::domain::OverlayTherapyConfig;
 //!
-//! async fn load_config(storage: &dyn ConfigStorage<TherapyConfig>) -> Result<TherapyConfig, StorageError> {
+//! async fn load_config(storage: &dyn ConfigStorage<OverlayTherapyConfig>) -> Result<OverlayTherapyConfig, StorageError> {
 //!     storage.load().await
 //! }
 //! ```
@@ -48,7 +48,7 @@ pub enum StorageError {
 /// Puerto para guardar y cargar la configuración de la terapia visual.
 ///
 /// Este trait es genérico para soportar diferentes tipos de configuración:
-/// - `ConfigStorage<TherapyConfig>` para la configuración de la terapia.
+/// - `ConfigStorage<OverlayTherapyConfig>` para la configuración de la terapia.
 /// - `ConfigStorage<AppSettings>` para las preferencias globales.
 ///
 /// # Requisitos del tipo `T`
@@ -61,11 +61,11 @@ pub enum StorageError {
 ///
 /// ```
 /// use terapia_visual_domain::ports::{ConfigStorage, StorageError};
-/// use terapia_visual_domain::domain::TherapyConfig;
+/// use terapia_visual_domain::domain::OverlayTherapyConfig;
 ///
 /// async fn save_and_load(
-///     storage: &dyn ConfigStorage<TherapyConfig>,
-///     config: &TherapyConfig,
+///     storage: &dyn ConfigStorage<OverlayTherapyConfig>,
+///     config: &OverlayTherapyConfig,
 /// ) -> Result<(), StorageError> {
 ///     storage.save(config).await?;
 ///     let loaded = storage.load().await?;
@@ -91,11 +91,11 @@ where
     /// # Ejemplos
     ///
     /// ```
-    /// use terapia_visual_domain::domain::TherapyConfig;
+    /// use terapia_visual_domain::domain::OverlayTherapyConfig;
     /// # use terapia_visual_domain::ports::ConfigStorage;
     ///
-    /// # async fn example(storage: &dyn ConfigStorage<TherapyConfig>) {
-    /// let config = TherapyConfig::default();
+    /// # async fn example(storage: &dyn ConfigStorage<OverlayTherapyConfig>) {
+    /// let config = OverlayTherapyConfig::default();
     /// storage.save(&config).await.unwrap();
     /// # }
     /// ```
@@ -112,11 +112,11 @@ where
     /// # Ejemplos
     ///
     /// ```
-    /// # use terapia_visual_domain::domain::TherapyConfig;
+    /// # use terapia_visual_domain::domain::OverlayTherapyConfig;
     /// # use terapia_visual_domain::ports::ConfigStorage;
     ///
-    /// # async fn example(storage: &dyn ConfigStorage<TherapyConfig>) {
-    /// let config = storage.load().await.unwrap_or_else(|_| TherapyConfig::default());
+    /// # async fn example(storage: &dyn ConfigStorage<OverlayTherapyConfig>) {
+    /// let config = storage.load().await.unwrap_or_else(|_| OverlayTherapyConfig::default());
     /// # }
     /// ```
     async fn load(&self) -> Result<T, StorageError>;

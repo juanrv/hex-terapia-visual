@@ -10,16 +10,16 @@
 //! - [`ZoneRect`]: Rectángulos que definen áreas en la pantalla
 //! - [`Zone`]: Zona de color con posición, color y opacidad
 //! - [`ZoneConfig`]: Configuración de una zona (color + opacidad)
-//! - [`TherapyConfig`]: Configuración completa de la terapia
+//! - [`OverlayTherapyConfig`]: Configuración completa de la terapia
 //! - [`AppSettings`]: Preferencias globales de la aplicación
 //!
 //! # Ejemplo de uso
 //!
 //! ```
-//! use terapia_visual_domain::domain::{TherapyConfig, TherapyType, Layout, ZoneConfig, Color, Opacity};
+//! use terapia_visual_domain::domain::{OverlayTherapyConfig, TherapyType, Layout, ZoneConfig, Color, Opacity};
 //!
 //! // Crear una configuración de terapia
-//! let config = TherapyConfig::new(
+//! let config = OverlayTherapyConfig::new(
 //!     TherapyType::ColorDivision,
 //!     Layout::Vertical,
 //!     vec![
@@ -42,16 +42,19 @@
 
 pub mod app_settings;
 pub mod color;
-pub mod overlay_therapy_config;
 pub mod geometry;
 pub mod layout;
 pub mod opacity;
+pub mod overlay_therapy_config;
+pub mod reading_settings;
+pub mod reading_therapy_config;
 pub mod zone;
 
 pub use app_settings::{AppSettings, Language};
 pub use color::Color;
-pub use overlay_therapy_config::{OverlayTherapyConfig, ConfigError, TherapyType, ZoneConfig};
 pub use geometry::ZoneRect;
 pub use layout::Layout;
 pub use opacity::Opacity;
+pub use overlay_therapy_config::{ConfigError, OverlayTherapyConfig, TherapyType, ZoneConfig};
+pub use reading_settings::ReadingSettings;
 pub use zone::Zone;

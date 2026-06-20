@@ -17,10 +17,10 @@
 //!
 //! ```
 //! use terapia_visual_domain::ports::{OverlayPort, OverlayError};
-//! use terapia_visual_domain::domain::TherapyConfig;
+//! use terapia_visual_domain::domain::OverlayTherapyConfig;
 //!
 //! # async fn example(overlay: &mut dyn OverlayPort) -> Result<(), OverlayError> {
-//! let config = TherapyConfig::default();
+//! let config = OverlayTherapyConfig::default();
 //! overlay.show(&config, 1920, 1080).await?;
 //! # Ok(())
 //! # }
@@ -69,11 +69,11 @@ pub enum OverlayError {
 ///
 /// ```
 /// use terapia_visual_domain::ports::{OverlayPort, OverlayError};
-/// use terapia_visual_domain::domain::TherapyConfig;
+/// use terapia_visual_domain::domain::OverlayTherapyConfig;
 ///
 /// # async fn example(overlay: &mut dyn OverlayPort) -> Result<(), OverlayError> {
 /// // Mostrar el overlay
-/// let config = TherapyConfig::default();
+/// let config = OverlayTherapyConfig::default();
 /// overlay.show(&config, 1920, 1080).await?;
 ///
 /// // Verificar si está activo
@@ -105,9 +105,9 @@ pub trait OverlayPort: Send + Sync {
     ///
     /// ```
     /// # use terapia_visual_domain::ports::OverlayPort;
-    /// # use terapia_visual_domain::domain::TherapyConfig;
+    /// # use terapia_visual_domain::domain::OverlayTherapyConfig;
     /// # async fn example(overlay: &mut dyn OverlayPort) {
-    /// let config = TherapyConfig::default();
+    /// let config = OverlayTherapyConfig::default();
     /// if let Err(e) = overlay.show(&config, 1920, 1080).await {
     ///     eprintln!("Failed to show overlay: {}", e);
     /// }
@@ -158,9 +158,9 @@ pub trait OverlayPort: Send + Sync {
     ///
     /// ```
     /// # use terapia_visual_domain::ports::OverlayPort;
-    /// # use terapia_visual_domain::domain::TherapyConfig;
+    /// # use terapia_visual_domain::domain::OverlayTherapyConfig;
     /// # async fn example(overlay: &mut dyn OverlayPort) {
-    /// let mut config = TherapyConfig::default();
+    /// let mut config = OverlayTherapyConfig::default();
     /// // ... modificar config ...
     /// if let Err(e) = overlay.update_config(&config, 1920, 1080).await {
     ///     eprintln!("Failed to update overlay: {}", e);

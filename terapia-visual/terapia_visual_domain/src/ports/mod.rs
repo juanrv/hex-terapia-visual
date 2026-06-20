@@ -25,17 +25,19 @@
 //!
 //! ```
 //! use terapia_visual_domain::ports::{ConfigStorage, StorageError};
-//! use terapia_visual_domain::domain::TherapyConfig;
+//! use terapia_visual_domain::domain::OverlayTherapyConfig;
 //!
-//! async fn load_config(storage: &dyn ConfigStorage<TherapyConfig>) -> Result<TherapyConfig, StorageError> {
+//! async fn load_config(storage: &dyn ConfigStorage<OverlayTherapyConfig>) -> Result<OverlayTherapyConfig, StorageError> {
 //!     storage.load().await
 //! }
 //! ```
 
 pub mod config_storage;
 pub mod overlay;
+pub mod reading_window;
 pub mod system_notifier;
 
 pub use config_storage::{ConfigStorage, StorageError};
 pub use overlay::{OverlayError, OverlayPort};
+pub use reading_window::{ReadingWindowError, ReadingWindowPort};
 pub use system_notifier::{NotifierError, SystemNotifier};

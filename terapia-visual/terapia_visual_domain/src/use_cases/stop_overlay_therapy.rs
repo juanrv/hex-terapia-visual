@@ -11,11 +11,11 @@
 //! # Ejemplos
 //!
 //! ```
-//! use terapia_visual_domain::use_cases::stop_therapy;
+//! use terapia_visual_domain::use_cases::stop_overlay_therapy;
 //! use terapia_visual_domain::ports::OverlayPort;
 //!
 //! # async fn example(overlay: &mut dyn OverlayPort) -> Result<(), Box<dyn std::error::Error>> {
-//! stop_therapy::stop_therapy(overlay).await?;
+//! stop_overlay_therapy::stop_overlay_therapy(overlay).await?;
 //! # Ok(())
 //! # }
 //! ```
@@ -39,11 +39,11 @@ use crate::ports::{OverlayError, OverlayPort};
 /// # Ejemplos
 ///
 /// ```
-/// use terapia_visual_domain::use_cases::stop_therapy;
+/// use terapia_visual_domain::use_cases::stop_overlay_therapy;
 /// use terapia_visual_domain::ports::{OverlayPort, OverlayError};
 ///
 /// # async fn example(overlay: &mut dyn OverlayPort) -> Result<(), OverlayError> {
-/// stop_therapy::stop_therapy(overlay).await?;
+/// stop_overlay_therapy::stop_overlay_therapy(overlay).await?;
 /// # Ok(())
 /// # }
 /// ```

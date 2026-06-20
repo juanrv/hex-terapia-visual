@@ -1,6 +1,6 @@
 //! # Módulo de Configuración de Terapia
 //!
-//! Define el agregado principal [`TherapyConfig`], que representa la configuración
+//! Define el agregado principal [`OverlayTherapyConfig`], que representa la configuración
 //! completa de una terapia visual.
 //!
 //! Una configuración incluye:
@@ -14,10 +14,10 @@
 //! # Ejemplos
 //!
 //! ```
-//! use terapia_visual_domain::domain::{TherapyConfig, TherapyType, Layout, ZoneConfig, Color, Opacity};
+//! use terapia_visual_domain::domain::{OverlayTherapyConfig, TherapyType, Layout, ZoneConfig, Color, Opacity};
 //!
 //! // Crear una configuración vertical con dos zonas (rojo y verde)
-//! let config = TherapyConfig::new(
+//! let config = OverlayTherapyConfig::new(
 //!     TherapyType::ColorDivision,
 //!     Layout::Vertical,
 //!     vec![
@@ -67,7 +67,7 @@ pub enum ConfigError {
 ///
 /// Este enum está diseñado para ser extensible. Para añadir un nuevo tipo de terapia:
 /// 1. Añadir una nueva variante aquí.
-/// 2. Modificar el método [`TherapyConfig::new`] para manejar la nueva variante.
+/// 2. Modificar el método [`OverlayTherapyConfig::new`] para manejar la nueva variante.
 /// 3. Implementar cualquier lógica específica del nuevo tipo.
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
 pub enum TherapyType {
@@ -132,10 +132,10 @@ impl OverlayTherapyConfig {
     /// # Ejemplos
     ///
     /// ```
-    /// use terapia_visual_domain::domain::{TherapyConfig, TherapyType, Layout, ZoneConfig, Color, Opacity};
+    /// use terapia_visual_domain::domain::{OverlayTherapyConfig, TherapyType, Layout, ZoneConfig, Color, Opacity};
     ///
     /// // Configuración válida
-    /// let config = TherapyConfig::new(
+    /// let config = OverlayTherapyConfig::new(
     ///     TherapyType::ColorDivision,
     ///     Layout::Vertical,
     ///     vec![
@@ -146,7 +146,7 @@ impl OverlayTherapyConfig {
     /// assert!(config.is_ok());
     ///
     /// // Configuración inválida (número incorrecto de zonas)
-    /// let invalid = TherapyConfig::new(
+    /// let invalid = OverlayTherapyConfig::new(
     ///     TherapyType::ColorDivision,
     ///     Layout::Vertical,
     ///     vec![
@@ -196,9 +196,9 @@ impl OverlayTherapyConfig {
     /// # Ejemplos
     ///
     /// ```
-    /// use terapia_visual_domain::domain::{TherapyConfig, Layout};
+    /// use terapia_visual_domain::domain::{OverlayTherapyConfig, Layout};
     ///
-    /// let mut config = TherapyConfig::default(); // Layout::Vertical (2 zonas)
+    /// let mut config = OverlayTherapyConfig::default(); // Layout::Vertical (2 zonas)
     ///
     /// // Cambiar a Checkerboard (4 zonas)
     /// config.change_layout(Layout::Checkerboard);
@@ -269,9 +269,9 @@ impl OverlayTherapyConfig {
     /// # Ejemplos
     ///
     /// ```
-    /// use terapia_visual_domain::domain::{TherapyConfig, Color};
+    /// use terapia_visual_domain::domain::{OverlayTherapyConfig, Color};
     ///
-    /// let mut config = TherapyConfig::default();
+    /// let mut config = OverlayTherapyConfig::default();
     /// let new_color = Color::new("#0000FF").unwrap();
     ///
     /// // Cambiar el color de la primera zona a azul
@@ -313,9 +313,9 @@ impl OverlayTherapyConfig {
     /// # Ejemplos
     ///
     /// ```
-    /// use terapia_visual_domain::domain::{TherapyConfig, Opacity};
+    /// use terapia_visual_domain::domain::{OverlayTherapyConfig, Opacity};
     ///
-    /// let mut config = TherapyConfig::default();
+    /// let mut config = OverlayTherapyConfig::default();
     /// let new_opacity = Opacity::new(0.3).unwrap();
     ///
     /// // Cambiar la opacidad de la primera zona a 0.3
@@ -396,9 +396,9 @@ impl OverlayTherapyConfig {
     /// # Ejemplos
     ///
     /// ```
-    /// use terapia_visual_domain::domain::TherapyConfig;
+    /// use terapia_visual_domain::domain::OverlayTherapyConfig;
     ///
-    /// let config = TherapyConfig::default(); // Layout::Vertical
+    /// let config = OverlayTherapyConfig::default(); // Layout::Vertical
     /// let zones = config.generate_zones(1920, 1080);
     ///
     /// assert_eq!(zones.len(), 2);
@@ -425,9 +425,9 @@ impl OverlayTherapyConfig {
 /// # Ejemplos
 ///
 /// ```
-/// use terapia_visual_domain::domain::{TherapyConfig, Layout};
+/// use terapia_visual_domain::domain::{OverlayTherapyConfig, Layout};
 ///
-/// let config = TherapyConfig::default();
+/// let config = OverlayTherapyConfig::default();
 /// assert_eq!(config.layout(), Layout::Vertical);
 /// assert_eq!(config.zones_config().len(), 2);
 /// ```
@@ -735,5 +735,55 @@ mod tests {
 
         let _ = config.update_zone_opacity(3, op_d);
         assert_eq!(config.zones_config()[1].opacity, op_d); // 3 actualiza 1
+    }
+    // ==========================================
+    // REGLAS DE SINCRONIZACIÓN - CASOS NONE
+    // ==========================================
+
+    #[test]
+    fn test_get_sync_pair_returns_none_for_vertical_layout() {
+        let config = OverlayTherapyConfig::default(); // Layout::Vertical
+        // Verificar que para cualquier índice en Vertical, get_sync_pair retorna None
+        for i in 0..config.zones_config().len() {
+            assert_eq!(config.get_sync_pair(i), None);
+        }
+    }
+
+    #[test]
+    fn test_get_sync_pair_returns_none_for_horizontal_layout() {
+        let mut config = OverlayTherapyConfig::default();
+        config.change_layout(Layout::Horizontal);
+        for i in 0..config.zones_config().len() {
+            assert_eq!(config.get_sync_pair(i), None);
+        }
+    }
+
+    #[test]
+    fn test_get_sync_pair_returns_none_for_out_of_range_index() {
+        let config = OverlayTherapyConfig::default();
+        // Intentar con índices fuera del rango de zonas
+        // (aunque el método no valida el índice, el match lo maneja con _)
+        assert_eq!(config.get_sync_pair(99), None);
+        assert_eq!(config.get_sync_pair(100), None);
+    }
+
+    #[test]
+    fn test_get_sync_pair_returns_none_for_unpaired_index_in_checkerboard() {
+        let mut config = OverlayTherapyConfig::default();
+        config.change_layout(Layout::Checkerboard);
+        // En Checkerboard, los índices válidos son 0,1,2,3
+        // Los índices fuera de ese rango retornan None
+        assert_eq!(config.get_sync_pair(4), None);
+        assert_eq!(config.get_sync_pair(5), None);
+    }
+
+    #[test]
+    fn test_get_sync_pair_returns_none_for_unpaired_index_in_vertical4() {
+        let mut config = OverlayTherapyConfig::default();
+        config.change_layout(Layout::Vertical4Columns);
+        // En Vertical4Columns, los índices válidos son 0,1,2,3
+        // Los índices fuera de ese rango retornan None
+        assert_eq!(config.get_sync_pair(4), None);
+        assert_eq!(config.get_sync_pair(5), None);
     }
 }
