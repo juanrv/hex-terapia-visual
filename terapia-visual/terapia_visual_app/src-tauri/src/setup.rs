@@ -39,7 +39,7 @@ use terapia_visual_adapter::config_storage::TomlStorage;
 use terapia_visual_adapter::messages::{self, init_language};
 use terapia_visual_adapter::notifier::TauriSystemNotifier;
 use terapia_visual_adapter::overlay::TauriOverlay;
-use terapia_visual_domain::domain::{AppSettings, TherapyConfig};
+use terapia_visual_domain::domain::{AppSettings, OverlayTherapyConfig};
 use terapia_visual_domain::ports::{ConfigStorage, SystemNotifier};
 
 use crate::state::AppState;
@@ -80,22 +80,35 @@ pub fn init(app: &mut App) -> Result<(), Box<dyn std::error::Error>> {
         .expect("Failed to obtain app data dir");
     std::fs::create_dir_all(&config_dir)?;
 
+    // Migracion de retrocompatibilidad
+    let old_overlay_path = config_dir.join("therapy_config.toml");
+    let new_overlay_path = config_dir.join("overlay_config.toml");
+
+    if old_overlay_path.exists() && !new_overlay_path.exists() {
+        if let Err(e) = std::fs::rename(&old_overlay_path, &new_overlay_path) {
+            tracing::warn!("Failed to rename old overlay config file: {}", e);
+        } else {
+            tracing::info!("Succesful migration: therapy_config.toml -> overlay_config.toml");
+        }
+    }
+
     // Cargar iconos de la bandeja empaquetados en el binario
     const ICON_ACTIVE: &[u8] = include_bytes!("../icons/tray_active.png");
     const ICON_INACTIVE: &[u8] = include_bytes!("../icons/tray_inactive.png");
 
     // Inicializar adaptadores
-    let therapy_storage = TomlStorage::new(&config_dir, "therapy_config.toml");
+    let overlay_storage = TomlStorage::new(&config_dir, "overlay_config.toml");
     let app_storage = TomlStorage::new(&config_dir, "app_config.toml");
     let notifier = TauriSystemNotifier::new(app.handle().clone(), ICON_INACTIVE, ICON_ACTIVE);
     let overlay = TauriOverlay::new(app.handle().clone());
 
     // Cargar configuraciones (con valores por defecto en caso de fallo)
-    let initial_config: TherapyConfig = tauri::async_runtime::block_on(therapy_storage.load())
-        .unwrap_or_else(|_| TherapyConfig::default());
+    let initial_overlay_config: OverlayTherapyConfig =
+        tauri::async_runtime::block_on(overlay_storage.load())
+            .unwrap_or_else(|_| OverlayTherapyConfig::default());
 
     // Guardar la inicial por si es la primera vez
-    let _ = tauri::async_runtime::block_on(therapy_storage.save(&initial_config));
+    let _ = tauri::async_runtime::block_on(overlay_storage.save(&initial_overlay_config));
 
     let app_settings: AppSettings =
         tauri::async_runtime::block_on(app_storage.load()).unwrap_or_default();
@@ -115,11 +128,11 @@ pub fn init(app: &mut App) -> Result<(), Box<dyn std::error::Error>> {
 
     // Inyectar estado a Tauri
     let state = AppState {
-        therapy_storage,
+        overlay_storage,
         app_storage,
         overlay: Mutex::new(overlay),
         notifier,
-        current_config: RwLock::new(initial_config),
+        overlay_config: RwLock::new(initial_overlay_config),
         is_toggling: AtomicBool::new(false),
     };
     app.manage(state);
@@ -174,7 +187,7 @@ pub fn global_shortcut_handler(app: &AppHandle, shortcut: &Shortcut, event: Shor
                 let mut overlay = state.overlay.lock().await;
 
                 // Si esta activa, se detiene
-                if terapia_visual_domain::use_cases::stop_therapy(&mut *overlay)
+                if terapia_visual_domain::use_cases::stop_overlay_therapy(&mut *overlay)
                     .await
                     .is_ok()
                 {
@@ -185,9 +198,9 @@ pub fn global_shortcut_handler(app: &AppHandle, shortcut: &Shortcut, event: Shor
                     // Calcular tamaño de pantlla
                     if let Ok(Some(monitor)) = app_handle.primary_monitor() {
                         let size = monitor.size();
-                        let config = state.current_config.read().await;
+                        let config = state.overlay_config.read().await;
 
-                        if terapia_visual_domain::use_cases::start_therapy(
+                        if terapia_visual_domain::use_cases::start_overlay_therapy(
                             &mut *overlay,
                             &config,
                             size.width,
@@ -231,9 +244,9 @@ pub fn global_shortcut_handler(app: &AppHandle, shortcut: &Shortcut, event: Shor
 pub fn save_configs(app_handle: &AppHandle) {
     let state = app_handle.state::<AppState>();
 
-    let therapy_config = async_runtime::block_on(state.current_config.read());
+    let therapy_config = async_runtime::block_on(state.overlay_config.read());
     println!("[DEBUG] Saving therapy config: {:?}", therapy_config);
-    if let Err(e) = async_runtime::block_on(state.therapy_storage.save(&*therapy_config)) {
+    if let Err(e) = async_runtime::block_on(state.overlay_storage.save(&*therapy_config)) {
         eprintln!("Error saving therapy config: {}", e);
     }
     // Guardar app_settings también

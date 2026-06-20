@@ -23,7 +23,7 @@
 //! ```
 
 use crate::{
-    domain::TherapyConfig,
+    domain::OverlayTherapyConfig,
     ports::{OverlayError, OverlayPort, overlay},
 };
 
@@ -57,9 +57,9 @@ use crate::{
 /// # Ok(())
 /// # }
 /// ```
-pub async fn start_therapy(
+pub async fn start_overlay_therapy(
     overlay: &mut dyn OverlayPort,
-    config: &TherapyConfig,
+    config: &OverlayTherapyConfig,
     screen_width: u32,
     screen_height: u32,
 ) -> Result<(), overlay::OverlayError> {
@@ -77,8 +77,8 @@ mod tests {
     use crate::domain::*;
     use crate::use_cases::mocks::MockOverlay;
 
-    fn sample_config() -> TherapyConfig {
-        TherapyConfig::new(
+    fn sample_config() -> OverlayTherapyConfig {
+        OverlayTherapyConfig::new(
             TherapyType::ColorDivision,
             Layout::Vertical,
             vec![
@@ -99,7 +99,7 @@ mod tests {
     async fn test_start_therapy_ok() {
         let mut overlay = MockOverlay::default();
         let config = sample_config();
-        let result = start_therapy(&mut overlay, &config, 1920, 1080).await;
+        let result = start_overlay_therapy(&mut overlay, &config, 1920, 1080).await;
         assert!(result.is_ok());
         assert!(overlay.is_active());
         assert!(overlay.show_called);
@@ -112,7 +112,7 @@ mod tests {
             ..Default::default()
         };
         let config = sample_config();
-        let result = start_therapy(&mut overlay, &config, 1920, 1080).await;
+        let result = start_overlay_therapy(&mut overlay, &config, 1920, 1080).await;
         assert_eq!(result.unwrap_err(), OverlayError::AlreadyActive);
     }
 }

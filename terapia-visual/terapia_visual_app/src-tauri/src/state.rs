@@ -37,7 +37,7 @@ use std::sync::atomic::AtomicBool;
 use terapia_visual_adapter::config_storage::TomlStorage;
 use terapia_visual_adapter::notifier::TauriSystemNotifier;
 use terapia_visual_adapter::overlay::TauriOverlay;
-use terapia_visual_domain::domain::TherapyConfig;
+use terapia_visual_domain::domain::OverlayTherapyConfig;
 use tokio::sync::{Mutex, RwLock};
 
 /// Estado global de la aplicación Tauri.
@@ -68,7 +68,7 @@ use tokio::sync::{Mutex, RwLock};
 /// ```
 pub struct AppState {
     /// Almacenamiento de configuración de terapia (colores, layout, opacidades).
-    pub therapy_storage: TomlStorage,
+    pub overlay_storage: TomlStorage,
 
     /// Almacenamiento de configuración de la aplicación (idioma, etc.).
     pub app_storage: TomlStorage,
@@ -82,7 +82,7 @@ pub struct AppState {
 
     /// Configuración actual de la terapia en memoria.
     /// Usa `RwLock` para permitir múltiples lecturas concurrentes.
-    pub current_config: RwLock<TherapyConfig>,
+    pub overlay_config: RwLock<OverlayTherapyConfig>,
 
     /// Bandera para evitar múltiples pulsaciones del atajo de teclado.
     /// Usa `AtomicBool` para operaciones atómicas sin bloqueos.

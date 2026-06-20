@@ -42,10 +42,11 @@
 
 use tauri::State;
 use terapia_visual_adapter::messages::{self, init_language};
-use terapia_visual_domain::domain::{AppSettings, Color, Layout, Opacity, TherapyConfig};
+use terapia_visual_domain::domain::{AppSettings, Color, Layout, Opacity, OverlayTherapyConfig};
 use terapia_visual_domain::ports::SystemNotifier;
 use terapia_visual_domain::use_cases::{
-    get_app_settings, start_therapy, stop_therapy, update_app_settings, update_therapy_config,
+    get_app_settings, start_overlay_therapy, stop_overlay_therapy, update_app_settings,
+    update_overlay_therapy,
 };
 
 use tauri::Manager;
@@ -65,8 +66,10 @@ use crate::state::AppState;
 /// console.log('Configuración:', config);
 /// ```
 #[tauri::command]
-pub async fn cmd_get_therapy_config(state: State<'_, AppState>) -> Result<TherapyConfig, String> {
-    let config = state.current_config.read().await;
+pub async fn cmd_get_therapy_config(
+    state: State<'_, AppState>,
+) -> Result<OverlayTherapyConfig, String> {
+    let config = state.overlay_config.read().await;
     Ok(config.clone())
 }
 
@@ -98,10 +101,10 @@ pub async fn cmd_start_therapy(
     screen_width: u32,
     screen_height: u32,
 ) -> Result<(), String> {
-    let config = state.current_config.read().await;
+    let config = state.overlay_config.read().await;
     let mut overlay = state.overlay.lock().await;
 
-    start_therapy(&mut *overlay, &config, screen_width, screen_height)
+    start_overlay_therapy(&mut *overlay, &config, screen_width, screen_height)
         .await
         .map_err(|e| e.to_string())?;
 
@@ -133,7 +136,7 @@ pub async fn cmd_start_therapy(
 #[tauri::command]
 pub async fn cmd_stop_therapy(state: State<'_, AppState>) -> Result<(), String> {
     let mut overlay = state.overlay.lock().await;
-    stop_therapy(&mut *overlay)
+    stop_overlay_therapy(&mut *overlay)
         .await
         .map_err(|e| e.to_string())?;
 
@@ -169,15 +172,15 @@ pub async fn cmd_stop_therapy(state: State<'_, AppState>) -> Result<(), String> 
 #[tauri::command]
 pub async fn cmd_update_therapy_config(
     state: State<'_, AppState>,
-    new_config: TherapyConfig,
+    new_config: OverlayTherapyConfig,
     screen_width: u32,
     screen_height: u32,
 ) -> Result<(), String> {
     let mut overlay = state.overlay.lock().await;
 
-    update_therapy_config(
+    update_overlay_therapy(
         &mut *overlay,
-        &state.therapy_storage,
+        &state.overlay_storage,
         &new_config,
         screen_width,
         screen_height,
@@ -185,7 +188,7 @@ pub async fn cmd_update_therapy_config(
     .await
     .map_err(|e| e.to_string())?;
 
-    let mut current = state.current_config.write().await;
+    let mut current = state.overlay_config.write().await;
     *current = new_config;
     Ok(())
 }
@@ -279,13 +282,13 @@ pub async fn cmd_change_layout(
     screen_width: u32,
     screen_height: u32,
 ) -> Result<(), String> {
-    let mut current = state.current_config.write().await;
+    let mut current = state.overlay_config.write().await;
     current.change_layout(new_layout);
 
     let mut overlay = state.overlay.lock().await;
-    update_therapy_config(
+    update_overlay_therapy(
         &mut *overlay,
-        &state.therapy_storage,
+        &state.overlay_storage,
         &current,
         screen_width,
         screen_height,
@@ -332,7 +335,7 @@ pub async fn cmd_update_zone_color(
     screen_height: u32,
 ) -> Result<(), String> {
     let color = Color::new(&new_color).map_err(|e| e.to_string())?;
-    let mut current = state.current_config.write().await;
+    let mut current = state.overlay_config.write().await;
 
     // Método que sincroniza los colores si es Ajedrez
     current
@@ -340,9 +343,9 @@ pub async fn cmd_update_zone_color(
         .map_err(|e| e.to_string())?;
 
     let mut overlay = state.overlay.lock().await;
-    update_therapy_config(
+    update_overlay_therapy(
         &mut *overlay,
-        &state.therapy_storage,
+        &state.overlay_storage,
         &current,
         screen_width,
         screen_height,
@@ -389,7 +392,7 @@ pub async fn cmd_update_zone_opacity(
     screen_height: u32,
 ) -> Result<(), String> {
     let opacity = Opacity::new(new_opacity).map_err(|e| e.to_string())?;
-    let mut current = state.current_config.write().await;
+    let mut current = state.overlay_config.write().await;
 
     // Método que sincroniza la opacidad si es Ajedrez
     current
@@ -397,9 +400,9 @@ pub async fn cmd_update_zone_opacity(
         .map_err(|e| e.to_string())?;
 
     let mut overlay = state.overlay.lock().await;
-    update_therapy_config(
+    update_overlay_therapy(
         &mut *overlay,
-        &state.therapy_storage,
+        &state.overlay_storage,
         &current,
         screen_width,
         screen_height,
@@ -432,15 +435,15 @@ pub async fn cmd_reset_therapy_config(
     state: State<'_, AppState>,
     screen_width: u32,
     screen_height: u32,
-) -> Result<TherapyConfig, String> {
+) -> Result<OverlayTherapyConfig, String> {
     // Obtiene la configuracion segura por defecto del dominio
-    let default_config = TherapyConfig::default();
+    let default_config = OverlayTherapyConfig::default();
 
     // Aplicarla al overlay y guardar en disco
     let mut overlay = state.overlay.lock().await;
-    update_therapy_config(
+    update_overlay_therapy(
         &mut *overlay,
-        &state.therapy_storage,
+        &state.overlay_storage,
         &default_config,
         screen_width,
         screen_height,
@@ -449,7 +452,7 @@ pub async fn cmd_reset_therapy_config(
     .map_err(|e| e.to_string())?;
 
     // Actualizar en memoria
-    let mut current = state.current_config.write().await;
+    let mut current = state.overlay_config.write().await;
     *current = default_config.clone();
 
     // Retornar nueva configuracion

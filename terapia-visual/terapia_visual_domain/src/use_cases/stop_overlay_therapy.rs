@@ -47,7 +47,7 @@ use crate::ports::{OverlayError, OverlayPort};
 /// # Ok(())
 /// # }
 /// ```
-pub async fn stop_therapy(overlay: &mut dyn OverlayPort) -> Result<(), OverlayError> {
+pub async fn stop_overlay_therapy(overlay: &mut dyn OverlayPort) -> Result<(), OverlayError> {
     if overlay.is_active() {
         overlay.hide().await
     } else {
@@ -66,7 +66,7 @@ mod tests {
             active: true,
             ..Default::default()
         };
-        let result = stop_therapy(&mut overlay).await;
+        let result = stop_overlay_therapy(&mut overlay).await;
         assert!(result.is_ok());
         assert!(!overlay.is_active());
         assert!(overlay.hide_called);
@@ -75,7 +75,7 @@ mod tests {
     #[tokio::test]
     async fn test_stop_therapy_not_active() {
         let mut overlay = MockOverlay::default();
-        let result = stop_therapy(&mut overlay).await;
+        let result = stop_overlay_therapy(&mut overlay).await;
         assert_eq!(result.unwrap_err(), OverlayError::NotActive);
     }
 }

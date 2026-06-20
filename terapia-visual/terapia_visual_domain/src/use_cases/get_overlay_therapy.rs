@@ -20,7 +20,7 @@
 //! # }
 //! ```
 
-use crate::{domain::TherapyConfig, ports::ConfigStorage};
+use crate::{domain::OverlayTherapyConfig, ports::ConfigStorage};
 
 /// Obtiene la configuración de terapia actual desde el almacenamiento.
 ///
@@ -47,14 +47,16 @@ use crate::{domain::TherapyConfig, ports::ConfigStorage};
 /// assert_eq!(config, TherapyConfig::default());
 /// # }
 /// ```
-pub async fn get_therapy_config(storage: &dyn ConfigStorage<TherapyConfig>) -> TherapyConfig {
+pub async fn get_overlay_therapy(
+    storage: &dyn ConfigStorage<OverlayTherapyConfig>,
+) -> OverlayTherapyConfig {
     storage.load().await.unwrap_or_default()
 }
 
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::domain::{Layout, TherapyConfig};
+    use crate::domain::{Layout, OverlayTherapyConfig};
     use crate::use_cases::mocks::MockTherapyConfigStorage;
 
     #[tokio::test]
@@ -65,15 +67,15 @@ mod tests {
             ..Default::default()
         };
 
-        let config = get_therapy_config(&storage).await;
+        let config = get_overlay_therapy(&storage).await;
         // Debe dar configuración predeterminada
-        assert_eq!(config, TherapyConfig::default());
+        assert_eq!(config, OverlayTherapyConfig::default());
     }
 
     #[tokio::test]
     async fn test_get_therapy_config_returns_stored() {
         // Crear configuracion distinta a la default
-        let mut expected = TherapyConfig::default();
+        let mut expected = OverlayTherapyConfig::default();
         expected.change_layout(Layout::Horizontal);
 
         // Simular comportamiento en disco
@@ -83,7 +85,7 @@ mod tests {
             ..Default::default()
         };
 
-        let config = get_therapy_config(&storage).await;
+        let config = get_overlay_therapy(&storage).await;
 
         // Debe devolver exactamente lo que estaba guardado
         assert_eq!(config, expected);

@@ -37,7 +37,7 @@
 use async_trait::async_trait;
 
 use crate::{
-    domain::{AppSettings, TherapyConfig},
+    domain::{AppSettings, OverlayTherapyConfig},
     ports::{
         ConfigStorage, NotifierError, OverlayError, OverlayPort, StorageError, SystemNotifier,
     },
@@ -58,7 +58,7 @@ pub struct MockOverlay {
     /// Se establece a `true` cuando se llama a `update_config()`.
     pub update_config_called: bool,
     /// Última configuración recibida en `show()` o `update_config()`.
-    pub last_config: Option<TherapyConfig>,
+    pub last_config: Option<OverlayTherapyConfig>,
     /// Últimas dimensiones de pantalla recibidas.
     pub last_screen_size: Option<(u32, u32)>,
     /// Si es `true`, los métodos devuelven error.
@@ -69,7 +69,7 @@ pub struct MockOverlay {
 impl OverlayPort for MockOverlay {
     async fn show(
         &mut self,
-        config: &TherapyConfig,
+        config: &OverlayTherapyConfig,
         width: u32,
         height: u32,
     ) -> Result<(), crate::ports::OverlayError> {
@@ -96,7 +96,7 @@ impl OverlayPort for MockOverlay {
 
     async fn update_config(
         &mut self,
-        config: &TherapyConfig,
+        config: &OverlayTherapyConfig,
         width: u32,
         height: u32,
     ) -> Result<(), OverlayError> {
@@ -121,7 +121,7 @@ impl OverlayPort for MockOverlay {
 #[derive(Debug, Default)]
 pub struct MockTherapyConfigStorage {
     /// Configuración de terapia simulada (si existe).
-    pub config: Option<TherapyConfig>,
+    pub config: Option<OverlayTherapyConfig>,
     /// Se establece a `true` cuando se llama a `load()`.
     pub load_called: bool,
     /// Se establece a `true` cuando se llama a `save()`.
@@ -133,8 +133,8 @@ pub struct MockTherapyConfigStorage {
 }
 
 #[async_trait]
-impl ConfigStorage<TherapyConfig> for MockTherapyConfigStorage {
-    async fn load(&self) -> Result<TherapyConfig, StorageError> {
+impl ConfigStorage<OverlayTherapyConfig> for MockTherapyConfigStorage {
+    async fn load(&self) -> Result<OverlayTherapyConfig, StorageError> {
         if self.should_fail_load {
             Err(StorageError::NotFound)
         } else {
@@ -142,7 +142,7 @@ impl ConfigStorage<TherapyConfig> for MockTherapyConfigStorage {
         }
     }
 
-    async fn save(&self, _config: &TherapyConfig) -> Result<(), StorageError> {
+    async fn save(&self, _config: &OverlayTherapyConfig) -> Result<(), StorageError> {
         if self.should_fail_save {
             Err(StorageError::WriteError("forced error".into()))
         } else {

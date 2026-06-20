@@ -39,18 +39,18 @@
 //! ```
 
 pub mod get_app_settings;
-pub mod get_therapy_config;
-pub mod start_therapy;
-pub mod stop_therapy;
+pub mod get_overlay_therapy;
+pub mod start_overlay_therapy;
+pub mod stop_overlay_therapy;
 pub mod update_app_settings;
-pub mod update_therapy_config;
+pub mod update_overlay_therapy;
 
 #[cfg(test)]
 pub mod mocks;
 
 pub use get_app_settings::get_app_settings;
-pub use get_therapy_config::get_therapy_config;
-pub use start_therapy::start_therapy;
-pub use stop_therapy::stop_therapy;
+pub use get_overlay_therapy::get_overlay_therapy;
+pub use start_overlay_therapy::start_overlay_therapy;
+pub use stop_overlay_therapy::stop_overlay_therapy;
 pub use update_app_settings::{UpdateAppSettingsError, update_app_settings};
-pub use update_therapy_config::{UpdateConfigError, update_therapy_config};
+pub use update_overlay_therapy::{UpdateConfigError, update_overlay_therapy};

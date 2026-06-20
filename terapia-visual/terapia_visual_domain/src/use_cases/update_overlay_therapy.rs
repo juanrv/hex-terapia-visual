@@ -26,7 +26,7 @@
 //! ```
 
 use crate::{
-    domain::TherapyConfig,
+    domain::OverlayTherapyConfig,
     ports::{ConfigStorage, OverlayError, OverlayPort, StorageError},
 };
 
@@ -76,10 +76,10 @@ pub enum UpdateConfigError {
 /// # Ok(())
 /// # }
 /// ```
-pub async fn update_therapy_config(
+pub async fn update_overlay_therapy(
     overlay: &mut dyn OverlayPort,
-    storage: &dyn ConfigStorage<TherapyConfig>,
-    new_config: &TherapyConfig,
+    storage: &dyn ConfigStorage<OverlayTherapyConfig>,
+    new_config: &OverlayTherapyConfig,
     screen_width: u32,
     screen_height: u32,
 ) -> Result<(), UpdateConfigError> {
@@ -102,8 +102,8 @@ mod tests {
     use crate::domain::*;
     use crate::use_cases::mocks::{MockOverlay, MockTherapyConfigStorage};
 
-    fn sample_config() -> TherapyConfig {
-        TherapyConfig::new(
+    fn sample_config() -> OverlayTherapyConfig {
+        OverlayTherapyConfig::new(
             TherapyType::ColorDivision,
             Layout::Vertical,
             vec![
@@ -125,7 +125,7 @@ mod tests {
         let mut overlay = MockOverlay::default();
         let storage = MockTherapyConfigStorage::default();
         let new_config = sample_config();
-        let result = update_therapy_config(&mut overlay, &storage, &new_config, 1920, 1080).await;
+        let result = update_overlay_therapy(&mut overlay, &storage, &new_config, 1920, 1080).await;
         assert!(result.is_ok());
         assert!(!overlay.update_config_called);
     }
@@ -138,7 +138,7 @@ mod tests {
         };
         let storage = MockTherapyConfigStorage::default();
         let new_config = sample_config();
-        let result = update_therapy_config(&mut overlay, &storage, &new_config, 1920, 1080).await;
+        let result = update_overlay_therapy(&mut overlay, &storage, &new_config, 1920, 1080).await;
         assert!(result.is_ok());
         assert!(overlay.update_config_called);
     }

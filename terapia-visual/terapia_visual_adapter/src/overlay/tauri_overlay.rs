@@ -59,7 +59,7 @@ use tauri::{WebviewUrl, WebviewWindow, WebviewWindowBuilder};
 use tracing::info;
 use url::Url;
 
-use terapia_visual_domain::domain::{TherapyConfig, Zone};
+use terapia_visual_domain::domain::{OverlayTherapyConfig, Zone};
 use terapia_visual_domain::ports::{OverlayError, OverlayPort};
 
 /// Adaptador de overlay para Tauri.
@@ -207,7 +207,7 @@ impl TauriOverlay {
     fn update_window_content(
         &self,
         window: &WebviewWindow,
-        config: &TherapyConfig,
+        config: &OverlayTherapyConfig,
         screen_width: u32,
         screen_height: u32,
     ) -> Result<(), OverlayError> {
@@ -259,7 +259,7 @@ impl OverlayPort for TauriOverlay {
     /// ```
     async fn show(
         &mut self,
-        config: &TherapyConfig,
+        config: &OverlayTherapyConfig,
         screen_width: u32,
         screen_height: u32,
     ) -> Result<(), OverlayError> {
@@ -391,7 +391,7 @@ impl OverlayPort for TauriOverlay {
     /// ```
     async fn update_config(
         &mut self,
-        config: &TherapyConfig,
+        config: &OverlayTherapyConfig,
         screen_width: u32,
         screen_height: u32,
     ) -> Result<(), OverlayError> {

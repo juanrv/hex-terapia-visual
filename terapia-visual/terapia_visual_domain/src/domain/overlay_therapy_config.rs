@@ -93,7 +93,7 @@ pub enum TherapyType {
 ///   por el layout (ver [`Layout::zone_count`]).
 /// - Todos los colores y opacidades son válidos (garantizado por los constructores).
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
-pub struct TherapyConfig {
+pub struct OverlayTherapyConfig {
     therapy_type: TherapyType,
     layout: Layout,
     zones_config: Vec<ZoneConfig>,
@@ -114,7 +114,7 @@ pub struct ZoneConfig {
     pub opacity: Opacity,
 }
 
-impl TherapyConfig {
+impl OverlayTherapyConfig {
     /// Crea una nueva configuración de terapia, validando que la cantidad de zonas
     /// coincida con lo esperado por el layout.
     ///
@@ -431,7 +431,7 @@ impl TherapyConfig {
 /// assert_eq!(config.layout(), Layout::Vertical);
 /// assert_eq!(config.zones_config().len(), 2);
 /// ```
-impl Default for TherapyConfig {
+impl Default for OverlayTherapyConfig {
     fn default() -> Self {
         let default_zones = vec![
             ZoneConfig {
@@ -471,7 +471,7 @@ mod tests {
 
     #[test]
     fn test_new_config_valid() {
-        let config = TherapyConfig::new(
+        let config = OverlayTherapyConfig::new(
             TherapyType::ColorDivision,
             Layout::Vertical,
             two_zones_config(),
@@ -489,7 +489,7 @@ mod tests {
             color: Color::default(),
             opacity: Opacity::default(),
         }];
-        let result = TherapyConfig::new(TherapyType::ColorDivision, Layout::Vertical, zones);
+        let result = OverlayTherapyConfig::new(TherapyType::ColorDivision, Layout::Vertical, zones);
         assert_eq!(
             result,
             Err(ConfigError::ZoneCountMismatch {
@@ -501,7 +501,7 @@ mod tests {
 
     #[test]
     fn test_generate_zones() {
-        let config = TherapyConfig::new(
+        let config = OverlayTherapyConfig::new(
             TherapyType::ColorDivision,
             Layout::Vertical,
             two_zones_config(),
@@ -523,7 +523,7 @@ mod tests {
 
     #[test]
     fn test_change_layout_same_zone_count() {
-        let mut config = TherapyConfig::default();
+        let mut config = OverlayTherapyConfig::default();
         config.change_layout(Layout::Horizontal);
         assert_eq!(config.layout(), Layout::Horizontal);
         assert_eq!(config.zones_config().len(), 2);
@@ -531,7 +531,7 @@ mod tests {
 
     #[test]
     fn test_change_layout_truncates_when_reducing_zones() {
-        let mut config = TherapyConfig::default();
+        let mut config = OverlayTherapyConfig::default();
         config.change_layout(Layout::Checkerboard); // Sube a 4
         config.change_layout(Layout::Horizontal); // Baja a 2
         assert_eq!(config.layout(), Layout::Horizontal);
@@ -540,7 +540,7 @@ mod tests {
 
     #[test]
     fn test_change_layout_to_checkboard_expands_and_syncs() {
-        let mut config = TherapyConfig::default();
+        let mut config = OverlayTherapyConfig::default();
         config.change_layout(Layout::Checkerboard);
         assert_eq!(config.layout(), Layout::Checkerboard);
         assert_eq!(config.zones_config().len(), 4);
@@ -556,7 +556,7 @@ mod tests {
 
     #[test]
     fn test_change_layout_to_vertical4_expands_and_syncs() {
-        let mut config = TherapyConfig::default();
+        let mut config = OverlayTherapyConfig::default();
         config.change_layout(Layout::Vertical4Columns);
         assert_eq!(config.layout(), Layout::Vertical4Columns);
         assert_eq!(config.zones_config().len(), 4);
@@ -576,7 +576,7 @@ mod tests {
 
     #[test]
     fn test_update_zone_color_success() {
-        let mut config = TherapyConfig::default();
+        let mut config = OverlayTherapyConfig::default();
         let new_color = Color::new("#0000FF").unwrap();
         assert!(config.update_zone_color(0, new_color.clone()).is_ok());
         assert_eq!(config.zones_config()[0].color, new_color);
@@ -584,7 +584,7 @@ mod tests {
 
     #[test]
     fn test_update_zone_color_out_of_bounds() {
-        let mut config = TherapyConfig::default();
+        let mut config = OverlayTherapyConfig::default();
         let new_color = Color::new("#0000FF").unwrap();
         assert_eq!(
             config.update_zone_color(99, new_color),
@@ -594,7 +594,7 @@ mod tests {
 
     #[test]
     fn test_update_zone_color_no_sync_for_vertical_layout() {
-        let mut config = TherapyConfig::default(); // Inicia Vertical
+        let mut config = OverlayTherapyConfig::default(); // Inicia Vertical
         let new_color = Color::new("#FFFFFF").unwrap();
         let _ = config.update_zone_color(0, new_color.clone());
         assert_eq!(config.zones_config()[0].color, new_color);
@@ -603,7 +603,7 @@ mod tests {
 
     #[test]
     fn test_update_zone_opacity_success() {
-        let mut config = TherapyConfig::default();
+        let mut config = OverlayTherapyConfig::default();
         let new_opacity = Opacity::new(0.2).unwrap();
         assert!(config.update_zone_opacity(1, new_opacity).is_ok());
         assert_eq!(config.zones_config()[1].opacity, new_opacity);
@@ -611,7 +611,7 @@ mod tests {
 
     #[test]
     fn test_update_zone_opacity_out_of_bounds() {
-        let mut config = TherapyConfig::default();
+        let mut config = OverlayTherapyConfig::default();
         let new_opacity = Opacity::new(0.5).unwrap();
         // Intentamos actualizar una zona inexistente
         assert_eq!(
@@ -622,7 +622,7 @@ mod tests {
 
     #[test]
     fn test_update_zone_opacity_no_sync_for_vertical_layout() {
-        let mut config = TherapyConfig::default();
+        let mut config = OverlayTherapyConfig::default();
         let new_opacity = Opacity::new(0.3).unwrap();
         let _ = config.update_zone_opacity(0, new_opacity);
         assert_eq!(config.zones_config()[0].opacity, new_opacity);
@@ -635,7 +635,7 @@ mod tests {
 
     #[test]
     fn test_checkerboard_syncs_color_updates() {
-        let mut config = TherapyConfig::default();
+        let mut config = OverlayTherapyConfig::default();
         config.change_layout(Layout::Checkerboard);
 
         let color_a = Color::new("#111111").unwrap();
@@ -660,7 +660,7 @@ mod tests {
 
     #[test]
     fn test_checkerboard_syncs_opacity_updates() {
-        let mut config = TherapyConfig::default();
+        let mut config = OverlayTherapyConfig::default();
         config.change_layout(Layout::Checkerboard);
 
         let op_a = Opacity::new(0.1).unwrap();
@@ -689,7 +689,7 @@ mod tests {
 
     #[test]
     fn test_vertical4_syncs_color_updates() {
-        let mut config = TherapyConfig::default();
+        let mut config = OverlayTherapyConfig::default();
         config.change_layout(Layout::Vertical4Columns);
 
         let color_a = Color::new("#111111").unwrap();
@@ -714,7 +714,7 @@ mod tests {
 
     #[test]
     fn test_vertical4_syncs_opacity_updates() {
-        let mut config = TherapyConfig::default();
+        let mut config = OverlayTherapyConfig::default();
         config.change_layout(Layout::Vertical4Columns);
 
         let op_a = Opacity::new(0.1).unwrap();

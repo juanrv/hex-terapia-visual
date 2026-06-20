@@ -28,7 +28,7 @@
 
 use async_trait::async_trait;
 
-use crate::domain::TherapyConfig;
+use crate::domain::OverlayTherapyConfig;
 
 /// Errores que pueden ocurrir al interactuar con el overlay.
 #[derive(Debug, thiserror::Error, PartialEq)]
@@ -115,7 +115,7 @@ pub trait OverlayPort: Send + Sync {
     /// ```
     async fn show(
         &mut self,
-        config: &TherapyConfig,
+        config: &OverlayTherapyConfig,
         screen_width: u32,
         screen_height: u32,
     ) -> Result<(), OverlayError>;
@@ -169,7 +169,7 @@ pub trait OverlayPort: Send + Sync {
     /// ```
     async fn update_config(
         &mut self,
-        config: &TherapyConfig,
+        config: &OverlayTherapyConfig,
         screen_width: u32,
         screen_height: u32,
     ) -> Result<(), OverlayError>;
