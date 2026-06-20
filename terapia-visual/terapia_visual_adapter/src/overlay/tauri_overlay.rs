@@ -30,12 +30,12 @@
 //! ```no_run
 //! use terapia_visual_adapter::overlay::TauriOverlay;
 //! use terapia_visual_domain::ports::OverlayPort;
-//! use terapia_visual_domain::domain::TherapyConfig;
+//! use terapia_visual_domain::domain::OverlayTherapyConfig;
 //! use tauri::AppHandle;
 //!
 //! # async fn example(app_handle: AppHandle) -> Result<(), Box<dyn std::error::Error>> {
 //! let mut overlay = TauriOverlay::new(app_handle);
-//! let config = TherapyConfig::default();
+//! let config = OverlayTherapyConfig::default();
 //!
 //! // Mostrar el overlay
 //! overlay.show(&config, 1920, 1080).await?;
@@ -250,9 +250,9 @@ impl OverlayPort for TauriOverlay {
     /// ```no_run
     /// # use terapia_visual_adapter::overlay::TauriOverlay;
     /// # use terapia_visual_domain::ports::OverlayPort;
-    /// # use terapia_visual_domain::domain::TherapyConfig;
+    /// # use terapia_visual_domain::domain::OverlayTherapyConfig;
     /// # async fn example(overlay: &mut TauriOverlay) -> Result<(), Box<dyn std::error::Error>> {
-    /// let config = TherapyConfig::default();
+    /// let config = OverlayTherapyConfig::default();
     /// overlay.show(&config, 1920, 1080).await?;
     /// # Ok(())
     /// # }
@@ -374,10 +374,10 @@ impl OverlayPort for TauriOverlay {
     /// ```no_run
     /// # use terapia_visual_adapter::overlay::TauriOverlay;
     /// # use terapia_visual_domain::ports::OverlayPort;
-    /// # use terapia_visual_domain::domain::{TherapyConfig, Layout, Color, Opacity, ZoneConfig, TherapyType};
+    /// # use terapia_visual_domain::domain::{OverlayTherapyConfig, Layout, Color, Opacity, ZoneConfig, TherapyType};
     /// # async fn example(overlay: &mut TauriOverlay) -> Result<(), Box<dyn std::error::Error>> {
     /// // Configuración inicial
-    /// let mut config = TherapyConfig::default();
+    /// let mut config = OverlayTherapyConfig::default();
     /// // Cambiar colores y layout en tiempo real
     /// let mut new_config = config.clone();
     /// new_config.change_layout(Layout::Horizontal);

@@ -1,55 +1,42 @@
-//! # Comandos Tauri para el Frontend
+//! # Comandos de Terapia Overlay
 //!
-//! Este módulo contiene todos los comandos que el frontend (TypeScript) puede
-//! invocar para interactuar con la aplicación.
+//! Este módulo contiene todos los comandos relacionados con la terapia de overlay
+//! (pantalla completa con zonas de color transparentes).
 //!
-//! # Comandos disponibles
+//! ## Comandos disponibles
 //!
 //! | Comando | Propósito |
 //! |---------|-----------|
-//! | `cmd_get_therapy_config` | Obtener la configuración actual de la terapia |
-//! | `cmd_start_therapy` | Iniciar la terapia visual |
-//! | `cmd_stop_therapy` | Detener la terapia visual |
-//! | `cmd_update_therapy_config` | Actualizar la configuración completa de la terapia |
-//! | `cmd_change_layout` | Cambiar el layout (vertical, horizontal, etc.) |
-//! | `cmd_update_zone_color` | Cambiar el color de una zona específica |
-//! | `cmd_update_zone_opacity` | Cambiar la opacidad de una zona específica |
-//! | `cmd_reset_therapy_config` | Restablecer la configuración a los valores por defecto |
-//! | `cmd_get_app_settings` | Obtener la configuración de la aplicación (idioma, etc.) |
-//! | `cmd_update_app_settings` | Actualizar la configuración de la aplicación |
+//! | `cmd_get_overlay_config` | Obtener la configuración actual del overlay |
+//! | `cmd_start_overlay` | Iniciar la terapia de overlay |
+//! | `cmd_stop_overlay` | Detener la terapia de overlay |
+//! | `cmd_update_overlay_config` | Actualizar la configuración completa del overlay |
+//! | `cmd_change_overlay_layout` | Cambiar el layout (vertical, horizontal, etc.) |
+//! | `cmd_update_overlay_zone_color` | Cambiar el color de una zona específica |
+//! | `cmd_update_overlay_zone_opacity` | Cambiar la opacidad de una zona específica |
+//! | `cmd_reset_overlay_config` | Restablecer la configuración a los valores por defecto |
 //!
-//! # Flujo típico
-//!
-//! 1. El frontend llama a un comando usando `invoke()`.
-//! 2. El comando obtiene el estado de la aplicación (`AppState`).
-//! 3. El comando llama al caso de uso correspondiente.
-//! 4. El comando devuelve el resultado al frontend.
-//!
-//! # Ejemplo desde el frontend
+//! ## Ejemplo desde el frontend
 //!
 //! ```typescript
 //! import { invoke } from '@tauri-apps/api/core';
 //!
+//! // Obtener la configuración actual
+//! const config = await invoke('cmd_get_overlay_config');
+//!
 //! // Iniciar la terapia
-//! await invoke('cmd_start_therapy', { screenWidth: 1920, screenHeight: 1080 });
+//! await invoke('cmd_start_overlay', { screenWidth: 1920, screenHeight: 1080 });
 //!
-//! // Cambiar el layout a horizontal
-//! await invoke('cmd_change_layout', { newLayout: 'Horizontal', screenWidth: 1920, screenHeight: 1080 });
-//!
-//! // Cambiar el color de la primera zona a azul
-//! await invoke('cmd_update_zone_color', { zoneIndex: 0, newColor: '#0000FF', screenWidth: 1920, screenHeight: 1080 });
+//! // Cambiar el color de la primera zona
+//! await invoke('cmd_update_overlay_zone_color', { zoneIndex: 0, newColor: '#FF0000', screenWidth: 1920, screenHeight: 1080 });
 //! ```
 
 use tauri::State;
-use terapia_visual_adapter::messages::{self, init_language};
-use terapia_visual_domain::domain::{AppSettings, Color, Layout, Opacity, OverlayTherapyConfig};
+use terapia_visual_domain::domain::{Color, Layout, Opacity, OverlayTherapyConfig};
 use terapia_visual_domain::ports::SystemNotifier;
 use terapia_visual_domain::use_cases::{
-    get_app_settings, start_overlay_therapy, stop_overlay_therapy, update_app_settings,
-    update_overlay_therapy,
+    start_overlay_therapy, stop_overlay_therapy, update_overlay_therapy,
 };
-
-use tauri::Manager;
 
 use crate::state::AppState;
 
@@ -66,7 +53,7 @@ use crate::state::AppState;
 /// console.log('Configuración:', config);
 /// ```
 #[tauri::command]
-pub async fn cmd_get_therapy_config(
+pub async fn cmd_get_overlay_config(
     state: State<'_, AppState>,
 ) -> Result<OverlayTherapyConfig, String> {
     let config = state.overlay_config.read().await;
@@ -96,7 +83,7 @@ pub async fn cmd_get_therapy_config(
 /// }
 /// ```
 #[tauri::command]
-pub async fn cmd_start_therapy(
+pub async fn cmd_start_overlay(
     state: State<'_, AppState>,
     screen_width: u32,
     screen_height: u32,
@@ -134,7 +121,7 @@ pub async fn cmd_start_therapy(
 /// }
 /// ```
 #[tauri::command]
-pub async fn cmd_stop_therapy(state: State<'_, AppState>) -> Result<(), String> {
+pub async fn cmd_stop_overlay(state: State<'_, AppState>) -> Result<(), String> {
     let mut overlay = state.overlay.lock().await;
     stop_overlay_therapy(&mut *overlay)
         .await
@@ -170,7 +157,7 @@ pub async fn cmd_stop_therapy(state: State<'_, AppState>) -> Result<(), String> 
 /// await invoke('cmd_update_therapy_config', { newConfig, screenWidth: 1920, screenHeight: 1080 });
 /// ```
 #[tauri::command]
-pub async fn cmd_update_therapy_config(
+pub async fn cmd_update_overlay_config(
     state: State<'_, AppState>,
     new_config: OverlayTherapyConfig,
     screen_width: u32,
@@ -190,69 +177,6 @@ pub async fn cmd_update_therapy_config(
 
     let mut current = state.overlay_config.write().await;
     *current = new_config;
-    Ok(())
-}
-
-/// Obtiene la configuración de la aplicación (idioma, etc.).
-///
-/// # Retorno
-///
-/// La configuración actual de la aplicación.
-///
-/// # Ejemplo desde el frontend
-///
-/// ```typescript
-/// const settings = await invoke('cmd_get_app_settings');
-/// console.log('Idioma:', settings.language);
-/// ```
-#[tauri::command]
-pub async fn cmd_get_app_settings(state: State<'_, AppState>) -> Result<AppSettings, String> {
-    let settings = get_app_settings(&state.app_storage).await;
-    Ok(settings)
-}
-
-/// Actualiza la configuración de la aplicación (idioma, etc.).
-///
-/// # Argumentos
-///
-/// * `new_settings` - Nueva configuración de la aplicación.
-///
-/// # Efectos secundarios
-///
-/// - Reinicializa el sistema de mensajes con el nuevo idioma.
-/// - Actualiza el tooltip de la bandeja.
-/// - Actualiza el título de la ventana principal.
-///
-/// # Ejemplo desde el frontend
-///
-/// ```typescript
-/// await invoke('cmd_update_app_settings', {
-///     newSettings: { language: 'en' }
-/// });
-/// ```
-#[tauri::command]
-pub async fn cmd_update_app_settings(
-    app_handle: tauri::AppHandle,
-    state: State<'_, AppState>,
-    new_settings: AppSettings,
-) -> Result<(), String> {
-    update_app_settings(&state.app_storage, &new_settings)
-        .await
-        .map_err(|e| e.to_string())?;
-
-    init_language(&new_settings);
-
-    if let Some(tray) = app_handle.tray_by_id("main") {
-        tray.set_tooltip(Some(messages::tooltip_app_name()))
-            .map_err(|e| e.to_string())?;
-    }
-
-    if let Some(main_window) = app_handle.get_webview_window("main") {
-        main_window
-            .set_title(messages::window_title())
-            .map_err(|e| e.to_string())?;
-    }
-
     Ok(())
 }
 
@@ -276,7 +200,7 @@ pub async fn cmd_update_app_settings(
 /// await invoke('cmd_change_layout', { newLayout: 'Checkerboard', screenWidth: 1920, screenHeight: 1080 });
 /// ```
 #[tauri::command]
-pub async fn cmd_change_layout(
+pub async fn cmd_change_overlay_layout(
     state: State<'_, AppState>,
     new_layout: Layout,
     screen_width: u32,
@@ -327,7 +251,7 @@ pub async fn cmd_change_layout(
 /// });
 /// ```
 #[tauri::command]
-pub async fn cmd_update_zone_color(
+pub async fn cmd_update_overlay_zone_color(
     state: State<'_, AppState>,
     zone_index: usize,
     new_color: String,
@@ -384,7 +308,7 @@ pub async fn cmd_update_zone_color(
 /// });
 /// ```
 #[tauri::command]
-pub async fn cmd_update_zone_opacity(
+pub async fn cmd_update_overlay_zone_opacity(
     state: State<'_, AppState>,
     zone_index: usize,
     new_opacity: f32,
@@ -431,7 +355,7 @@ pub async fn cmd_update_zone_opacity(
 /// console.log('Configuración restablecida:', defaultConfig);
 /// ```
 #[tauri::command]
-pub async fn cmd_reset_therapy_config(
+pub async fn cmd_reset_overlay_config(
     state: State<'_, AppState>,
     screen_width: u32,
     screen_height: u32,

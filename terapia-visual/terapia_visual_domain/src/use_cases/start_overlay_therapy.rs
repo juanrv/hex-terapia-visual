@@ -11,13 +11,13 @@
 //! # Ejemplos
 //!
 //! ```
-//! use terapia_visual_domain::use_cases::start_therapy;
+//! use terapia_visual_domain::use_cases::start_overlay_therapy;
 //! use terapia_visual_domain::ports::OverlayPort;
-//! use terapia_visual_domain::domain::TherapyConfig;
+//! use terapia_visual_domain::domain::OverlayTherapyConfig;
 //!
 //! # async fn example(overlay: &mut dyn OverlayPort) -> Result<(), Box<dyn std::error::Error>> {
-//! let config = TherapyConfig::default();
-//! start_therapy::start_therapy(overlay, &config, 1920, 1080).await?;
+//! let config = OverlayTherapyConfig::default();
+//! start_overlay_therapy::start_overlay_therapy(overlay, &config, 1920, 1080).await?;
 //! # Ok(())
 //! # }
 //! ```
@@ -47,13 +47,13 @@ use crate::{
 /// # Ejemplos
 ///
 /// ```
-/// use terapia_visual_domain::use_cases::start_therapy;
+/// use terapia_visual_domain::use_cases::start_overlay_therapy;
 /// use terapia_visual_domain::ports::{OverlayPort, OverlayError};
-/// use terapia_visual_domain::domain::TherapyConfig;
+/// use terapia_visual_domain::domain::OverlayTherapyConfig;
 ///
 /// # async fn example(overlay: &mut dyn OverlayPort) -> Result<(), OverlayError> {
-/// let config = TherapyConfig::default();
-/// start_therapy::start_therapy(overlay, &config, 1920, 1080).await?;
+/// let config = OverlayTherapyConfig::default();
+/// start_overlay_therapy::start_overlay_therapy(overlay, &config, 1920, 1080).await?;
 /// # Ok(())
 /// # }
 /// ```

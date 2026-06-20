@@ -10,15 +10,15 @@
 //!
 //! ```no_run
 //! use terapia_visual_adapter::config_storage::TomlStorage;
-//! use terapia_visual_domain::domain::TherapyConfig;
+//! use terapia_visual_domain::domain::OverlayTherapyConfig;
 //! use terapia_visual_domain::ports::ConfigStorage;
 //!
 //! # async fn example() -> Result<(), Box<dyn std::error::Error>> {
-//! // Crear un almacenamiento para TherapyConfig en "therapy_config.toml"
+//! // Crear un almacenamiento para OverlayTherapyConfig en "therapy_config.toml"
 //! let storage = TomlStorage::new("./config", "therapy_config.toml");
 //!
 //! // Cargar la configuración (con fallback a default si no existe)
-//! let config: TherapyConfig = storage.load().await.unwrap_or_default();
+//! let config: OverlayTherapyConfig = storage.load().await.unwrap_or_default();
 //!
 //! // Guardar la configuración
 //! storage.save(&config).await?;
@@ -141,14 +141,14 @@ where
     ///
     /// ```no_run
     /// use terapia_visual_adapter::config_storage::TomlStorage;
-    /// use terapia_visual_domain::domain::TherapyConfig;
+    /// use terapia_visual_domain::domain::OverlayTherapyConfig;
     /// use terapia_visual_domain::ports::ConfigStorage;
     ///
     /// # async fn example() -> Result<(), Box<dyn std::error::Error>> {
     /// let storage = TomlStorage::new(".", "config.toml");
     ///
     /// // Intentar cargar, usando default si no existe
-    /// let config: TherapyConfig = storage.load().await.unwrap_or_default();
+    /// let config: OverlayTherapyConfig = storage.load().await.unwrap_or_default();
     /// # Ok(())
     /// # }
     /// ```
@@ -180,12 +180,12 @@ where
     ///
     /// ```no_run
     /// use terapia_visual_adapter::config_storage::TomlStorage;
-    /// use terapia_visual_domain::domain::TherapyConfig;
+    /// use terapia_visual_domain::domain::OverlayTherapyConfig;
     /// use terapia_visual_domain::ports::ConfigStorage;
     ///
     /// # async fn example() -> Result<(), Box<dyn std::error::Error>> {
     /// let storage = TomlStorage::new(".", "config.toml");
-    /// let config = TherapyConfig::default();
+    /// let config = OverlayTherapyConfig::default();
     ///
     /// storage.save(&config).await?;
     /// # Ok(())

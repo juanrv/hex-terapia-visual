@@ -1,9 +1,20 @@
-import { invoke } from "@tauri-apps/api/core";
+// src/main.ts
 import { setLanguage, translate, type Language } from "./localization/i18n";
+import {
+  getAppSettings,
+  updateAppSettings,
+  getOverlayConfig,
+  startOverlay,
+  stopOverlay,
+  resetOverlayConfig,
+  changeOverlayLayout,
+  updateOverlayZoneColor,
+  updateOverlayZoneOpacity,
+} from "./services";
+import { showStatus, showError } from "./services/ui";
 
 // Variables globales de estado del Frontend
 let currentConfig: any = null;
-let statusTimeout: number | undefined;
 
 // Referencias a elementos del DOM
 const statusDiv = document.getElementById("status");
@@ -12,74 +23,16 @@ const layoutSelect = document.getElementById(
 ) as HTMLSelectElement;
 const zonesContainer = document.getElementById("zones-container");
 
-// Utilidad para mostrar estado
-function showStatus(
-  messageKey: keyof typeof import("./localization/i18n").translations.es,
-) {
-  if (!statusDiv) return;
-  statusDiv.classList.remove("status-error");
-  statusDiv.innerText = translate(messageKey);
-
-  clearTimeout(statusTimeout);
-  statusTimeout = window.setTimeout(() => {
-    statusDiv.innerText = "";
-  }, 3000);
-}
-
-// Utilidad para mostrar errores
-function showError(errorMsg: string) {
-  if (!statusDiv) return;
-
-  statusDiv.classList.add("status-error");
-  statusDiv.innerText = `${translate("error_generic")}: ${errorMsg}`;
-
-  clearTimeout(statusTimeout);
-  statusTimeout = window.setTimeout(() => {
-    statusDiv.innerText = "";
-    statusDiv.classList.remove("status-error");
-  }, 3000);
-}
-
-async function loadInitialState() {
-  try {
-    // Cargar idioma
-    const settings: { language: string } = await invoke("cmd_get_app_settings");
-    setLanguage(settings.language === "en" ? "en" : "es");
-
-    // Cargar configuracion de Terapia
-    currentConfig = await invoke("cmd_get_therapy_config");
-
-    // Renderizar la UI
-    layoutSelect.value = currentConfig.layout;
-    renderZoneControls();
-  } catch (err) {
-    console.error("Error loading initial state: ", err);
-  }
-}
-
-async function changeLanguage(lang: Language) {
-  try {
-    await invoke("cmd_update_app_settings", {
-      newSettings: { language: lang },
-    });
-    setLanguage(lang);
-    renderZoneControls(); // Re-renderizar para traducir las zonas
-  } catch (error) {
-    console.error("Error updating language: ", error);
-    showError(String(error));
-  }
-}
+// --- Funciones de UI ---
 
 function renderZoneControls() {
   if (!zonesContainer || !currentConfig) return;
-  zonesContainer.innerHTML = ""; // Limpiar contenedor
+  zonesContainer.innerHTML = "";
 
   currentConfig.zones_config.forEach((zone: any, index: number) => {
-    // Crear la tarjeta de la zona
     const card = document.createElement("div");
     card.className = "zone-card";
 
-    // Titulo de la zona
     const title = document.createElement("h4");
     title.innerText = `${translate("zone_title")} ${index + 1}`;
     card.appendChild(title);
@@ -95,7 +48,6 @@ function renderZoneControls() {
     colorInput.type = "color";
     colorInput.value = zone.color;
 
-    // Cuando el usuario elige un color y cierra el picker ("change")
     colorInput.addEventListener("change", (e) => {
       updateZoneConfig(index, (e.target as HTMLInputElement).value, null);
     });
@@ -109,7 +61,6 @@ function renderZoneControls() {
     opacityGroup.className = "control-group";
 
     const opacityLabel = document.createElement("label");
-    // Mostrar el % actual
     opacityLabel.innerText = `${translate("opacity_label")} (${Math.round(zone.opacity * 100)}%)`;
 
     const opacityInput = document.createElement("input");
@@ -119,7 +70,6 @@ function renderZoneControls() {
     opacityInput.step = "0.01";
     opacityInput.value = zone.opacity;
 
-    // Al soltar el slider ("change")
     opacityInput.addEventListener("change", (e) => {
       const val = parseFloat((e.target as HTMLInputElement).value);
       opacityLabel.innerText = `${translate("opacity_label")} (${Math.round(val * 100)}%)`;
@@ -130,71 +80,8 @@ function renderZoneControls() {
     opacityGroup.appendChild(opacityInput);
     card.appendChild(opacityGroup);
 
-    // Añadir tarjeta al contenedor
     zonesContainer.appendChild(card);
   });
-}
-
-// Comunicación con el Backend (Rust)
-async function startTherapy() {
-  try {
-    const screenWidth = window.screen.width;
-    const screenHeight = window.screen.height;
-    await invoke("cmd_start_therapy", { screenWidth, screenHeight });
-    showStatus("status_started");
-  } catch (error) {
-    console.error("Error starting:", error);
-    showError(String(error));
-  }
-}
-
-async function stopTherapy() {
-  try {
-    await invoke("cmd_stop_therapy");
-    showStatus("status_stopped");
-  } catch (error) {
-    console.error("Error stopping:", error);
-    showError(String(error));
-  }
-}
-
-async function resetTherapy() {
-  try {
-    const screenWidth = window.screen.width;
-    const screenHeight = window.screen.height;
-
-    // LLamar al backend para que reinicie todo y retorne configuracion limpia
-    currentConfig = await invoke("cmd_reset_therapy_config", {
-      screenWidth,
-      screenHeight,
-    });
-
-    // Sincronizar UI con los nuevos valores
-    layoutSelect.value = currentConfig.layout;
-    renderZoneControls();
-    showStatus("status_reset");
-  } catch (error) {
-    console.error("Error reseteando configuracion:", error);
-    showError(String(error));
-  }
-}
-
-async function handleLayoutChange(e: Event) {
-  const newLayout = (e.target as HTMLSelectElement).value;
-
-  try {
-    const screenWidth = window.screen.width;
-    const screenHeight = window.screen.height;
-
-    await invoke("cmd_change_layout", { newLayout, screenWidth, screenHeight });
-
-    currentConfig = await invoke("cmd_get_therapy_config");
-    renderZoneControls();
-    showStatus("status_updated");
-  } catch (error) {
-    console.error("Error cambiando layout:", error);
-    showError(String(error));
-  }
 }
 
 async function updateZoneConfig(
@@ -206,35 +93,117 @@ async function updateZoneConfig(
     const screenWidth = window.screen.width;
     const screenHeight = window.screen.height;
 
-    // Mandar el comando especifico segun lo que se toco
     if (newColor !== null) {
-      await invoke("cmd_update_zone_color", {
-        zoneIndex: index,
-        newColor: newColor.toUpperCase(),
+      await updateOverlayZoneColor(
+        index,
+        newColor.toUpperCase(),
         screenWidth,
         screenHeight,
-      });
+      );
     }
     if (newOpacity !== null) {
-      await invoke("cmd_update_zone_opacity", {
-        zoneIndex: index,
+      await updateOverlayZoneOpacity(
+        index,
         newOpacity,
         screenWidth,
         screenHeight,
-      });
+      );
     }
 
-    // Refrescar la UI por si el backend sincronizo colores (como en el Ajedrez)
-    currentConfig = await invoke("cmd_get_therapy_config");
+    currentConfig = await getOverlayConfig();
     renderZoneControls();
-    showStatus("status_updated");
+    showStatus("status_updated", statusDiv);
   } catch (error) {
     console.error("Error actualizando zona:", error);
-    showError(String(error));
+    showError(String(error), statusDiv);
   }
 }
 
-// Event Listeners
+// --- Funciones de carga inicial ---
+
+async function loadInitialState() {
+  try {
+    const settings = await getAppSettings();
+    setLanguage(settings.language === "en" ? "en" : "es");
+
+    currentConfig = await getOverlayConfig();
+    layoutSelect.value = currentConfig.layout;
+    renderZoneControls();
+  } catch (err) {
+    console.error("Error loading initial state: ", err);
+  }
+}
+
+// --- Manejadores de eventos ---
+
+async function changeLanguage(lang: Language) {
+  try {
+    await updateAppSettings(lang);
+    setLanguage(lang);
+    renderZoneControls();
+  } catch (error) {
+    console.error("Error updating language: ", error);
+    showError(String(error), statusDiv);
+  }
+}
+
+async function startTherapy() {
+  try {
+    const screenWidth = window.screen.width;
+    const screenHeight = window.screen.height;
+    await startOverlay(screenWidth, screenHeight);
+    showStatus("status_started", statusDiv);
+  } catch (error) {
+    console.error("Error starting:", error);
+    showError(String(error), statusDiv);
+  }
+}
+
+async function stopTherapy() {
+  try {
+    await stopOverlay();
+    showStatus("status_stopped", statusDiv);
+  } catch (error) {
+    console.error("Error stopping:", error);
+    showError(String(error), statusDiv);
+  }
+}
+
+async function resetTherapy() {
+  try {
+    const screenWidth = window.screen.width;
+    const screenHeight = window.screen.height;
+
+    currentConfig = await resetOverlayConfig(screenWidth, screenHeight);
+
+    layoutSelect.value = currentConfig.layout;
+    renderZoneControls();
+    showStatus("status_reset", statusDiv);
+  } catch (error) {
+    console.error("Error reseteando configuracion:", error);
+    showError(String(error), statusDiv);
+  }
+}
+
+async function handleLayoutChange(e: Event) {
+  const newLayout = (e.target as HTMLSelectElement).value;
+
+  try {
+    const screenWidth = window.screen.width;
+    const screenHeight = window.screen.height;
+
+    await changeOverlayLayout(newLayout, screenWidth, screenHeight);
+
+    currentConfig = await getOverlayConfig();
+    renderZoneControls();
+    showStatus("status_updated", statusDiv);
+  } catch (error) {
+    console.error("Error cambiando layout:", error);
+    showError(String(error), statusDiv);
+  }
+}
+
+// --- Event Listeners ---
 
 window.addEventListener("DOMContentLoaded", async () => {
   await loadInitialState();

@@ -14,7 +14,7 @@
 //! | `app_storage` | `TomlStorage` | Almacenamiento de configuración de la aplicación |
 //! | `overlay` | `Mutex<TauriOverlay>` | Control de la ventana de superposición |
 //! | `notifier` | `TauriSystemNotifier` | Notificaciones y bandeja del sistema |
-//! | `current_config` | `RwLock<TherapyConfig>` | Configuración actual de la terapia (en memoria) |
+//! | `overlay_config` | `RwLock<TherapyConfig>` | Configuración actual de la terapia (en memoria) |
 //! | `is_toggling` | `AtomicBool` | Bandera para evitar múltiples pulsaciones del atajo |
 //!
 //! # Ejemplo de acceso al estado
@@ -26,7 +26,7 @@
 //! #[tauri::command]
 //! async fn example_command(state: State<'_, AppState>) -> Result<(), String> {
 //!     // Leer la configuración actual
-//!     let config = state.current_config.read().await;
+//!     let config = state.overlay_config.read().await;
 //!     println!("Layout actual: {:?}", config.layout());
 //!     Ok(())
 //! }
@@ -62,7 +62,7 @@ use tokio::sync::{Mutex, RwLock};
 ///
 /// #[tauri::command]
 /// async fn get_layout(state: State<'_, AppState>) -> Result<String, String> {
-///     let config = state.current_config.read().await;
+///     let config = state.overlay_config.read().await;
 ///     Ok(format!("{:?}", config.layout()))
 /// }
 /// ```

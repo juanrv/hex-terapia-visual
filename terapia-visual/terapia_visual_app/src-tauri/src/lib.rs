@@ -31,13 +31,13 @@
 //! import { invoke } from '@tauri-apps/api/core';
 //!
 //! // Iniciar la terapia
-//! await invoke('cmd_start_therapy', { screenWidth: 1920, screenHeight: 1080 });
+//! await invoke('cmd_start_overlay', { screenWidth: 1920, screenHeight: 1080 });
 //!
 //! // Detener la terapia
-//! await invoke('cmd_stop_therapy');
+//! await invoke('cmd_stop_overlay');
 //!
 //! // Obtener la configuración actual
-//! const config = await invoke('cmd_get_therapy_config');
+//! const config = await invoke('cmd_get_overlay_config');
 //! ```
 
 pub mod commands;
@@ -88,16 +88,16 @@ pub fn run() {
         }))
         // Comandos expuestos al frontend
         .invoke_handler(tauri::generate_handler![
-            commands::cmd_get_therapy_config,
-            commands::cmd_start_therapy,
-            commands::cmd_stop_therapy,
-            commands::cmd_update_therapy_config,
+            commands::cmd_get_overlay_config,
+            commands::cmd_start_overlay,
+            commands::cmd_stop_overlay,
+            commands::cmd_update_overlay_config,
             commands::cmd_get_app_settings,
             commands::cmd_update_app_settings,
-            commands::cmd_change_layout,
-            commands::cmd_update_zone_color,
-            commands::cmd_update_zone_opacity,
-            commands::cmd_reset_therapy_config,
+            commands::cmd_change_overlay_layout,
+            commands::cmd_update_overlay_zone_color,
+            commands::cmd_update_overlay_zone_opacity,
+            commands::cmd_reset_overlay_config,
         ])
         // Evento de cierre de ventana
         .on_window_event(|window, event| {
