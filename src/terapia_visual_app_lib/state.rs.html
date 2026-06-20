@@ -37,7 +37,7 @@
 <a href=#37 id=37 data-nosnippet>37</a><span class="kw">use </span>terapia_visual_adapter::config_storage::TomlStorage;
 <a href=#38 id=38 data-nosnippet>38</a><span class="kw">use </span>terapia_visual_adapter::notifier::TauriSystemNotifier;
 <a href=#39 id=39 data-nosnippet>39</a><span class="kw">use </span>terapia_visual_adapter::overlay::TauriOverlay;
-<a href=#40 id=40 data-nosnippet>40</a><span class="kw">use </span>terapia_visual_domain::domain::TherapyConfig;
+<a href=#40 id=40 data-nosnippet>40</a><span class="kw">use </span>terapia_visual_domain::domain::OverlayTherapyConfig;
 <a href=#41 id=41 data-nosnippet>41</a><span class="kw">use </span>tokio::sync::{Mutex, RwLock};
 <a href=#42 id=42 data-nosnippet>42</a>
 <a href=#43 id=43 data-nosnippet>43</a><span class="doccomment">/// Estado global de la aplicación Tauri.
@@ -68,7 +68,7 @@
 <a href=#68 id=68 data-nosnippet>68</a>/// ```
 <a href=#69 id=69 data-nosnippet>69</a></span><span class="kw">pub struct </span>AppState {
 <a href=#70 id=70 data-nosnippet>70</a>    <span class="doccomment">/// Almacenamiento de configuración de terapia (colores, layout, opacidades).
-<a href=#71 id=71 data-nosnippet>71</a>    </span><span class="kw">pub </span>therapy_storage: TomlStorage,
+<a href=#71 id=71 data-nosnippet>71</a>    </span><span class="kw">pub </span>overlay_storage: TomlStorage,
 <a href=#72 id=72 data-nosnippet>72</a>
 <a href=#73 id=73 data-nosnippet>73</a>    <span class="doccomment">/// Almacenamiento de configuración de la aplicación (idioma, etc.).
 <a href=#74 id=74 data-nosnippet>74</a>    </span><span class="kw">pub </span>app_storage: TomlStorage,
@@ -82,7 +82,7 @@
 <a href=#82 id=82 data-nosnippet>82</a>
 <a href=#83 id=83 data-nosnippet>83</a>    <span class="doccomment">/// Configuración actual de la terapia en memoria.
 <a href=#84 id=84 data-nosnippet>84</a>    /// Usa `RwLock` para permitir múltiples lecturas concurrentes.
-<a href=#85 id=85 data-nosnippet>85</a>    </span><span class="kw">pub </span>current_config: RwLock&lt;TherapyConfig&gt;,
+<a href=#85 id=85 data-nosnippet>85</a>    </span><span class="kw">pub </span>overlay_config: RwLock&lt;OverlayTherapyConfig&gt;,
 <a href=#86 id=86 data-nosnippet>86</a>
 <a href=#87 id=87 data-nosnippet>87</a>    <span class="doccomment">/// Bandera para evitar múltiples pulsaciones del atajo de teclado.
 <a href=#88 id=88 data-nosnippet>88</a>    /// Usa `AtomicBool` para operaciones atómicas sin bloqueos.

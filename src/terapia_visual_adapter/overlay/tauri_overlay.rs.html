@@ -59,7 +59,7 @@
 <a href=#59 id=59 data-nosnippet>59</a><span class="kw">use </span>tracing::info;
 <a href=#60 id=60 data-nosnippet>60</a><span class="kw">use </span>url::Url;
 <a href=#61 id=61 data-nosnippet>61</a>
-<a href=#62 id=62 data-nosnippet>62</a><span class="kw">use </span>terapia_visual_domain::domain::{TherapyConfig, Zone};
+<a href=#62 id=62 data-nosnippet>62</a><span class="kw">use </span>terapia_visual_domain::domain::{OverlayTherapyConfig, Zone};
 <a href=#63 id=63 data-nosnippet>63</a><span class="kw">use </span>terapia_visual_domain::ports::{OverlayError, OverlayPort};
 <a href=#64 id=64 data-nosnippet>64</a>
 <a href=#65 id=65 data-nosnippet>65</a><span class="doccomment">/// Adaptador de overlay para Tauri.
@@ -207,7 +207,7 @@
 <a href=#207 id=207 data-nosnippet>207</a>    </span><span class="kw">fn </span>update_window_content(
 <a href=#208 id=208 data-nosnippet>208</a>        <span class="kw-2">&amp;</span><span class="self">self</span>,
 <a href=#209 id=209 data-nosnippet>209</a>        window: <span class="kw-2">&amp;</span>WebviewWindow,
-<a href=#210 id=210 data-nosnippet>210</a>        config: <span class="kw-2">&amp;</span>TherapyConfig,
+<a href=#210 id=210 data-nosnippet>210</a>        config: <span class="kw-2">&amp;</span>OverlayTherapyConfig,
 <a href=#211 id=211 data-nosnippet>211</a>        screen_width: u32,
 <a href=#212 id=212 data-nosnippet>212</a>        screen_height: u32,
 <a href=#213 id=213 data-nosnippet>213</a>    ) -&gt; <span class="prelude-ty">Result</span>&lt;(), OverlayError&gt; {
@@ -259,7 +259,7 @@
 <a href=#259 id=259 data-nosnippet>259</a>    /// ```
 <a href=#260 id=260 data-nosnippet>260</a>    </span><span class="kw">async fn </span>show(
 <a href=#261 id=261 data-nosnippet>261</a>        <span class="kw-2">&amp;mut </span><span class="self">self</span>,
-<a href=#262 id=262 data-nosnippet>262</a>        config: <span class="kw-2">&amp;</span>TherapyConfig,
+<a href=#262 id=262 data-nosnippet>262</a>        config: <span class="kw-2">&amp;</span>OverlayTherapyConfig,
 <a href=#263 id=263 data-nosnippet>263</a>        screen_width: u32,
 <a href=#264 id=264 data-nosnippet>264</a>        screen_height: u32,
 <a href=#265 id=265 data-nosnippet>265</a>    ) -&gt; <span class="prelude-ty">Result</span>&lt;(), OverlayError&gt; {
@@ -391,7 +391,7 @@
 <a href=#391 id=391 data-nosnippet>391</a>    /// ```
 <a href=#392 id=392 data-nosnippet>392</a>    </span><span class="kw">async fn </span>update_config(
 <a href=#393 id=393 data-nosnippet>393</a>        <span class="kw-2">&amp;mut </span><span class="self">self</span>,
-<a href=#394 id=394 data-nosnippet>394</a>        config: <span class="kw-2">&amp;</span>TherapyConfig,
+<a href=#394 id=394 data-nosnippet>394</a>        config: <span class="kw-2">&amp;</span>OverlayTherapyConfig,
 <a href=#395 id=395 data-nosnippet>395</a>        screen_width: u32,
 <a href=#396 id=396 data-nosnippet>396</a>        screen_height: u32,
 <a href=#397 id=397 data-nosnippet>397</a>    ) -&gt; <span class="prelude-ty">Result</span>&lt;(), OverlayError&gt; {

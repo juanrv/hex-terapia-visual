@@ -28,7 +28,7 @@
 <a href=#28 id=28 data-nosnippet>28</a>
 <a href=#29 id=29 data-nosnippet>29</a></span><span class="kw">use </span>async_trait::async_trait;
 <a href=#30 id=30 data-nosnippet>30</a>
-<a href=#31 id=31 data-nosnippet>31</a><span class="kw">use </span><span class="kw">crate</span>::domain::TherapyConfig;
+<a href=#31 id=31 data-nosnippet>31</a><span class="kw">use </span><span class="kw">crate</span>::domain::OverlayTherapyConfig;
 <a href=#32 id=32 data-nosnippet>32</a>
 <a href=#33 id=33 data-nosnippet>33</a><span class="doccomment">/// Errores que pueden ocurrir al interactuar con el overlay.
 <a href=#34 id=34 data-nosnippet>34</a></span><span class="attr">#[derive(Debug, thiserror::Error, PartialEq)]
@@ -115,7 +115,7 @@
 <a href=#115 id=115 data-nosnippet>115</a>    /// ```
 <a href=#116 id=116 data-nosnippet>116</a>    </span><span class="kw">async fn </span>show(
 <a href=#117 id=117 data-nosnippet>117</a>        <span class="kw-2">&amp;mut </span><span class="self">self</span>,
-<a href=#118 id=118 data-nosnippet>118</a>        config: <span class="kw-2">&amp;</span>TherapyConfig,
+<a href=#118 id=118 data-nosnippet>118</a>        config: <span class="kw-2">&amp;</span>OverlayTherapyConfig,
 <a href=#119 id=119 data-nosnippet>119</a>        screen_width: u32,
 <a href=#120 id=120 data-nosnippet>120</a>        screen_height: u32,
 <a href=#121 id=121 data-nosnippet>121</a>    ) -&gt; <span class="prelude-ty">Result</span>&lt;(), OverlayError&gt;;
@@ -169,7 +169,7 @@
 <a href=#169 id=169 data-nosnippet>169</a>    /// ```
 <a href=#170 id=170 data-nosnippet>170</a>    </span><span class="kw">async fn </span>update_config(
 <a href=#171 id=171 data-nosnippet>171</a>        <span class="kw-2">&amp;mut </span><span class="self">self</span>,
-<a href=#172 id=172 data-nosnippet>172</a>        config: <span class="kw-2">&amp;</span>TherapyConfig,
+<a href=#172 id=172 data-nosnippet>172</a>        config: <span class="kw-2">&amp;</span>OverlayTherapyConfig,
 <a href=#173 id=173 data-nosnippet>173</a>        screen_width: u32,
 <a href=#174 id=174 data-nosnippet>174</a>        screen_height: u32,
 <a href=#175 id=175 data-nosnippet>175</a>    ) -&gt; <span class="prelude-ty">Result</span>&lt;(), OverlayError&gt;;
