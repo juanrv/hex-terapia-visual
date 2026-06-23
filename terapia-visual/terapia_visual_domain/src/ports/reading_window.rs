@@ -53,10 +53,13 @@ pub trait ReadingWindowPort: Send + Sync {
     /// - [`ReadingWindowError::AlreadyActive`] si la ventana ya está activa.
     /// - [`ReadingWindowError::CreationError`] si el sistema falla al crear la ventana.
     async fn show(
-        &self,
+        &mut self,
         config: &ReadingTherapyConfig,
         html_content: &str,
     ) -> Result<(), ReadingWindowError>;
+
+    /// Cierra u oculta la ventana de lectura.
+    async fn hide(&mut self) -> Result<(), ReadingWindowError>;
 
     /// Actualiza la configuración visual de la ventana en tiempo real.
     ///
