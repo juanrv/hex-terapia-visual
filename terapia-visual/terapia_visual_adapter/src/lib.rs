@@ -47,7 +47,9 @@ pub mod config_storage;
 pub mod messages;
 pub mod notifier;
 pub mod overlay;
+pub mod reading_window;
 
 pub use config_storage::TomlStorage;
 pub use notifier::TauriSystemNotifier;
 pub use overlay::TauriOverlay;
+pub use reading_window::TauriReadingWindow;
