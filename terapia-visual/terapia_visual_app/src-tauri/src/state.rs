@@ -34,9 +34,10 @@
 
 use std::sync::atomic::AtomicBool;
 
-use terapia_visual_adapter::config_storage::TomlStorage;
 use terapia_visual_adapter::notifier::TauriSystemNotifier;
 use terapia_visual_adapter::overlay::TauriOverlay;
+use terapia_visual_adapter::{config_storage::TomlStorage, TauriReadingWindow};
+use terapia_visual_domain::domain::reading_therapy_config::ReadingTherapyConfig;
 use terapia_visual_domain::domain::OverlayTherapyConfig;
 use tokio::sync::{Mutex, RwLock};
 
@@ -67,8 +68,11 @@ use tokio::sync::{Mutex, RwLock};
 /// }
 /// ```
 pub struct AppState {
-    /// Almacenamiento de configuración de terapia (colores, layout, opacidades).
+    /// Almacenamiento de configuración de terapia de overlay.
     pub overlay_storage: TomlStorage,
+
+    /// Almacenamiento de configuracion de lectura.
+    pub reading_storage: TomlStorage,
 
     /// Almacenamiento de configuración de la aplicación (idioma, etc.).
     pub app_storage: TomlStorage,
@@ -77,12 +81,20 @@ pub struct AppState {
     /// Usa `Mutex` porque las operaciones requieren acceso exclusivo.
     pub overlay: Mutex<TauriOverlay>,
 
+    /// Adaptador de lectura para controlar la ventana de lectura.
+    /// Usa `Mutex` porque las operaciones requieren acceso exclusivo.
+    pub reading_window: Mutex<TauriReadingWindow>,
+
     /// Adaptador de notificaciones y bandeja del sistema.
     pub notifier: TauriSystemNotifier,
 
-    /// Configuración actual de la terapia en memoria.
+    /// Configuración actual de la terapia  de overlay en memoria.
     /// Usa `RwLock` para permitir múltiples lecturas concurrentes.
     pub overlay_config: RwLock<OverlayTherapyConfig>,
+
+    /// configuracion actual de la terapia de lectura.
+    /// Usa `RwLock` para permitir múltiples lecturas concurrentes.
+    pub reading_config: RwLock<ReadingTherapyConfig>,
 
     /// Bandera para evitar múltiples pulsaciones del atajo de teclado.
     /// Usa `AtomicBool` para operaciones atómicas sin bloqueos.

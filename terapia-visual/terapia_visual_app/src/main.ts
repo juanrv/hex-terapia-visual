@@ -3,6 +3,7 @@ import { setLanguage, translate, type Language } from "./localization/i18n";
 import {
   getAppSettings,
   updateAppSettings,
+  exitApp,
   getOverlayConfig,
   startOverlay,
   stopOverlay,
@@ -22,6 +23,16 @@ const layoutSelect = document.getElementById(
   "layout-select",
 ) as HTMLSelectElement;
 const zonesContainer = document.getElementById("zones-container");
+
+// --- Navegación (SPA) ---
+function switchView(viewId: "view-home" | "view-color" | "view-reading") {
+  document.getElementById("view-home")!.style.display = "none";
+  document.getElementById("view-color")!.style.display = "none";
+  document.getElementById("view-reading")!.style.display = "none";
+
+  document.getElementById(viewId)!.style.display = "block";
+  if (statusDiv) statusDiv.innerText = "";
+}
 
 // --- Funciones de UI ---
 
@@ -203,10 +214,32 @@ async function handleLayoutChange(e: Event) {
   }
 }
 
+async function handleExitApp() {
+  try {
+    await exitApp();
+  } catch (error) {
+    console.error("No se pudo cerrar la app:", error);
+    showError(String(error), statusDiv);
+  }
+}
+
 // --- Event Listeners ---
 
 window.addEventListener("DOMContentLoaded", async () => {
   await loadInitialState();
+
+  // ---- Event Listeners de Navegacion ----
+  document
+    .getElementById("btn-nav-color")
+    ?.addEventListener("click", () => switchView("view-color"));
+  document
+    .getElementById("btn-nav-reading")
+    ?.addEventListener("click", () => switchView("view-reading"));
+  document.getElementById("btn-exit")?.addEventListener("click", handleExitApp);
+
+  document.querySelectorAll(".btn-back").forEach((btn) => {
+    btn.addEventListener("click", () => switchView("view-home"));
+  });
 
   document.getElementById("btn-start")?.addEventListener("click", startTherapy);
   document.getElementById("btn-stop")?.addEventListener("click", stopTherapy);

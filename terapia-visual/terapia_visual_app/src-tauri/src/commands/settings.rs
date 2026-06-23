@@ -26,6 +26,7 @@
 use tauri::State;
 use terapia_visual_adapter::messages::{self, init_language};
 use terapia_visual_domain::domain::AppSettings;
+use terapia_visual_domain::ports::ConfigStorage;
 use terapia_visual_domain::use_cases::{get_app_settings, update_app_settings};
 
 use tauri::Manager;
@@ -70,8 +71,8 @@ pub async fn cmd_get_app_settings(state: State<'_, AppState>) -> Result<AppSetti
 /// });
 /// ```
 #[tauri::command]
-pub async fn cmd_update_app_settings(
-    app_handle: tauri::AppHandle,
+pub async fn cmd_update_app_settings<R: tauri::Runtime>(
+    app_handle: tauri::AppHandle<R>,
     state: State<'_, AppState>,
     new_settings: AppSettings,
 ) -> Result<(), String> {
@@ -93,4 +94,29 @@ pub async fn cmd_update_app_settings(
     }
 
     Ok(())
+}
+
+/// Cierra la aplicación de forma segura guardando la configuración de todas las terapias.
+#[tauri::command]
+pub async fn cmd_exit_app(state: State<'_, AppState>) -> Result<(), String> {
+    // Guardar configuracion del overlay
+    let overlay_config = state.overlay_config.read().await;
+    if let Err(e) = state.overlay_storage.save(&*overlay_config).await {
+        eprintln!("Error saving overlay config: {}", e);
+    }
+
+    // Guardar configuracion de lectura
+    let reading_config = state.reading_config.read().await;
+    if let Err(e) = state.reading_storage.save(&*reading_config).await {
+        eprintln!("Error saving reading config: {}", e);
+    }
+
+    // Guardar la configuracion de la app
+    let app_settings: AppSettings = state.app_storage.load().await.unwrap_or_default();
+    if let Err(e) = state.app_storage.save(&app_settings).await {
+        eprintln!("Error saving app config: {}", e);
+    }
+
+    // Termina el proceso de forma limpia
+    std::process::exit(0);
 }

@@ -87,18 +87,7 @@ pub fn run() {
             }
         }))
         // Comandos expuestos al frontend
-        .invoke_handler(tauri::generate_handler![
-            commands::cmd_get_overlay_config,
-            commands::cmd_start_overlay,
-            commands::cmd_stop_overlay,
-            commands::cmd_update_overlay_config,
-            commands::cmd_get_app_settings,
-            commands::cmd_update_app_settings,
-            commands::cmd_change_overlay_layout,
-            commands::cmd_update_overlay_zone_color,
-            commands::cmd_update_overlay_zone_opacity,
-            commands::cmd_reset_overlay_config,
-        ])
+        .invoke_handler(commands::get_handlers())
         // Evento de cierre de ventana
         .on_window_event(|window, event| {
             if let tauri::WindowEvent::CloseRequested { api, .. } = event {
