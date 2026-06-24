@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"mod":["overlay","settings"]};
+window.SIDEBAR_ITEMS = {"fn":["get_handlers"],"mod":["overlay","reading","settings"]};

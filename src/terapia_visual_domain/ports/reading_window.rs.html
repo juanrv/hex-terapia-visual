@@ -53,21 +53,24 @@
 <a href=#53 id=53 data-nosnippet>53</a>    /// - [`ReadingWindowError::AlreadyActive`] si la ventana ya está activa.
 <a href=#54 id=54 data-nosnippet>54</a>    /// - [`ReadingWindowError::CreationError`] si el sistema falla al crear la ventana.
 <a href=#55 id=55 data-nosnippet>55</a>    </span><span class="kw">async fn </span>show(
-<a href=#56 id=56 data-nosnippet>56</a>        <span class="kw-2">&amp;</span><span class="self">self</span>,
+<a href=#56 id=56 data-nosnippet>56</a>        <span class="kw-2">&amp;mut </span><span class="self">self</span>,
 <a href=#57 id=57 data-nosnippet>57</a>        config: <span class="kw-2">&amp;</span>ReadingTherapyConfig,
 <a href=#58 id=58 data-nosnippet>58</a>        html_content: <span class="kw-2">&amp;</span>str,
 <a href=#59 id=59 data-nosnippet>59</a>    ) -&gt; <span class="prelude-ty">Result</span>&lt;(), ReadingWindowError&gt;;
 <a href=#60 id=60 data-nosnippet>60</a>
-<a href=#61 id=61 data-nosnippet>61</a>    <span class="doccomment">/// Actualiza la configuración visual de la ventana en tiempo real.
-<a href=#62 id=62 data-nosnippet>62</a>    ///
-<a href=#63 id=63 data-nosnippet>63</a>    /// Esto permite cambiar el tamaño de letra, color de fondo o el layout
-<a href=#64 id=64 data-nosnippet>64</a>    /// sin perder la posición de lectura (scroll) del usuario.
-<a href=#65 id=65 data-nosnippet>65</a>    </span><span class="kw">async fn </span>update_config(
-<a href=#66 id=66 data-nosnippet>66</a>        <span class="kw-2">&amp;mut </span><span class="self">self</span>,
-<a href=#67 id=67 data-nosnippet>67</a>        config: <span class="kw-2">&amp;</span>ReadingTherapyConfig,
-<a href=#68 id=68 data-nosnippet>68</a>    ) -&gt; <span class="prelude-ty">Result</span>&lt;(), ReadingWindowError&gt;;
-<a href=#69 id=69 data-nosnippet>69</a>
-<a href=#70 id=70 data-nosnippet>70</a>    <span class="doccomment">/// Devuelve `true` si la ventana de lectura está actualmente abierta.
-<a href=#71 id=71 data-nosnippet>71</a>    </span><span class="kw">fn </span>is_active(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool;
-<a href=#72 id=72 data-nosnippet>72</a>}
+<a href=#61 id=61 data-nosnippet>61</a>    <span class="doccomment">/// Cierra u oculta la ventana de lectura.
+<a href=#62 id=62 data-nosnippet>62</a>    </span><span class="kw">async fn </span>hide(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;(), ReadingWindowError&gt;;
+<a href=#63 id=63 data-nosnippet>63</a>
+<a href=#64 id=64 data-nosnippet>64</a>    <span class="doccomment">/// Actualiza la configuración visual de la ventana en tiempo real.
+<a href=#65 id=65 data-nosnippet>65</a>    ///
+<a href=#66 id=66 data-nosnippet>66</a>    /// Esto permite cambiar el tamaño de letra, color de fondo o el layout
+<a href=#67 id=67 data-nosnippet>67</a>    /// sin perder la posición de lectura (scroll) del usuario.
+<a href=#68 id=68 data-nosnippet>68</a>    </span><span class="kw">async fn </span>update_config(
+<a href=#69 id=69 data-nosnippet>69</a>        <span class="kw-2">&amp;mut </span><span class="self">self</span>,
+<a href=#70 id=70 data-nosnippet>70</a>        config: <span class="kw-2">&amp;</span>ReadingTherapyConfig,
+<a href=#71 id=71 data-nosnippet>71</a>    ) -&gt; <span class="prelude-ty">Result</span>&lt;(), ReadingWindowError&gt;;
+<a href=#72 id=72 data-nosnippet>72</a>
+<a href=#73 id=73 data-nosnippet>73</a>    <span class="doccomment">/// Devuelve `true` si la ventana de lectura está actualmente abierta.
+<a href=#74 id=74 data-nosnippet>74</a>    </span><span class="kw">fn </span>is_active(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool;
+<a href=#75 id=75 data-nosnippet>75</a>}
 </code></pre></div></section></main></body></html>

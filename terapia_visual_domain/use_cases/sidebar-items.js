@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"mod":["get_app_settings","get_overlay_therapy","start_overlay_therapy","stop_overlay_therapy","update_app_settings","update_overlay_therapy"]};
+window.SIDEBAR_ITEMS = {"mod":["get_app_settings","get_overlay_therapy","get_reading_therapy","start_overlay_therapy","start_reading_therapy","stop_overlay_therapy","stop_reading_therapy","update_app_settings","update_overlay_therapy","update_reading_therapy"]};

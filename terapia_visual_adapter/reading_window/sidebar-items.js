@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"mod":["tauri_reading_window"]};

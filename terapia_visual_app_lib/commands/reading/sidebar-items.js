@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["cmd_change_reading_layout","cmd_get_reading_config","cmd_reading_window_resized","cmd_reset_reading_config","cmd_start_reading_therapy","cmd_stop_reading_therapy","cmd_update_reading_config","cmd_update_reading_settings","cmd_update_reading_zone_color","cmd_update_reading_zone_opacity"]};
