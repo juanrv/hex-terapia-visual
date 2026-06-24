@@ -33,6 +33,8 @@ use std::sync::atomic::{AtomicBool, Ordering};
 use tauri::async_runtime;
 use tauri::{App, AppHandle, Manager};
 use tauri_plugin_global_shortcut::{GlobalShortcutExt, Shortcut, ShortcutEvent, ShortcutState};
+use terapia_visual_adapter::TauriReadingWindow;
+use terapia_visual_domain::domain::reading_therapy_config::ReadingTherapyConfig;
 use tokio::sync::{Mutex, RwLock};
 
 use terapia_visual_adapter::config_storage::TomlStorage;
@@ -98,17 +100,24 @@ pub fn init(app: &mut App) -> Result<(), Box<dyn std::error::Error>> {
 
     // Inicializar adaptadores
     let overlay_storage = TomlStorage::new(&config_dir, "overlay_config.toml");
+    let reading_storage = TomlStorage::new(&config_dir, "reading_config.toml");
     let app_storage = TomlStorage::new(&config_dir, "app_config.toml");
+
     let notifier = TauriSystemNotifier::new(app.handle().clone(), ICON_INACTIVE, ICON_ACTIVE);
     let overlay = TauriOverlay::new(app.handle().clone());
+    let reading_window = TauriReadingWindow::new(app.handle().clone());
 
     // Cargar configuraciones (con valores por defecto en caso de fallo)
     let initial_overlay_config: OverlayTherapyConfig =
         tauri::async_runtime::block_on(overlay_storage.load())
             .unwrap_or_else(|_| OverlayTherapyConfig::default());
 
+    let initial_reading_config = tauri::async_runtime::block_on(reading_storage.load())
+        .unwrap_or_else(|_| ReadingTherapyConfig::default());
+
     // Guardar la inicial por si es la primera vez
     let _ = tauri::async_runtime::block_on(overlay_storage.save(&initial_overlay_config));
+    let _ = tauri::async_runtime::block_on(reading_storage.save(&initial_reading_config));
 
     let app_settings: AppSettings =
         tauri::async_runtime::block_on(app_storage.load()).unwrap_or_default();
@@ -129,10 +138,13 @@ pub fn init(app: &mut App) -> Result<(), Box<dyn std::error::Error>> {
     // Inyectar estado a Tauri
     let state = AppState {
         overlay_storage,
+        reading_storage,
         app_storage,
         overlay: Mutex::new(overlay),
+        reading_window: Mutex::new(reading_window),
         notifier,
         overlay_config: RwLock::new(initial_overlay_config),
+        reading_config: RwLock::new(initial_reading_config),
         is_toggling: AtomicBool::new(false),
     };
     app.manage(state);
@@ -244,11 +256,20 @@ pub fn global_shortcut_handler(app: &AppHandle, shortcut: &Shortcut, event: Shor
 pub fn save_configs(app_handle: &AppHandle) {
     let state = app_handle.state::<AppState>();
 
+    // Guardar configuracion del overlay
     let therapy_config = async_runtime::block_on(state.overlay_config.read());
     println!("[DEBUG] Saving therapy config: {:?}", therapy_config);
     if let Err(e) = async_runtime::block_on(state.overlay_storage.save(&*therapy_config)) {
         eprintln!("Error saving therapy config: {}", e);
     }
+
+    // Guardar configuracion de lectura
+    let reading_config = async_runtime::block_on(state.reading_config.read());
+    println!("[DEBUG] Saving reading config: {:?}", reading_config);
+    if let Err(e) = async_runtime::block_on(state.reading_storage.save(&*reading_config)) {
+        eprintln!("Error saving reading config: {}", e);
+    }
+
     // Guardar app_settings también
     let app_settings: AppSettings =
         tauri::async_runtime::block_on(state.app_storage.load()).unwrap_or_default();

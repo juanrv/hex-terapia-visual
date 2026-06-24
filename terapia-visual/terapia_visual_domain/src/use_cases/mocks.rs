@@ -37,9 +37,10 @@
 use async_trait::async_trait;
 
 use crate::{
-    domain::{AppSettings, OverlayTherapyConfig},
+    domain::{AppSettings, OverlayTherapyConfig, reading_therapy_config::ReadingTherapyConfig},
     ports::{
-        ConfigStorage, NotifierError, OverlayError, OverlayPort, StorageError, SystemNotifier,
+        ConfigStorage, NotifierError, OverlayError, OverlayPort, ReadingWindowError,
+        ReadingWindowPort, StorageError, SystemNotifier,
     },
 };
 
@@ -207,5 +208,89 @@ impl SystemNotifier for MockSystemNotifier {
 
     async fn set_tray_state(&self, _active: bool) -> Result<(), NotifierError> {
         Ok(())
+    }
+}
+
+/// Mock de ventana de lectura
+///
+/// Simula el comportamiento de la ventana de lectura
+#[derive(Debug, Default)]
+pub struct MockReadingWindow {
+    pub active: bool,
+    pub show_called: bool,
+    pub hide_called: bool,
+    pub update_config_called: bool,
+    pub last_html: Option<String>,
+    pub should_fail: bool,
+}
+
+#[async_trait]
+impl ReadingWindowPort for MockReadingWindow {
+    async fn show(
+        &mut self,
+        _config: &ReadingTherapyConfig,
+        html_content: &str,
+    ) -> Result<(), ReadingWindowError> {
+        self.show_called = true;
+        self.last_html = Some(html_content.to_string());
+        if self.should_fail {
+            Err(ReadingWindowError::CreationError("Error forzaddo".into()))
+        } else {
+            self.active = true;
+            Ok(())
+        }
+    }
+
+    async fn hide(&mut self) -> Result<(), ReadingWindowError> {
+        self.hide_called = true;
+        if self.should_fail {
+            Err(ReadingWindowError::NotActive)
+        } else {
+            self.active = false;
+            Ok(())
+        }
+    }
+
+    async fn update_config(
+        &mut self,
+        _config: &ReadingTherapyConfig,
+    ) -> Result<(), ReadingWindowError> {
+        self.update_config_called = true;
+        if self.should_fail {
+            Err(ReadingWindowError::UpdateError("Error forzado".into()))
+        } else {
+            Ok(())
+        }
+    }
+
+    fn is_active(&self) -> bool {
+        self.active
+    }
+}
+
+/// Mock de almacenamiento de configuración de lectura.
+#[derive(Debug, Default)]
+pub struct MockReadingConfigStorage {
+    pub config: Option<ReadingTherapyConfig>,
+    pub should_fail_load: bool,
+    pub should_fail_save: bool,
+}
+
+#[async_trait]
+impl ConfigStorage<ReadingTherapyConfig> for MockReadingConfigStorage {
+    async fn load(&self) -> Result<ReadingTherapyConfig, StorageError> {
+        if self.should_fail_load {
+            Err(StorageError::NotFound)
+        } else {
+            self.config.clone().ok_or(StorageError::NotFound)
+        }
+    }
+
+    async fn save(&self, _config: &ReadingTherapyConfig) -> Result<(), StorageError> {
+        if self.should_fail_save {
+            Err(StorageError::WriteError("forced error".into()))
+        } else {
+            Ok(())
+        }
     }
 }
