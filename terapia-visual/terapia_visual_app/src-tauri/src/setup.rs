@@ -253,7 +253,7 @@ pub fn global_shortcut_handler(app: &AppHandle, shortcut: &Shortcut, event: Shor
 /// save_configs(app_handle);
 /// # }
 /// ```
-pub fn save_configs<R: tauri::Runtime>(app_handle: &AppHandle<R>) {
+pub fn save_configs(app_handle: &AppHandle) {
     let state = app_handle.state::<AppState>();
 
     // Guardar configuracion del overlay

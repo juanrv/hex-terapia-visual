@@ -11,6 +11,8 @@ import {
   changeOverlayLayout,
   updateOverlayZoneColor,
   updateOverlayZoneOpacity,
+  startReading,
+  stopReading,
 } from "./services";
 import { showStatus, showError } from "./services/ui";
 
@@ -223,6 +225,63 @@ async function handleExitApp() {
   }
 }
 
+// --- Lógica de Terapia de Lectura ---
+
+function processReadingText(rawText: string): string {
+  if (rawText.includes("<p>") || rawText.includes("<div>")) {
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(rawText, "text/html");
+    doc
+      .querySelectorAll("script, style, link, meta, head")
+      .forEach((el) => el.remove());
+    doc.querySelectorAll("*").forEach((el) => {
+      el.removeAttribute("class");
+      el.removeAttribute("style");
+      el.removeAttribute("id");
+    });
+    return doc.body.innerHTML;
+  }
+
+  const escaped = rawText
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;");
+  return escaped
+    .split(/\n\n+/)
+    .filter((p) => p.trim() !== "")
+    .map((p) => `<p>${p.replace(/\n/g, "<br>")}</p>`)
+    .join("\n");
+}
+
+async function handleStartReading() {
+  const textarea = document.getElementById(
+    "reading-input",
+  ) as HTMLTextAreaElement;
+  if (!textarea || !textarea.value.trim()) {
+    showError("Por favor, pega algún texto o HTML primero.", statusDiv);
+    return;
+  }
+
+  try {
+    const cleanHtml = processReadingText(textarea.value);
+    await startReading(cleanHtml);
+    showStatus("status_reading_started", statusDiv);
+  } catch (error) {
+    console.error("Error starting reading therapy:", error);
+    showError(String(error), statusDiv);
+  }
+}
+
+async function handleStopReading() {
+  try {
+    await stopReading();
+    showStatus("status_reading_stopped", statusDiv);
+  } catch (error) {
+    console.error("Error stopping reading therapy:", error);
+    showError(String(error), statusDiv);
+  }
+}
+
 // --- Event Listeners ---
 
 window.addEventListener("DOMContentLoaded", async () => {
@@ -240,6 +299,13 @@ window.addEventListener("DOMContentLoaded", async () => {
   document.querySelectorAll(".btn-back").forEach((btn) => {
     btn.addEventListener("click", () => switchView("view-home"));
   });
+  // --- Botones de Terapia de Lectura ---
+  document
+    .getElementById("btn-start-reading")
+    ?.addEventListener("click", handleStartReading);
+  document
+    .getElementById("btn-stop-reading")
+    ?.addEventListener("click", handleStopReading);
 
   document.getElementById("btn-start")?.addEventListener("click", startTherapy);
   document.getElementById("btn-stop")?.addEventListener("click", stopTherapy);
