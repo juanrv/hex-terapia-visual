@@ -3,9 +3,8 @@
   <head>
     <meta charset="UTF-8" />
     <title data-i18n="app_title">Terapia Visual</title>
-    <!-- Rutas corregidas para que funcionen desde la raíz -->
     <link rel="icon" type="image/png" href="/src-tauri/icons/32x32.png" />
-    <link rel="stylesheet" href="/src/styles.css" />
+    <link rel="stylesheet" href="./src/styles.css" />
   </head>
   <body>
     <div class="app-container">
@@ -19,46 +18,24 @@
 
       <!-- MENÚ PRINCIPAL (siempre visible por defecto) -->
       <div id="view-home" class="view">
-        <div
-          style="
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            margin-top: 20px;
-          "
-        >
+        <div class="menu-container">
           <button
             id="btn-nav-color"
-            style="
-              padding: 20px;
-              font-size: 1.1rem;
-              background-color: #3498db;
-              color: white;
-            "
+            class="menu-btn menu-btn-color"
             data-i18n="menu_color_division"
           >
             Terapia de División de Color
           </button>
           <button
             id="btn-nav-reading"
-            style="
-              padding: 20px;
-              font-size: 1.1rem;
-              background-color: #9b59b6;
-              color: white;
-            "
+            class="menu-btn menu-btn-reading"
             data-i18n="menu_reading"
           >
             Terapia de Lectura
           </button>
           <button
             id="btn-exit"
-            style="
-              padding: 15px;
-              margin-top: 20px;
-              background-color: #e74c3c;
-              color: white;
-            "
+            class="menu-btn menu-btn-exit"
             data-i18n="btn_exit"
           >
             Salir de la Aplicación
@@ -72,6 +49,6 @@
       <div id="status"></div>
     </div>
     <!-- Ruta corregida -->
-    <script type="module" src="/src/main.ts"></script>
+    <script type="module" src="./src/main.ts"></script>
   </body>
 </html>

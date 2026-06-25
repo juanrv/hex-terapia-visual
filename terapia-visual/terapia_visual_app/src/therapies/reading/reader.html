@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Terapia de Lectura</title>
+  </head>
+  <body>
+    <div id="zones-container"></div>
+
+    <div id="content-wrapper">
+      <div id="chaptercontent">
+        <h2 style="text-align: center; color: #7f8c8d; margin-top: 20vh">
+          Cargando lectura...
+        </h2>
+      </div>
+    </div>
+
+    <!-- UI Flotante -->
+    <button id="floating-btn">⚙️</button>
+    <div id="settings-panel">
+      <h2 style="margin-top: 0">Ajustes de Lectura</h2>
+
+      <div class="control-group">
+        <label>Tamaño de Fuente (px)</label>
+        <input type="number" id="inp-font-size" min="10" max="50" />
+      </div>
+      <div class="control-group">
+        <label>Color de Letra</label>
+        <input type="color" id="inp-text-color" />
+      </div>
+      <div class="control-group">
+        <label>Color de Fondo</label>
+        <input type="color" id="inp-bg-color" />
+      </div>
+      <hr class="reading-divider" />
+      <div class="control-group">
+        <label>Layout de Terapia</label>
+        <select id="inp-layout">
+          <option value="Vertical">Vertical</option>
+          <option value="Horizontal">Horizontal</option>
+          <option value="Checkerboard">Ajedrez</option>
+          <option value="Vertical4Columns">Vertical (4 Columnas)</option>
+        </select>
+      </div>
+      <div id="zones-controls"></div>
+    </div>
+
+    <script type="module" src="reader.ts"></script>
+  </body>
+</html>

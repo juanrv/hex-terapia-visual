@@ -1,0 +1,113 @@
+/* Estilos base de la ventana de lectura (reading.html) */
+body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  transition: background-color 0.3s;
+}
+
+#zones-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+}
+
+#content-wrapper {
+  position: relative;
+  z-index: 1;
+  background-color: rgba(0, 0, 0, 0.4);
+  min-height: 100vh;
+  width: 100%;
+  padding: 40px 20px;
+  box-sizing: border-box;
+}
+
+#chaptercontent {
+  margin: 0 auto;
+  max-width: 900px;
+}
+
+#chaptercontent p {
+  margin-bottom: 1.2rem;
+}
+
+/* Botón Flotante */
+#floating-btn {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 1000;
+  background: #34495e;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  font-size: 24px;
+  cursor: pointer;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+  transition: 0.3s;
+}
+
+#floating-btn:hover {
+  background: #2c3e50;
+  transform: scale(1.1);
+}
+
+/* Panel Lateral de Ajustes */
+#settings-panel {
+  position: fixed;
+  top: 0;
+  right: -350px;
+  width: 300px;
+  height: 100%;
+  background: #fdfdfd;
+  box-shadow: -4px 0 15px rgba(0, 0, 0, 0.2);
+  z-index: 999;
+  transition: right 0.3s ease;
+  padding: 20px;
+  box-sizing: border-box;
+  overflow-y: auto;
+  font-family: Arial, sans-serif;
+  color: #333;
+}
+
+#settings-panel.open {
+  right: 0;
+}
+
+.control-group {
+  margin-bottom: 15px;
+}
+
+.control-group label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+  font-size: 0.9rem;
+}
+
+.control-group input,
+.control-group select {
+  width: 100%;
+  padding: 8px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+}
+
+.control-group input[type="color"] {
+  padding: 0;
+  height: 35px;
+  cursor: pointer;
+}
+
+.reading-divider {
+  border: 0;
+  border-top: 1px solid #ddd;
+  margin: 20px 0;
+}

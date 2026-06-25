@@ -78,7 +78,7 @@ impl ReadingWindowPort for TauriReadingWindow {
         let window = WebviewWindowBuilder::new(
             &self.app_handle,
             "reading_window",
-            WebviewUrl::App("src/reading.html".into()),
+            WebviewUrl::App("src/therapies/reading/reader.html".into()),
         )
         .title("Terapia de Lectura")
         .inner_size(1024.0, 768.0)

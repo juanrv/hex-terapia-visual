@@ -30,7 +30,7 @@ export default defineConfig(async () => ({
     rollupOptions: {
       input: {
         main: resolve(__dirname, "index.html"),
-        reading: resolve(__dirname, "src/reading.html"),
+        reading: resolve(__dirname, "src/therapies/reading/reader.html"),
       },
     },
   },
