@@ -52,11 +52,14 @@ terapia_visual_adapter/src/notifier/tauri_notifier.rs
 terapia_visual_adapter/src/overlay/mod.rs
 terapia_visual_adapter/src/overlay/tauri_overlay.rs
 terapia_visual_adapter/src/overlay/windows_overlay.rs
+terapia_visual_adapter/src/reading_window/mod.rs
+terapia_visual_adapter/src/reading_window/tauri_reading_window.rs
 terapia_visual_app/.gitignore
 terapia_visual_app/app-icon.png
 terapia_visual_app/index.html
 terapia_visual_app/package.json
 terapia_visual_app/public/overlay.html
+terapia_visual_app/public/reading.html
 terapia_visual_app/README.md
 terapia_visual_app/src-tauri/.gitignore
 terapia_visual_app/src-tauri/build.rs
@@ -116,7 +119,10 @@ terapia_visual_app/src-tauri/icons/Square89x89Logo.png
 terapia_visual_app/src-tauri/icons/StoreLogo.png
 terapia_visual_app/src-tauri/icons/tray_active.png
 terapia_visual_app/src-tauri/icons/tray_inactive.png
-terapia_visual_app/src-tauri/src/commands.rs
+terapia_visual_app/src-tauri/src/commands/mod.rs
+terapia_visual_app/src-tauri/src/commands/overlay.rs
+terapia_visual_app/src-tauri/src/commands/reading.rs
+terapia_visual_app/src-tauri/src/commands/settings.rs
 terapia_visual_app/src-tauri/src/lib.rs
 terapia_visual_app/src-tauri/src/main.rs
 terapia_visual_app/src-tauri/src/setup.rs
@@ -126,9 +132,29 @@ terapia_visual_app/src-tauri/tauri.conf.json
 terapia_visual_app/src/assets/tauri.svg
 terapia_visual_app/src/assets/typescript.svg
 terapia_visual_app/src/assets/vite.svg
-terapia_visual_app/src/localization/i18n.ts
+terapia_visual_app/src/core/commands/index.ts
+terapia_visual_app/src/core/commands/overlay.ts
+terapia_visual_app/src/core/commands/reading.ts
+terapia_visual_app/src/core/commands/settings.ts
+terapia_visual_app/src/core/localization/i18n.ts
+terapia_visual_app/src/core/services/index.ts
+terapia_visual_app/src/core/services/overlay.ts
+terapia_visual_app/src/core/services/reading.ts
+terapia_visual_app/src/core/services/settings.ts
+terapia_visual_app/src/core/services/ui.ts
+terapia_visual_app/src/core/types/index.ts
 terapia_visual_app/src/main.ts
+terapia_visual_app/src/pages/index.html
+terapia_visual_app/src/reading.html
+terapia_visual_app/src/reading.ts
 terapia_visual_app/src/styles.css
+terapia_visual_app/src/therapies/overlay/index.ts
+terapia_visual_app/src/therapies/overlay/view.ts
+terapia_visual_app/src/therapies/reading/index.ts
+terapia_visual_app/src/therapies/reading/view.ts
+terapia_visual_app/src/ui/components/status.ts
+terapia_visual_app/src/ui/components/zone-controls.ts
+terapia_visual_app/src/ui/router.ts
 terapia_visual_app/tsconfig.json
 terapia_visual_app/vite.config.ts
 terapia_visual_domain/Cargo.toml
@@ -146,15 +172,20 @@ terapia_visual_domain/src/lib.rs
 terapia_visual_domain/src/ports/config_storage.rs
 terapia_visual_domain/src/ports/mod.rs
 terapia_visual_domain/src/ports/overlay.rs
+terapia_visual_domain/src/ports/reading_window.rs
 terapia_visual_domain/src/ports/system_notifier.rs
 terapia_visual_domain/src/use_cases/get_app_settings.rs
 terapia_visual_domain/src/use_cases/get_overlay_therapy.rs
+terapia_visual_domain/src/use_cases/get_reading_therapy.rs
 terapia_visual_domain/src/use_cases/mocks.rs
 terapia_visual_domain/src/use_cases/mod.rs
 terapia_visual_domain/src/use_cases/start_overlay_therapy.rs
+terapia_visual_domain/src/use_cases/start_reading_therapy.rs
 terapia_visual_domain/src/use_cases/stop_overlay_therapy.rs
+terapia_visual_domain/src/use_cases/stop_reading_therapy.rs
 terapia_visual_domain/src/use_cases/update_app_settings.rs
 terapia_visual_domain/src/use_cases/update_overlay_therapy.rs
+terapia_visual_domain/src/use_cases/update_reading_therapy.rs
 </directory_structure>
 
 <files>
@@ -238,10 +269,10 @@ FN:185,_RNvNtNtNtCsh6eLa7zxMRk_21terapia_visual_domain6domain5color5testss_26tes
 FN:179,_RNvNtNtNtCsh6eLa7zxMRk_21terapia_visual_domain6domain5color5testss_31test_invalid_color_wrong_length
 FN:167,_RNvNtNtNtCsh6eLa7zxMRk_21terapia_visual_domain6domain5color5testss_49test_valid_color_lowercase_converted_to_uppercase
 FN:111,_RNCNvMNtNtCsh6eLa7zxMRk_21terapia_visual_domain6domain5colorNtB4_5Color3new0B8_
-FNDA:175,_RNvMNtNtCsh6eLa7zxMRk_21terapia_visual_domain6domain5colorNtB2_5Color3new
-FNDA:7,_RNvMNtNtCsh6eLa7zxMRk_21terapia_visual_domain6domain5colorNtB2_5Color6as_str
+FNDA:157,_RNvMNtNtCsh6eLa7zxMRk_21terapia_visual_domain6domain5colorNtB2_5Color3new
+FNDA:8,_RNvMNtNtCsh6eLa7zxMRk_21terapia_visual_domain6domain5colorNtB2_5Color6as_str
 FNDA:1,_RNvXs0_NtNtCsh6eLa7zxMRk_21terapia_visual_domain6domain5colorNtB5_5ColorNtNtCs9N2lWLRSIT9_4core3fmt7Display3fmt
-FNDA:5,_RNvXs_NtNtCsh6eLa7zxMRk_21terapia_visual_domain6domain5colorNtB4_5ColorNtNtCs9N2lWLRSIT9_4core7default7Default7default
+FNDA:4,_RNvXs_NtNtCsh6eLa7zxMRk_21terapia_visual_domain6domain5colorNtB4_5ColorNtNtCs9N2lWLRSIT9_4core7default7Default7default
 FNDA:1,_RNvNtNtNtCsh6eLa7zxMRk_21terapia_visual_domain6domain5color5testss_16test_valid_color
 FNDA:1,_RNvNtNtNtCsh6eLa7zxMRk_21terapia_visual_domain6domain5color5testss_18test_color_display
 FNDA:1,_RNvNtNtNtCsh6eLa7zxMRk_21terapia_visual_domain6domain5color5testss_18test_default_color
@@ -249,29 +280,29 @@ FNDA:1,_RNvNtNtNtCsh6eLa7zxMRk_21terapia_visual_domain6domain5color5testss_26tes
 FNDA:1,_RNvNtNtNtCsh6eLa7zxMRk_21terapia_visual_domain6domain5color5testss_26test_invalid_color_non_hex
 FNDA:1,_RNvNtNtNtCsh6eLa7zxMRk_21terapia_visual_domain6domain5color5testss_31test_invalid_color_wrong_length
 FNDA:1,_RNvNtNtNtCsh6eLa7zxMRk_21terapia_visual_domain6domain5color5testss_49test_valid_color_lowercase_converted_to_uppercase
-FNDA:1033,_RNCNvMNtNtCsh6eLa7zxMRk_21terapia_visual_domain6domain5colorNtB4_5Color3new0B8_
+FNDA:925,_RNCNvMNtNtCsh6eLa7zxMRk_21terapia_visual_domain6domain5colorNtB4_5Color3new0B8_
 FNF:12
 FNH:12
-DA:97,175
-DA:98,175
-DA:101,175
+DA:97,157
+DA:98,157
+DA:101,157
 DA:102,1
-DA:103,174
-DA:105,174
-DA:106,174
+DA:103,156
+DA:105,156
+DA:106,156
 DA:107,1
-DA:108,173
-DA:111,1033
+DA:108,155
+DA:111,925
 DA:112,1
-DA:113,172
-DA:115,172
-DA:116,175
-DA:128,7
-DA:129,7
-DA:130,7
-DA:135,5
-DA:136,5
-DA:137,5
+DA:113,154
+DA:115,154
+DA:116,157
+DA:128,8
+DA:129,8
+DA:130,8
+DA:135,4
+DA:136,4
+DA:137,4
 DA:151,1
 DA:152,1
 DA:153,1
@@ -310,17 +341,17 @@ LH:52
 end_of_record
 SF:C:\Users\shiro\Documents\Projects\hex-terapia-visual\terapia-visual\terapia_visual_domain\src\domain\geometry.rs
 FN:86,_RNvMNtNtCsh6eLa7zxMRk_21terapia_visual_domain6domain8geometryNtB2_8ZoneRect3new
-FNDA:38,_RNvMNtNtCsh6eLa7zxMRk_21terapia_visual_domain6domain8geometryNtB2_8ZoneRect3new
+FNDA:36,_RNvMNtNtCsh6eLa7zxMRk_21terapia_visual_domain6domain8geometryNtB2_8ZoneRect3new
 FNF:1
 FNH:1
-DA:86,38
-DA:87,38
-DA:88,38
-DA:89,38
-DA:90,38
-DA:91,38
-DA:92,38
-DA:93,38
+DA:86,36
+DA:87,36
+DA:88,36
+DA:89,36
+DA:90,36
+DA:91,36
+DA:92,36
+DA:93,36
 BRF:0
 BRH:0
 LF:8
@@ -336,8 +367,8 @@ FN:188,_RNvNtNtNtCsh6eLa7zxMRk_21terapia_visual_domain6domain6layout5testss_34te
 FN:196,_RNvNtNtNtCsh6eLa7zxMRk_21terapia_visual_domain6domain6layout5testss_36test_checkerboard_layout_calculation
 FN:218,_RNvNtNtNtCsh6eLa7zxMRk_21terapia_visual_domain6domain6layout5testss_40test_vertical4columns_layout_calculation
 FN:234,_RNvNtNtNtCsh6eLa7zxMRk_21terapia_visual_domain6domain6layout5testss_40test_vertical4columns_odd_width_handling
-FNDA:72,_RNvMNtNtCsh6eLa7zxMRk_21terapia_visual_domain6domain6layoutNtB2_6Layout10zone_count
-FNDA:9,_RNvMNtNtCsh6eLa7zxMRk_21terapia_visual_domain6domain6layoutNtB2_6Layout15calculate_zones
+FNDA:71,_RNvMNtNtCsh6eLa7zxMRk_21terapia_visual_domain6domain6layoutNtB2_6Layout10zone_count
+FNDA:8,_RNvMNtNtCsh6eLa7zxMRk_21terapia_visual_domain6domain6layoutNtB2_6Layout15calculate_zones
 FNDA:1,_RNvNtNtNtCsh6eLa7zxMRk_21terapia_visual_domain6domain6layout5testss_23test_layout_zone_counts
 FNDA:1,_RNvNtNtNtCsh6eLa7zxMRk_21terapia_visual_domain6domain6layout5testss_23test_odd_width_handling
 FNDA:1,_RNvNtNtNtCsh6eLa7zxMRk_21terapia_visual_domain6domain6layout5testss_32test_vertical_layout_calculation
@@ -347,19 +378,19 @@ FNDA:1,_RNvNtNtNtCsh6eLa7zxMRk_21terapia_visual_domain6domain6layout5testss_40te
 FNDA:1,_RNvNtNtNtCsh6eLa7zxMRk_21terapia_visual_domain6domain6layout5testss_40test_vertical4columns_odd_width_handling
 FNF:9
 FNH:9
-DA:94,72
-DA:95,72
-DA:96,31
-DA:97,24
+DA:94,71
+DA:95,71
+DA:96,34
+DA:97,20
 DA:98,9
 DA:99,8
-DA:101,72
-DA:125,9
-DA:126,9
-DA:128,5
-DA:129,5
-DA:130,5
-DA:131,5
+DA:101,71
+DA:125,8
+DA:126,8
+DA:128,4
+DA:129,4
+DA:130,4
+DA:131,4
 DA:135,1
 DA:136,1
 DA:137,1
@@ -377,7 +408,7 @@ DA:157,2
 DA:158,2
 DA:159,2
 DA:160,2
-DA:164,9
+DA:164,8
 DA:172,1
 DA:173,1
 DA:174,1
@@ -440,10 +471,10 @@ FN:110,_RNvNtNtNtCsh6eLa7zxMRk_21terapia_visual_domain6domain7opacity5testss_20t
 FN:89,_RNvNtNtNtCsh6eLa7zxMRk_21terapia_visual_domain6domain7opacity5testss_23test_opacity_boundaries
 FN:95,_RNvNtNtNtCsh6eLa7zxMRk_21terapia_visual_domain6domain7opacity5testss_28test_invalid_opacity_too_low
 FN:101,_RNvNtNtNtCsh6eLa7zxMRk_21terapia_visual_domain6domain7opacity5testss_29test_invalid_opacity_too_high
-FNDA:47,_RNvMNtNtCsh6eLa7zxMRk_21terapia_visual_domain6domain7opacityNtB2_7Opacity3new
+FNDA:41,_RNvMNtNtCsh6eLa7zxMRk_21terapia_visual_domain6domain7opacityNtB2_7Opacity3new
 FNDA:3,_RNvMNtNtCsh6eLa7zxMRk_21terapia_visual_domain6domain7opacityNtB2_7Opacity5value
 FNDA:1,_RNvXs0_NtNtCsh6eLa7zxMRk_21terapia_visual_domain6domain7opacityNtB5_7OpacityNtNtCs9N2lWLRSIT9_4core3fmt7Display3fmt
-FNDA:75,_RNvXs_NtNtCsh6eLa7zxMRk_21terapia_visual_domain6domain7opacityNtB4_7OpacityNtNtCs9N2lWLRSIT9_4core7default7Default7default
+FNDA:76,_RNvXs_NtNtCsh6eLa7zxMRk_21terapia_visual_domain6domain7opacityNtB4_7OpacityNtNtCs9N2lWLRSIT9_4core7default7Default7default
 FNDA:1,_RNvNtNtNtCsh6eLa7zxMRk_21terapia_visual_domain6domain7opacity5testss_12test_display
 FNDA:1,_RNvNtNtNtCsh6eLa7zxMRk_21terapia_visual_domain6domain7opacity5testss_18test_valid_opacity
 FNDA:1,_RNvNtNtNtCsh6eLa7zxMRk_21terapia_visual_domain6domain7opacity5testss_20test_default_opacity
@@ -452,17 +483,17 @@ FNDA:1,_RNvNtNtNtCsh6eLa7zxMRk_21terapia_visual_domain6domain7opacity5testss_28t
 FNDA:1,_RNvNtNtNtCsh6eLa7zxMRk_21terapia_visual_domain6domain7opacity5testss_29test_invalid_opacity_too_high
 FNF:10
 FNH:10
-DA:48,47
-DA:49,47
-DA:50,44
+DA:48,41
+DA:49,41
+DA:50,38
 DA:52,3
-DA:54,47
+DA:54,41
 DA:57,3
 DA:58,3
 DA:59,3
-DA:67,75
-DA:68,75
-DA:69,75
+DA:67,76
+DA:68,76
+DA:69,76
 DA:73,1
 DA:74,1
 DA:75,1
@@ -526,19 +557,24 @@ FN:533,_RNvNtNtNtCsh6eLa7zxMRk_21terapia_visual_domain6domain22overlay_therapy_c
 FN:558,_RNvNtNtNtCsh6eLa7zxMRk_21terapia_visual_domain6domain22overlay_therapy_config5testss_49test_change_layout_to_vertical4_expands_and_syncs
 FN:542,_RNvNtNtNtCsh6eLa7zxMRk_21terapia_visual_domain6domain22overlay_therapy_config5testss_50test_change_layout_to_checkboard_expands_and_syncs
 FN:596,_RNvNtNtNtCsh6eLa7zxMRk_21terapia_visual_domain6domain22overlay_therapy_config5testss_50test_update_zone_color_no_sync_for_vertical_layout
+FN:744,_RNvNtNtNtCsh6eLa7zxMRk_21terapia_visual_domain6domain22overlay_therapy_config5testss_51test_get_sync_pair_returns_none_for_vertical_layout
 FN:624,_RNvNtNtNtCsh6eLa7zxMRk_21terapia_visual_domain6domain22overlay_therapy_config5testss_52test_update_zone_opacity_no_sync_for_vertical_layout
+FN:753,_RNvNtNtNtCsh6eLa7zxMRk_21terapia_visual_domain6domain22overlay_therapy_config5testss_53test_get_sync_pair_returns_none_for_horizontal_layout
+FN:762,_RNvNtNtNtCsh6eLa7zxMRk_21terapia_visual_domain6domain22overlay_therapy_config5testss_54test_get_sync_pair_returns_none_for_out_of_range_index
+FN:781,_RNvNtNtNtCsh6eLa7zxMRk_21terapia_visual_domain6domain22overlay_therapy_config5testss_63test_get_sync_pair_returns_none_for_unpaired_index_in_vertical4
+FN:771,_RNvNtNtNtCsh6eLa7zxMRk_21terapia_visual_domain6domain22overlay_therapy_config5testss_66test_get_sync_pair_returns_none_for_unpaired_index_in_checkerboard
 FN:413,_RNCNvMNtNtCsh6eLa7zxMRk_21terapia_visual_domain6domain22overlay_therapy_configNtB4_20OverlayTherapyConfig14generate_zones0B8_
 FNDA:1,_RNvMNtNtCsh6eLa7zxMRk_21terapia_visual_domain6domain22overlay_therapy_configNtB2_20OverlayTherapyConfig12therapy_type
-FNDA:35,_RNvMNtNtCsh6eLa7zxMRk_21terapia_visual_domain6domain22overlay_therapy_configNtB2_20OverlayTherapyConfig12zones_config
-FNDA:10,_RNvMNtNtCsh6eLa7zxMRk_21terapia_visual_domain6domain22overlay_therapy_configNtB2_20OverlayTherapyConfig13change_layout
-FNDA:20,_RNvMNtNtCsh6eLa7zxMRk_21terapia_visual_domain6domain22overlay_therapy_configNtB2_20OverlayTherapyConfig13get_sync_pair
+FNDA:37,_RNvMNtNtCsh6eLa7zxMRk_21terapia_visual_domain6domain22overlay_therapy_configNtB2_20OverlayTherapyConfig12zones_config
+FNDA:13,_RNvMNtNtCsh6eLa7zxMRk_21terapia_visual_domain6domain22overlay_therapy_configNtB2_20OverlayTherapyConfig13change_layout
+FNDA:30,_RNvMNtNtCsh6eLa7zxMRk_21terapia_visual_domain6domain22overlay_therapy_configNtB2_20OverlayTherapyConfig13get_sync_pair
 FNDA:1,_RNvMNtNtCsh6eLa7zxMRk_21terapia_visual_domain6domain22overlay_therapy_configNtB2_20OverlayTherapyConfig14generate_zones
-FNDA:10,_RNvMNtNtCsh6eLa7zxMRk_21terapia_visual_domain6domain22overlay_therapy_configNtB2_20OverlayTherapyConfig16apply_sync_rules
+FNDA:13,_RNvMNtNtCsh6eLa7zxMRk_21terapia_visual_domain6domain22overlay_therapy_configNtB2_20OverlayTherapyConfig16apply_sync_rules
 FNDA:11,_RNvMNtNtCsh6eLa7zxMRk_21terapia_visual_domain6domain22overlay_therapy_configNtB2_20OverlayTherapyConfig17update_zone_color
 FNDA:11,_RNvMNtNtCsh6eLa7zxMRk_21terapia_visual_domain6domain22overlay_therapy_configNtB2_20OverlayTherapyConfig19update_zone_opacity
-FNDA:24,_RNvMNtNtCsh6eLa7zxMRk_21terapia_visual_domain6domain22overlay_therapy_configNtB2_20OverlayTherapyConfig3new
+FNDA:29,_RNvMNtNtCsh6eLa7zxMRk_21terapia_visual_domain6domain22overlay_therapy_configNtB2_20OverlayTherapyConfig3new
 FNDA:5,_RNvMNtNtCsh6eLa7zxMRk_21terapia_visual_domain6domain22overlay_therapy_configNtB2_20OverlayTherapyConfig6layout
-FNDA:17,_RNvXs_NtNtCsh6eLa7zxMRk_21terapia_visual_domain6domain22overlay_therapy_configNtB4_20OverlayTherapyConfigNtNtCs9N2lWLRSIT9_4core7default7Default7default
+FNDA:22,_RNvXs_NtNtCsh6eLa7zxMRk_21terapia_visual_domain6domain22overlay_therapy_configNtB4_20OverlayTherapyConfigNtNtCs9N2lWLRSIT9_4core7default7Default7default
 FNDA:2,_RNvNtNtNtCsh6eLa7zxMRk_21terapia_visual_domain6domain22overlay_therapy_config5tests16two_zones_config
 FNDA:1,_RNvNtNtNtCsh6eLa7zxMRk_21terapia_visual_domain6domain22overlay_therapy_config5testss_19test_generate_zones
 FNDA:1,_RNvNtNtNtCsh6eLa7zxMRk_21terapia_visual_domain6domain22overlay_therapy_config5testss_21test_new_config_valid
@@ -556,59 +592,64 @@ FNDA:1,_RNvNtNtNtCsh6eLa7zxMRk_21terapia_visual_domain6domain22overlay_therapy_c
 FNDA:1,_RNvNtNtNtCsh6eLa7zxMRk_21terapia_visual_domain6domain22overlay_therapy_config5testss_49test_change_layout_to_vertical4_expands_and_syncs
 FNDA:1,_RNvNtNtNtCsh6eLa7zxMRk_21terapia_visual_domain6domain22overlay_therapy_config5testss_50test_change_layout_to_checkboard_expands_and_syncs
 FNDA:1,_RNvNtNtNtCsh6eLa7zxMRk_21terapia_visual_domain6domain22overlay_therapy_config5testss_50test_update_zone_color_no_sync_for_vertical_layout
+FNDA:1,_RNvNtNtNtCsh6eLa7zxMRk_21terapia_visual_domain6domain22overlay_therapy_config5testss_51test_get_sync_pair_returns_none_for_vertical_layout
 FNDA:1,_RNvNtNtNtCsh6eLa7zxMRk_21terapia_visual_domain6domain22overlay_therapy_config5testss_52test_update_zone_opacity_no_sync_for_vertical_layout
+FNDA:1,_RNvNtNtNtCsh6eLa7zxMRk_21terapia_visual_domain6domain22overlay_therapy_config5testss_53test_get_sync_pair_returns_none_for_horizontal_layout
+FNDA:1,_RNvNtNtNtCsh6eLa7zxMRk_21terapia_visual_domain6domain22overlay_therapy_config5testss_54test_get_sync_pair_returns_none_for_out_of_range_index
+FNDA:1,_RNvNtNtNtCsh6eLa7zxMRk_21terapia_visual_domain6domain22overlay_therapy_config5testss_63test_get_sync_pair_returns_none_for_unpaired_index_in_vertical4
+FNDA:1,_RNvNtNtNtCsh6eLa7zxMRk_21terapia_visual_domain6domain22overlay_therapy_config5testss_66test_get_sync_pair_returns_none_for_unpaired_index_in_checkerboard
 FNDA:2,_RNCNvMNtNtCsh6eLa7zxMRk_21terapia_visual_domain6domain22overlay_therapy_configNtB4_20OverlayTherapyConfig14generate_zones0B8_
-FNF:30
-FNH:30
-DA:158,24
-DA:159,24
-DA:160,24
-DA:161,24
-DA:162,24
-DA:163,24
-DA:165,24
-DA:166,24
-DA:167,24
+FNF:35
+FNH:35
+DA:158,29
+DA:159,29
+DA:160,29
+DA:161,29
+DA:162,29
+DA:163,29
+DA:165,29
+DA:166,29
+DA:167,29
 DA:168,1
 DA:169,1
 DA:170,1
 DA:171,1
-DA:172,23
-DA:173,23
-DA:174,23
-DA:175,23
-DA:176,23
-DA:177,23
-DA:180,24
-DA:208,10
-DA:209,10
-DA:210,10
-DA:212,10
-DA:213,7
-DA:214,21
-DA:215,14
-DA:216,14
-DA:217,14
-DA:218,14
-DA:219,7
-DA:220,3
+DA:172,28
+DA:173,28
+DA:174,28
+DA:175,28
+DA:176,28
+DA:177,28
+DA:180,29
+DA:208,13
+DA:209,13
+DA:210,13
+DA:212,13
+DA:213,9
+DA:214,27
+DA:215,18
+DA:216,18
+DA:217,18
+DA:218,18
+DA:219,9
+DA:220,4
 DA:221,1
-DA:222,2
-DA:224,10
-DA:227,10
-DA:228,10
-DA:241,10
-DA:242,10
-DA:243,4
-DA:244,4
-DA:245,4
-DA:246,4
-DA:247,3
-DA:248,3
-DA:249,3
-DA:250,3
-DA:251,3
-DA:253,10
+DA:222,3
+DA:224,13
+DA:227,13
+DA:228,13
+DA:241,13
+DA:242,13
+DA:243,5
+DA:244,5
+DA:245,5
+DA:246,5
+DA:247,4
+DA:248,4
+DA:249,4
+DA:250,4
+DA:251,4
+DA:253,13
 DA:281,11
 DA:282,11
 DA:283,11
@@ -637,31 +678,31 @@ DA:337,8
 DA:338,8
 DA:340,10
 DA:341,11
-DA:349,20
-DA:350,20
-DA:351,8
+DA:349,30
+DA:350,30
+DA:351,10
 DA:352,2
 DA:353,2
 DA:354,2
 DA:355,2
-DA:356,0
-DA:358,8
+DA:356,2
+DA:358,10
 DA:359,2
 DA:360,2
 DA:361,2
 DA:362,2
-DA:363,0
-DA:365,4
-DA:367,20
+DA:363,2
+DA:365,10
+DA:367,30
 DA:370,1
 DA:371,1
 DA:372,1
 DA:375,5
 DA:376,5
 DA:377,5
-DA:380,35
-DA:381,35
-DA:382,35
+DA:380,37
+DA:381,37
+DA:382,37
 DA:408,1
 DA:409,1
 DA:410,1
@@ -670,19 +711,19 @@ DA:412,1
 DA:413,2
 DA:414,1
 DA:415,1
-DA:435,17
-DA:436,17
-DA:437,17
-DA:438,17
-DA:439,17
-DA:440,17
-DA:441,17
-DA:442,17
-DA:443,17
-DA:444,17
-DA:446,17
-DA:447,17
-DA:448,17
+DA:435,22
+DA:436,22
+DA:437,22
+DA:438,22
+DA:439,22
+DA:440,22
+DA:441,22
+DA:442,22
+DA:443,22
+DA:444,22
+DA:446,22
+DA:447,22
+DA:448,22
 DA:455,2
 DA:456,2
 DA:457,2
@@ -867,174 +908,64 @@ DA:734,1
 DA:736,1
 DA:737,1
 DA:738,1
+DA:744,1
+DA:745,1
+DA:747,2
+DA:748,2
+DA:750,1
+DA:753,1
+DA:754,1
+DA:755,1
+DA:756,2
+DA:757,2
+DA:759,1
+DA:762,1
+DA:763,1
+DA:766,1
+DA:767,1
+DA:768,1
+DA:771,1
+DA:772,1
+DA:773,1
+DA:776,1
+DA:777,1
+DA:778,1
+DA:781,1
+DA:782,1
+DA:783,1
+DA:786,1
+DA:787,1
+DA:788,1
 BRF:0
 BRH:0
-LF:308
-LH:306
+LF:336
+LH:336
 end_of_record
 SF:C:\Users\shiro\Documents\Projects\hex-terapia-visual\terapia-visual\terapia_visual_domain\src\domain\reading_settings.rs
-FN:42,_RNvNtNtNtCsh6eLa7zxMRk_21terapia_visual_domain6domain16reading_settings5tests16two_zones_config
-FN:109,_RNvNtNtNtCsh6eLa7zxMRk_21terapia_visual_domain6domain16reading_settings5testss_19test_generate_zones
-FN:82,_RNvNtNtNtCsh6eLa7zxMRk_21terapia_visual_domain6domain16reading_settings5testss_21test_new_config_valid
-FN:60,_RNvNtNtNtCsh6eLa7zxMRk_21terapia_visual_domain6domain16reading_settings5testss_28test_reading_config_creation
-FN:93,_RNvNtNtNtCsh6eLa7zxMRk_21terapia_visual_domain6domain16reading_settings5testss_34test_new_config_invalid_zone_count
-FN:68,_RNvNtNtNtCsh6eLa7zxMRk_21terapia_visual_domain6domain16reading_settings5testss_35test_reading_config_update_settings
-FN:230,_RNvNtNtNtCsh6eLa7zxMRk_21terapia_visual_domain6domain16reading_settings5testss_40test_vertical4_syncs_updates_and_reverse
-FN:185,_RNvNtNtNtCsh6eLa7zxMRk_21terapia_visual_domain6domain16reading_settings5testss_42test_updates_no_sync_for_horizontal_layout
-FN:204,_RNvNtNtNtCsh6eLa7zxMRk_21terapia_visual_domain6domain16reading_settings5testss_43test_checkerboard_syncs_updates_and_reverse
-FN:127,_RNvNtNtNtCsh6eLa7zxMRk_21terapia_visual_domain6domain16reading_settings5testss_48test_change_layout_truncates_when_reducing_zones
-FN:157,_RNvNtNtNtCsh6eLa7zxMRk_21terapia_visual_domain6domain16reading_settings5testss_48test_update_zone_color_success_and_out_of_bounds
-FN:136,_RNvNtNtNtCsh6eLa7zxMRk_21terapia_visual_domain6domain16reading_settings5testss_49test_change_layout_to_vertical4_expands_and_syncs
-FN:171,_RNvNtNtNtCsh6eLa7zxMRk_21terapia_visual_domain6domain16reading_settings5testss_50test_update_zone_opacity_success_and_out_of_bounds
+FN:39,_RNvNtNtNtCsh6eLa7zxMRk_21terapia_visual_domain6domain16reading_settings5testss_29test_reading_settings_default
 FN:24,_RNvXNtNtCsh6eLa7zxMRk_21terapia_visual_domain6domain16reading_settingsNtB2_15ReadingSettingsNtNtCs9N2lWLRSIT9_4core7default7Default7default
-FNDA:2,_RNvNtNtNtCsh6eLa7zxMRk_21terapia_visual_domain6domain16reading_settings5tests16two_zones_config
-FNDA:1,_RNvNtNtNtCsh6eLa7zxMRk_21terapia_visual_domain6domain16reading_settings5testss_19test_generate_zones
-FNDA:1,_RNvNtNtNtCsh6eLa7zxMRk_21terapia_visual_domain6domain16reading_settings5testss_21test_new_config_valid
-FNDA:1,_RNvNtNtNtCsh6eLa7zxMRk_21terapia_visual_domain6domain16reading_settings5testss_28test_reading_config_creation
-FNDA:1,_RNvNtNtNtCsh6eLa7zxMRk_21terapia_visual_domain6domain16reading_settings5testss_34test_new_config_invalid_zone_count
-FNDA:1,_RNvNtNtNtCsh6eLa7zxMRk_21terapia_visual_domain6domain16reading_settings5testss_35test_reading_config_update_settings
-FNDA:1,_RNvNtNtNtCsh6eLa7zxMRk_21terapia_visual_domain6domain16reading_settings5testss_40test_vertical4_syncs_updates_and_reverse
-FNDA:1,_RNvNtNtNtCsh6eLa7zxMRk_21terapia_visual_domain6domain16reading_settings5testss_42test_updates_no_sync_for_horizontal_layout
-FNDA:1,_RNvNtNtNtCsh6eLa7zxMRk_21terapia_visual_domain6domain16reading_settings5testss_43test_checkerboard_syncs_updates_and_reverse
-FNDA:1,_RNvNtNtNtCsh6eLa7zxMRk_21terapia_visual_domain6domain16reading_settings5testss_48test_change_layout_truncates_when_reducing_zones
-FNDA:1,_RNvNtNtNtCsh6eLa7zxMRk_21terapia_visual_domain6domain16reading_settings5testss_48test_update_zone_color_success_and_out_of_bounds
-FNDA:1,_RNvNtNtNtCsh6eLa7zxMRk_21terapia_visual_domain6domain16reading_settings5testss_49test_change_layout_to_vertical4_expands_and_syncs
-FNDA:1,_RNvNtNtNtCsh6eLa7zxMRk_21terapia_visual_domain6domain16reading_settings5testss_50test_update_zone_opacity_success_and_out_of_bounds
-FNDA:26,_RNvXNtNtCsh6eLa7zxMRk_21terapia_visual_domain6domain16reading_settingsNtB2_15ReadingSettingsNtNtCs9N2lWLRSIT9_4core7default7Default7default
-FNF:14
-FNH:14
-DA:24,26
-DA:25,26
-DA:26,26
-DA:27,26
-DA:28,26
-DA:29,26
-DA:30,26
-DA:31,26
-DA:42,2
-DA:43,2
-DA:44,2
-DA:45,2
-DA:46,2
-DA:47,2
-DA:48,2
-DA:49,2
-DA:50,2
-DA:51,2
-DA:53,2
-DA:60,1
-DA:61,1
-DA:62,1
-DA:63,1
-DA:64,1
-DA:65,1
-DA:68,1
-DA:69,1
-DA:70,1
-DA:71,1
-DA:73,1
-DA:74,1
-DA:75,1
-DA:82,1
-DA:83,1
-DA:84,1
-DA:85,1
-DA:86,1
-DA:88,1
-DA:89,1
-DA:90,1
-DA:93,1
-DA:94,1
-DA:95,1
-DA:96,1
-DA:97,1
-DA:98,1
-DA:99,1
-DA:106,1
-DA:109,1
-DA:110,1
-DA:111,1
-DA:112,1
-DA:113,1
-DA:115,1
-DA:116,1
-DA:117,1
-DA:118,1
-DA:119,1
-DA:120,1
-DA:127,1
-DA:128,1
-DA:129,1
-DA:130,1
-DA:131,1
-DA:132,1
-DA:133,1
-DA:136,1
-DA:137,1
-DA:138,1
-DA:139,1
-DA:140,1
-DA:142,1
-DA:143,1
-DA:144,1
-DA:146,1
-DA:147,1
-DA:148,1
-DA:150,1
-DA:157,1
-DA:158,1
-DA:159,1
-DA:161,1
-DA:162,1
-DA:164,1
-DA:165,1
-DA:168,1
-DA:171,1
-DA:172,1
-DA:173,1
-DA:175,1
-DA:176,1
-DA:178,1
-DA:179,1
-DA:182,1
-DA:185,1
-DA:186,1
-DA:187,1
-DA:188,1
-DA:190,1
-DA:191,1
-DA:193,1
-DA:194,1
-DA:195,1
-DA:196,1
-DA:197,1
-DA:204,1
-DA:205,1
-DA:206,1
-DA:208,1
-DA:209,1
-DA:210,1
-DA:213,1
-DA:214,1
-DA:217,1
-DA:218,1
-DA:221,1
-DA:222,1
-DA:223,1
-DA:230,1
-DA:231,1
-DA:232,1
-DA:234,1
-DA:235,1
-DA:238,1
-DA:239,1
-DA:242,1
-DA:243,1
-DA:244,1
+FNDA:1,_RNvNtNtNtCsh6eLa7zxMRk_21terapia_visual_domain6domain16reading_settings5testss_29test_reading_settings_default
+FNDA:20,_RNvXNtNtCsh6eLa7zxMRk_21terapia_visual_domain6domain16reading_settingsNtB2_15ReadingSettingsNtNtCs9N2lWLRSIT9_4core7default7Default7default
+FNF:2
+FNH:2
+DA:24,20
+DA:25,20
+DA:26,20
+DA:27,20
+DA:28,20
+DA:29,20
+DA:30,20
+DA:31,20
+DA:39,1
+DA:40,1
+DA:41,1
+DA:42,1
+DA:43,1
+DA:44,1
 BRF:0
 BRH:0
-LF:128
-LH:128
+LF:14
+LH:14
 end_of_record
 SF:C:\Users\shiro\Documents\Projects\hex-terapia-visual\terapia-visual\terapia_visual_domain\src\domain\reading_therapy_config.rs
 FN:148,_RNvMNtNtCsh6eLa7zxMRk_21terapia_visual_domain6domain22reading_therapy_configNtB2_20ReadingTherapyConfig12zones_config
@@ -1062,20 +993,25 @@ FN:279,_RNvNtNtNtCsh6eLa7zxMRk_21terapia_visual_domain6domain22reading_therapy_c
 FN:309,_RNvNtNtNtCsh6eLa7zxMRk_21terapia_visual_domain6domain22reading_therapy_config5testss_48test_update_zone_color_success_and_out_of_bounds
 FN:288,_RNvNtNtNtCsh6eLa7zxMRk_21terapia_visual_domain6domain22reading_therapy_config5testss_49test_change_layout_to_vertical4_expands_and_syncs
 FN:323,_RNvNtNtNtCsh6eLa7zxMRk_21terapia_visual_domain6domain22reading_therapy_config5testss_50test_update_zone_opacity_success_and_out_of_bounds
+FN:415,_RNvNtNtNtCsh6eLa7zxMRk_21terapia_visual_domain6domain22reading_therapy_config5testss_51test_get_sync_pair_returns_none_for_vertical_layout
+FN:428,_RNvNtNtNtCsh6eLa7zxMRk_21terapia_visual_domain6domain22reading_therapy_config5testss_53test_get_sync_pair_returns_none_for_horizontal_layout
+FN:436,_RNvNtNtNtCsh6eLa7zxMRk_21terapia_visual_domain6domain22reading_therapy_config5testss_54test_get_sync_pair_returns_none_for_out_of_range_index
+FN:451,_RNvNtNtNtCsh6eLa7zxMRk_21terapia_visual_domain6domain22reading_therapy_config5testss_63test_get_sync_pair_returns_none_for_unpaired_index_in_vertical4
+FN:443,_RNvNtNtNtCsh6eLa7zxMRk_21terapia_visual_domain6domain22reading_therapy_config5testss_66test_get_sync_pair_returns_none_for_unpaired_index_in_checkerboard
 FN:161,_RNCNvMNtNtCsh6eLa7zxMRk_21terapia_visual_domain6domain22reading_therapy_configNtB4_20ReadingTherapyConfig14generate_zones0B8_
-FNDA:39,_RNvMNtNtCsh6eLa7zxMRk_21terapia_visual_domain6domain22reading_therapy_configNtB2_20ReadingTherapyConfig12zones_config
-FNDA:10,_RNvMNtNtCsh6eLa7zxMRk_21terapia_visual_domain6domain22reading_therapy_configNtB2_20ReadingTherapyConfig13change_layout
-FNDA:21,_RNvMNtNtCsh6eLa7zxMRk_21terapia_visual_domain6domain22reading_therapy_configNtB2_20ReadingTherapyConfig13get_sync_pair
-FNDA:2,_RNvMNtNtCsh6eLa7zxMRk_21terapia_visual_domain6domain22reading_therapy_configNtB2_20ReadingTherapyConfig14generate_zones
-FNDA:10,_RNvMNtNtCsh6eLa7zxMRk_21terapia_visual_domain6domain22reading_therapy_configNtB2_20ReadingTherapyConfig16apply_sync_rules
-FNDA:4,_RNvMNtNtCsh6eLa7zxMRk_21terapia_visual_domain6domain22reading_therapy_configNtB2_20ReadingTherapyConfig16reading_settings
-FNDA:13,_RNvMNtNtCsh6eLa7zxMRk_21terapia_visual_domain6domain22reading_therapy_configNtB2_20ReadingTherapyConfig17update_zone_color
-FNDA:12,_RNvMNtNtCsh6eLa7zxMRk_21terapia_visual_domain6domain22reading_therapy_configNtB2_20ReadingTherapyConfig19update_zone_opacity
-FNDA:2,_RNvMNtNtCsh6eLa7zxMRk_21terapia_visual_domain6domain22reading_therapy_configNtB2_20ReadingTherapyConfig23update_reading_settings
-FNDA:24,_RNvMNtNtCsh6eLa7zxMRk_21terapia_visual_domain6domain22reading_therapy_configNtB2_20ReadingTherapyConfig3new
-FNDA:8,_RNvMNtNtCsh6eLa7zxMRk_21terapia_visual_domain6domain22reading_therapy_configNtB2_20ReadingTherapyConfig6layout
-FNDA:18,_RNvXs_NtNtCsh6eLa7zxMRk_21terapia_visual_domain6domain22reading_therapy_configNtB4_20ReadingTherapyConfigNtNtCs9N2lWLRSIT9_4core7default7Default7default
-FNDA:2,_RNvNtNtNtCsh6eLa7zxMRk_21terapia_visual_domain6domain22reading_therapy_config5tests16two_zones_config
+FNDA:23,_RNvMNtNtCsh6eLa7zxMRk_21terapia_visual_domain6domain22reading_therapy_configNtB2_20ReadingTherapyConfig12zones_config
+FNDA:7,_RNvMNtNtCsh6eLa7zxMRk_21terapia_visual_domain6domain22reading_therapy_configNtB2_20ReadingTherapyConfig13change_layout
+FNDA:22,_RNvMNtNtCsh6eLa7zxMRk_21terapia_visual_domain6domain22reading_therapy_configNtB2_20ReadingTherapyConfig13get_sync_pair
+FNDA:1,_RNvMNtNtCsh6eLa7zxMRk_21terapia_visual_domain6domain22reading_therapy_configNtB2_20ReadingTherapyConfig14generate_zones
+FNDA:7,_RNvMNtNtCsh6eLa7zxMRk_21terapia_visual_domain6domain22reading_therapy_configNtB2_20ReadingTherapyConfig16apply_sync_rules
+FNDA:2,_RNvMNtNtCsh6eLa7zxMRk_21terapia_visual_domain6domain22reading_therapy_configNtB2_20ReadingTherapyConfig16reading_settings
+FNDA:7,_RNvMNtNtCsh6eLa7zxMRk_21terapia_visual_domain6domain22reading_therapy_configNtB2_20ReadingTherapyConfig17update_zone_color
+FNDA:7,_RNvMNtNtCsh6eLa7zxMRk_21terapia_visual_domain6domain22reading_therapy_configNtB2_20ReadingTherapyConfig19update_zone_opacity
+FNDA:1,_RNvMNtNtCsh6eLa7zxMRk_21terapia_visual_domain6domain22reading_therapy_configNtB2_20ReadingTherapyConfig23update_reading_settings
+FNDA:18,_RNvMNtNtCsh6eLa7zxMRk_21terapia_visual_domain6domain22reading_therapy_configNtB2_20ReadingTherapyConfig3new
+FNDA:4,_RNvMNtNtCsh6eLa7zxMRk_21terapia_visual_domain6domain22reading_therapy_configNtB2_20ReadingTherapyConfig6layout
+FNDA:14,_RNvXs_NtNtCsh6eLa7zxMRk_21terapia_visual_domain6domain22reading_therapy_configNtB4_20ReadingTherapyConfigNtNtCs9N2lWLRSIT9_4core7default7Default7default
+FNDA:3,_RNvNtNtNtCsh6eLa7zxMRk_21terapia_visual_domain6domain22reading_therapy_config5tests16two_zones_config
 FNDA:1,_RNvNtNtNtCsh6eLa7zxMRk_21terapia_visual_domain6domain22reading_therapy_config5testss_19test_generate_zones
 FNDA:1,_RNvNtNtNtCsh6eLa7zxMRk_21terapia_visual_domain6domain22reading_therapy_config5testss_21test_new_config_valid
 FNDA:1,_RNvNtNtNtCsh6eLa7zxMRk_21terapia_visual_domain6domain22reading_therapy_config5testss_28test_reading_config_creation
@@ -1088,147 +1024,152 @@ FNDA:1,_RNvNtNtNtCsh6eLa7zxMRk_21terapia_visual_domain6domain22reading_therapy_c
 FNDA:1,_RNvNtNtNtCsh6eLa7zxMRk_21terapia_visual_domain6domain22reading_therapy_config5testss_48test_update_zone_color_success_and_out_of_bounds
 FNDA:1,_RNvNtNtNtCsh6eLa7zxMRk_21terapia_visual_domain6domain22reading_therapy_config5testss_49test_change_layout_to_vertical4_expands_and_syncs
 FNDA:1,_RNvNtNtNtCsh6eLa7zxMRk_21terapia_visual_domain6domain22reading_therapy_config5testss_50test_update_zone_opacity_success_and_out_of_bounds
-FNDA:4,_RNCNvMNtNtCsh6eLa7zxMRk_21terapia_visual_domain6domain22reading_therapy_configNtB4_20ReadingTherapyConfig14generate_zones0B8_
-FNF:26
-FNH:26
-DA:25,24
-DA:26,24
-DA:27,24
-DA:28,24
-DA:29,24
-DA:30,24
-DA:31,24
-DA:32,24
-DA:33,2
-DA:34,2
-DA:35,2
-DA:36,2
-DA:37,22
-DA:38,22
-DA:39,22
-DA:40,22
-DA:41,22
-DA:42,22
-DA:43,24
-DA:46,10
-DA:47,10
-DA:48,10
-DA:50,10
-DA:51,8
-DA:52,24
-DA:53,16
-DA:54,16
-DA:55,16
-DA:56,8
-DA:57,2
-DA:58,2
-DA:59,2
-DA:61,10
-DA:62,10
-DA:63,10
-DA:66,10
-DA:67,10
-DA:68,4
-DA:69,4
-DA:70,4
-DA:71,4
-DA:72,4
-DA:73,4
-DA:74,4
-DA:75,4
-DA:76,2
-DA:78,10
-DA:81,13
-DA:82,13
-DA:83,13
-DA:84,13
-DA:85,13
-DA:86,13
-DA:87,2
-DA:88,11
-DA:90,11
-DA:92,11
-DA:93,7
-DA:94,7
-DA:96,11
-DA:97,13
-DA:100,12
-DA:101,12
-DA:102,12
-DA:103,12
-DA:104,12
-DA:105,12
-DA:106,2
-DA:107,10
-DA:109,10
-DA:111,10
-DA:112,6
-DA:113,6
-DA:115,10
-DA:116,12
-DA:119,21
-DA:120,21
-DA:121,7
-DA:122,2
-DA:123,2
+FNDA:1,_RNvNtNtNtCsh6eLa7zxMRk_21terapia_visual_domain6domain22reading_therapy_config5testss_51test_get_sync_pair_returns_none_for_vertical_layout
+FNDA:1,_RNvNtNtNtCsh6eLa7zxMRk_21terapia_visual_domain6domain22reading_therapy_config5testss_53test_get_sync_pair_returns_none_for_horizontal_layout
+FNDA:1,_RNvNtNtNtCsh6eLa7zxMRk_21terapia_visual_domain6domain22reading_therapy_config5testss_54test_get_sync_pair_returns_none_for_out_of_range_index
+FNDA:1,_RNvNtNtNtCsh6eLa7zxMRk_21terapia_visual_domain6domain22reading_therapy_config5testss_63test_get_sync_pair_returns_none_for_unpaired_index_in_vertical4
+FNDA:1,_RNvNtNtNtCsh6eLa7zxMRk_21terapia_visual_domain6domain22reading_therapy_config5testss_66test_get_sync_pair_returns_none_for_unpaired_index_in_checkerboard
+FNDA:2,_RNCNvMNtNtCsh6eLa7zxMRk_21terapia_visual_domain6domain22reading_therapy_configNtB4_20ReadingTherapyConfig14generate_zones0B8_
+FNF:31
+FNH:31
+DA:25,18
+DA:26,18
+DA:27,18
+DA:28,18
+DA:29,18
+DA:30,18
+DA:31,18
+DA:32,18
+DA:33,1
+DA:34,1
+DA:35,1
+DA:36,1
+DA:37,17
+DA:38,17
+DA:39,17
+DA:40,17
+DA:41,17
+DA:42,17
+DA:43,18
+DA:46,7
+DA:47,7
+DA:48,7
+DA:50,7
+DA:51,6
+DA:52,18
+DA:53,12
+DA:54,12
+DA:55,12
+DA:56,6
+DA:57,1
+DA:58,1
+DA:59,1
+DA:61,7
+DA:62,7
+DA:63,7
+DA:66,7
+DA:67,7
+DA:68,3
+DA:69,3
+DA:70,3
+DA:71,3
+DA:72,3
+DA:73,3
+DA:74,3
+DA:75,3
+DA:76,1
+DA:78,7
+DA:81,7
+DA:82,7
+DA:83,7
+DA:84,7
+DA:85,7
+DA:86,7
+DA:87,1
+DA:88,6
+DA:90,6
+DA:92,6
+DA:93,4
+DA:94,4
+DA:96,6
+DA:97,7
+DA:100,7
+DA:101,7
+DA:102,7
+DA:103,7
+DA:104,7
+DA:105,7
+DA:106,1
+DA:107,6
+DA:109,6
+DA:111,6
+DA:112,4
+DA:113,4
+DA:115,6
+DA:116,7
+DA:119,22
+DA:120,22
+DA:121,6
+DA:122,1
+DA:123,1
 DA:124,1
-DA:125,2
-DA:126,0
+DA:125,1
+DA:126,2
 DA:128,6
 DA:129,1
-DA:130,2
-DA:131,2
+DA:130,1
+DA:131,1
 DA:132,1
-DA:133,0
-DA:135,8
-DA:137,21
-DA:140,2
-DA:141,2
-DA:142,2
-DA:144,8
-DA:145,8
-DA:146,8
-DA:148,39
-DA:149,39
-DA:150,39
-DA:152,4
-DA:153,4
-DA:154,4
-DA:156,2
-DA:157,2
-DA:158,2
-DA:159,2
-DA:160,2
-DA:161,4
-DA:162,2
-DA:163,2
-DA:170,18
-DA:171,18
-DA:172,18
-DA:173,18
-DA:174,18
-DA:175,18
-DA:176,18
-DA:177,18
-DA:178,18
-DA:179,18
-DA:181,18
-DA:182,18
-DA:183,18
-DA:184,18
-DA:186,18
-DA:187,18
-DA:194,2
-DA:195,2
-DA:196,2
-DA:197,2
-DA:198,2
-DA:199,2
-DA:200,2
-DA:201,2
-DA:202,2
-DA:203,2
-DA:205,2
+DA:133,2
+DA:135,10
+DA:137,22
+DA:140,1
+DA:141,1
+DA:142,1
+DA:144,4
+DA:145,4
+DA:146,4
+DA:148,23
+DA:149,23
+DA:150,23
+DA:152,2
+DA:153,2
+DA:154,2
+DA:156,1
+DA:157,1
+DA:158,1
+DA:159,1
+DA:160,1
+DA:161,2
+DA:162,1
+DA:163,1
+DA:170,14
+DA:171,14
+DA:172,14
+DA:173,14
+DA:174,14
+DA:175,14
+DA:176,14
+DA:177,14
+DA:178,14
+DA:179,14
+DA:181,14
+DA:182,14
+DA:183,14
+DA:184,14
+DA:186,14
+DA:187,14
+DA:194,3
+DA:195,3
+DA:196,3
+DA:197,3
+DA:198,3
+DA:199,3
+DA:200,3
+DA:201,3
+DA:202,3
+DA:203,3
+DA:205,3
 DA:212,1
 DA:213,1
 DA:214,1
@@ -1344,10 +1285,41 @@ DA:403,1
 DA:406,1
 DA:407,1
 DA:408,1
+DA:415,1
+DA:416,1
+DA:417,1
+DA:418,1
+DA:419,1
+DA:421,1
+DA:422,2
+DA:423,2
+DA:425,1
+DA:428,1
+DA:429,1
+DA:430,2
+DA:431,2
+DA:433,1
+DA:436,1
+DA:437,1
+DA:438,1
+DA:439,1
+DA:440,1
+DA:443,1
+DA:444,1
+DA:445,1
+DA:446,1
+DA:447,1
+DA:448,1
+DA:451,1
+DA:452,1
+DA:453,1
+DA:454,1
+DA:455,1
+DA:456,1
 BRF:0
 BRH:0
-LF:254
-LH:252
+LF:285
+LH:285
 end_of_record
 SF:C:\Users\shiro\Documents\Projects\hex-terapia-visual\terapia-visual\terapia_visual_domain\src\domain\zone.rs
 FN:97,_RNvMNtNtCsh6eLa7zxMRk_21terapia_visual_domain6domain4zoneNtB2_4Zone3new
@@ -1357,28 +1329,28 @@ FN:162,_RNvMNtNtCsh6eLa7zxMRk_21terapia_visual_domain6domain4zoneNtB2_4Zone7opac
 FN:201,_RNvMNtNtCsh6eLa7zxMRk_21terapia_visual_domain6domain4zoneNtB2_4Zone8contains
 FN:216,_RNvNtNtNtCsh6eLa7zxMRk_21terapia_visual_domain6domain4zone5testss_18test_zone_creation
 FN:228,_RNvNtNtNtCsh6eLa7zxMRk_21terapia_visual_domain6domain4zone5testss_24test_zone_contains_point
-FNDA:8,_RNvMNtNtCsh6eLa7zxMRk_21terapia_visual_domain6domain4zoneNtB2_4Zone3new
-FNDA:7,_RNvMNtNtCsh6eLa7zxMRk_21terapia_visual_domain6domain4zoneNtB2_4Zone4rect
-FNDA:5,_RNvMNtNtCsh6eLa7zxMRk_21terapia_visual_domain6domain4zoneNtB2_4Zone5color
+FNDA:6,_RNvMNtNtCsh6eLa7zxMRk_21terapia_visual_domain6domain4zoneNtB2_4Zone3new
+FNDA:6,_RNvMNtNtCsh6eLa7zxMRk_21terapia_visual_domain6domain4zoneNtB2_4Zone4rect
+FNDA:4,_RNvMNtNtCsh6eLa7zxMRk_21terapia_visual_domain6domain4zoneNtB2_4Zone5color
 FNDA:1,_RNvMNtNtCsh6eLa7zxMRk_21terapia_visual_domain6domain4zoneNtB2_4Zone7opacity
 FNDA:7,_RNvMNtNtCsh6eLa7zxMRk_21terapia_visual_domain6domain4zoneNtB2_4Zone8contains
 FNDA:1,_RNvNtNtNtCsh6eLa7zxMRk_21terapia_visual_domain6domain4zone5testss_18test_zone_creation
 FNDA:1,_RNvNtNtNtCsh6eLa7zxMRk_21terapia_visual_domain6domain4zone5testss_24test_zone_contains_point
 FNF:7
 FNH:7
-DA:97,8
-DA:98,8
-DA:99,8
-DA:100,8
-DA:101,8
-DA:102,8
-DA:103,8
-DA:122,7
-DA:123,7
-DA:124,7
-DA:142,5
-DA:143,5
-DA:144,5
+DA:97,6
+DA:98,6
+DA:99,6
+DA:100,6
+DA:101,6
+DA:102,6
+DA:103,6
+DA:122,6
+DA:123,6
+DA:124,6
+DA:142,4
+DA:143,4
+DA:144,4
 DA:162,1
 DA:163,1
 DA:164,1
@@ -1503,16 +1475,22 @@ LF:30
 LH:30
 end_of_record
 SF:C:\Users\shiro\Documents\Projects\hex-terapia-visual\terapia-visual\terapia_visual_domain\src\use_cases\mocks.rs
-FN:102,_RNvXs0_NtNtCsh6eLa7zxMRk_21terapia_visual_domain9use_cases5mocksNtB5_11MockOverlayNtNtNtB9_5ports7overlay11OverlayPort13update_config
-FN:87,_RNvXs0_NtNtCsh6eLa7zxMRk_21terapia_visual_domain9use_cases5mocksNtB5_11MockOverlayNtNtNtB9_5ports7overlay11OverlayPort4hide
-FN:75,_RNvXs0_NtNtCsh6eLa7zxMRk_21terapia_visual_domain9use_cases5mocksNtB5_11MockOverlayNtNtNtB9_5ports7overlay11OverlayPort4show
-FN:113,_RNvXs0_NtNtCsh6eLa7zxMRk_21terapia_visual_domain9use_cases5mocksNtB5_11MockOverlayNtNtNtB9_5ports7overlay11OverlayPort9is_active
-FN:137,_RNvXs3_NtNtCsh6eLa7zxMRk_21terapia_visual_domain9use_cases5mocksNtB5_24MockTherapyConfigStorageINtNtNtB9_5ports14config_storage13ConfigStorageNtNtNtB9_6domain22overlay_therapy_config20OverlayTherapyConfigE4load
-FN:145,_RNvXs3_NtNtCsh6eLa7zxMRk_21terapia_visual_domain9use_cases5mocksNtB5_24MockTherapyConfigStorageINtNtNtB9_5ports14config_storage13ConfigStorageNtNtNtB9_6domain22overlay_therapy_config20OverlayTherapyConfigE4save
-FN:166,_RNvXs4_NtNtCsh6eLa7zxMRk_21terapia_visual_domain9use_cases5mocksNtB5_20MockAppConfigStorageINtNtNtB9_5ports14config_storage13ConfigStorageNtNtNtB9_6domain12app_settings11AppSettingsE4load
-FN:174,_RNvXs4_NtNtCsh6eLa7zxMRk_21terapia_visual_domain9use_cases5mocksNtB5_20MockAppConfigStorageINtNtNtB9_5ports14config_storage13ConfigStorageNtNtNtB9_6domain12app_settings11AppSettingsE4save
-FN:204,_RNvXs7_NtNtCsh6eLa7zxMRk_21terapia_visual_domain9use_cases5mocksNtB5_18MockSystemNotifierNtNtNtB9_5ports15system_notifier14SystemNotifier12show_message
-FN:208,_RNvXs7_NtNtCsh6eLa7zxMRk_21terapia_visual_domain9use_cases5mocksNtB5_18MockSystemNotifierNtNtNtB9_5ports15system_notifier14SystemNotifier14set_tray_state
+FN:103,_RNvXs0_NtNtCsh6eLa7zxMRk_21terapia_visual_domain9use_cases5mocksNtB5_11MockOverlayNtNtNtB9_5ports7overlay11OverlayPort13update_config
+FN:88,_RNvXs0_NtNtCsh6eLa7zxMRk_21terapia_visual_domain9use_cases5mocksNtB5_11MockOverlayNtNtNtB9_5ports7overlay11OverlayPort4hide
+FN:76,_RNvXs0_NtNtCsh6eLa7zxMRk_21terapia_visual_domain9use_cases5mocksNtB5_11MockOverlayNtNtNtB9_5ports7overlay11OverlayPort4show
+FN:114,_RNvXs0_NtNtCsh6eLa7zxMRk_21terapia_visual_domain9use_cases5mocksNtB5_11MockOverlayNtNtNtB9_5ports7overlay11OverlayPort9is_active
+FN:138,_RNvXs3_NtNtCsh6eLa7zxMRk_21terapia_visual_domain9use_cases5mocksNtB5_24MockTherapyConfigStorageINtNtNtB9_5ports14config_storage13ConfigStorageNtNtNtB9_6domain22overlay_therapy_config20OverlayTherapyConfigE4load
+FN:146,_RNvXs3_NtNtCsh6eLa7zxMRk_21terapia_visual_domain9use_cases5mocksNtB5_24MockTherapyConfigStorageINtNtNtB9_5ports14config_storage13ConfigStorageNtNtNtB9_6domain22overlay_therapy_config20OverlayTherapyConfigE4save
+FN:167,_RNvXs4_NtNtCsh6eLa7zxMRk_21terapia_visual_domain9use_cases5mocksNtB5_20MockAppConfigStorageINtNtNtB9_5ports14config_storage13ConfigStorageNtNtNtB9_6domain12app_settings11AppSettingsE4load
+FN:175,_RNvXs4_NtNtCsh6eLa7zxMRk_21terapia_visual_domain9use_cases5mocksNtB5_20MockAppConfigStorageINtNtNtB9_5ports14config_storage13ConfigStorageNtNtNtB9_6domain12app_settings11AppSettingsE4save
+FN:257,_RNvXsa_NtNtCsh6eLa7zxMRk_21terapia_visual_domain9use_cases5mocksNtB5_17MockReadingWindowNtNtNtB9_5ports14reading_window17ReadingWindowPort13update_config
+FN:244,_RNvXsa_NtNtCsh6eLa7zxMRk_21terapia_visual_domain9use_cases5mocksNtB5_17MockReadingWindowNtNtNtB9_5ports14reading_window17ReadingWindowPort4hide
+FN:233,_RNvXsa_NtNtCsh6eLa7zxMRk_21terapia_visual_domain9use_cases5mocksNtB5_17MockReadingWindowNtNtNtB9_5ports14reading_window17ReadingWindowPort4show
+FN:266,_RNvXsa_NtNtCsh6eLa7zxMRk_21terapia_visual_domain9use_cases5mocksNtB5_17MockReadingWindowNtNtNtB9_5ports14reading_window17ReadingWindowPort9is_active
+FN:281,_RNvXsd_NtNtCsh6eLa7zxMRk_21terapia_visual_domain9use_cases5mocksNtB5_24MockReadingConfigStorageINtNtNtB9_5ports14config_storage13ConfigStorageNtNtNtB9_6domain22reading_therapy_config20ReadingTherapyConfigE4load
+FN:289,_RNvXsd_NtNtCsh6eLa7zxMRk_21terapia_visual_domain9use_cases5mocksNtB5_24MockReadingConfigStorageINtNtNtB9_5ports14config_storage13ConfigStorageNtNtNtB9_6domain22reading_therapy_config20ReadingTherapyConfigE4save
+FN:205,_RNvXs7_NtNtCsh6eLa7zxMRk_21terapia_visual_domain9use_cases5mocksNtB5_18MockSystemNotifierNtNtNtB9_5ports15system_notifier14SystemNotifier12show_message
+FN:209,_RNvXs7_NtNtCsh6eLa7zxMRk_21terapia_visual_domain9use_cases5mocksNtB5_18MockSystemNotifierNtNtNtB9_5ports15system_notifier14SystemNotifier14set_tray_state
 FNDA:1,_RNvXs0_NtNtCsh6eLa7zxMRk_21terapia_visual_domain9use_cases5mocksNtB5_11MockOverlayNtNtNtB9_5ports7overlay11OverlayPort13update_config
 FNDA:1,_RNvXs0_NtNtCsh6eLa7zxMRk_21terapia_visual_domain9use_cases5mocksNtB5_11MockOverlayNtNtNtB9_5ports7overlay11OverlayPort4hide
 FNDA:1,_RNvXs0_NtNtCsh6eLa7zxMRk_21terapia_visual_domain9use_cases5mocksNtB5_11MockOverlayNtNtNtB9_5ports7overlay11OverlayPort4show
@@ -1521,35 +1499,54 @@ FNDA:2,_RNvXs3_NtNtCsh6eLa7zxMRk_21terapia_visual_domain9use_cases5mocksNtB5_24M
 FNDA:2,_RNvXs3_NtNtCsh6eLa7zxMRk_21terapia_visual_domain9use_cases5mocksNtB5_24MockTherapyConfigStorageINtNtNtB9_5ports14config_storage13ConfigStorageNtNtNtB9_6domain22overlay_therapy_config20OverlayTherapyConfigE4save
 FNDA:2,_RNvXs4_NtNtCsh6eLa7zxMRk_21terapia_visual_domain9use_cases5mocksNtB5_20MockAppConfigStorageINtNtNtB9_5ports14config_storage13ConfigStorageNtNtNtB9_6domain12app_settings11AppSettingsE4load
 FNDA:2,_RNvXs4_NtNtCsh6eLa7zxMRk_21terapia_visual_domain9use_cases5mocksNtB5_20MockAppConfigStorageINtNtNtB9_5ports14config_storage13ConfigStorageNtNtNtB9_6domain12app_settings11AppSettingsE4save
+FNDA:1,_RNvXsa_NtNtCsh6eLa7zxMRk_21terapia_visual_domain9use_cases5mocksNtB5_17MockReadingWindowNtNtNtB9_5ports14reading_window17ReadingWindowPort13update_config
+FNDA:1,_RNvXsa_NtNtCsh6eLa7zxMRk_21terapia_visual_domain9use_cases5mocksNtB5_17MockReadingWindowNtNtNtB9_5ports14reading_window17ReadingWindowPort4hide
+FNDA:0,_RNvXsa_NtNtCsh6eLa7zxMRk_21terapia_visual_domain9use_cases5mocksNtB5_17MockReadingWindowNtNtNtB9_5ports14reading_window17ReadingWindowPort4show
+FNDA:3,_RNvXsa_NtNtCsh6eLa7zxMRk_21terapia_visual_domain9use_cases5mocksNtB5_17MockReadingWindowNtNtNtB9_5ports14reading_window17ReadingWindowPort9is_active
+FNDA:0,_RNvXsd_NtNtCsh6eLa7zxMRk_21terapia_visual_domain9use_cases5mocksNtB5_24MockReadingConfigStorageINtNtNtB9_5ports14config_storage13ConfigStorageNtNtNtB9_6domain22reading_therapy_config20ReadingTherapyConfigE4load
+FNDA:1,_RNvXsd_NtNtCsh6eLa7zxMRk_21terapia_visual_domain9use_cases5mocksNtB5_24MockReadingConfigStorageINtNtNtB9_5ports14config_storage13ConfigStorageNtNtNtB9_6domain22reading_therapy_config20ReadingTherapyConfigE4save
 FNDA:0,_RNvXs7_NtNtCsh6eLa7zxMRk_21terapia_visual_domain9use_cases5mocksNtB5_18MockSystemNotifierNtNtNtB9_5ports15system_notifier14SystemNotifier12show_message
 FNDA:0,_RNvXs7_NtNtCsh6eLa7zxMRk_21terapia_visual_domain9use_cases5mocksNtB5_18MockSystemNotifierNtNtNtB9_5ports15system_notifier14SystemNotifier14set_tray_state
-FNF:10
-FNH:8
-DA:75,1
-DA:85,1
-DA:87,1
-DA:95,1
-DA:102,1
-DA:111,1
-DA:113,8
+FNF:16
+FNH:12
+DA:76,1
+DA:86,1
+DA:88,1
+DA:96,1
+DA:103,1
+DA:112,1
 DA:114,8
 DA:115,8
-DA:137,2
-DA:143,2
-DA:145,2
-DA:151,2
-DA:166,2
-DA:172,2
-DA:174,2
-DA:180,2
-DA:204,0
-DA:206,0
-DA:208,0
-DA:210,0
+DA:116,8
+DA:138,2
+DA:144,2
+DA:146,2
+DA:152,2
+DA:167,2
+DA:173,2
+DA:175,2
+DA:181,2
+DA:205,0
+DA:207,0
+DA:209,0
+DA:211,0
+DA:233,0
+DA:242,0
+DA:244,1
+DA:252,1
+DA:257,1
+DA:264,1
+DA:266,3
+DA:267,3
+DA:268,3
+DA:281,0
+DA:287,0
+DA:289,1
+DA:295,1
 BRF:0
 BRH:0
-LF:21
-LH:17
+LF:34
+LH:26
 end_of_record
 SF:C:\Users\shiro\Documents\Projects\hex-terapia-visual\terapia-visual\terapia_visual_domain\src\use_cases\start_overlay_therapy.rs
 FN:65,_RNCNvNtNtCsh6eLa7zxMRk_21terapia_visual_domain9use_cases21start_overlay_therapy21start_overlay_therapy0B7_
@@ -1615,6 +1612,25 @@ BRH:0
 LF:47
 LH:47
 end_of_record
+SF:C:\Users\shiro\Documents\Projects\hex-terapia-visual\terapia-visual\terapia_visual_domain\src\use_cases\start_reading_therapy.rs
+FN:15,_RNCNvNtNtCsh6eLa7zxMRk_21terapia_visual_domain9use_cases21start_reading_therapy21start_reading_therapy0B7_
+FN:11,_RNvNtNtCsh6eLa7zxMRk_21terapia_visual_domain9use_cases21start_reading_therapy21start_reading_therapy
+FNDA:0,_RNCNvNtNtCsh6eLa7zxMRk_21terapia_visual_domain9use_cases21start_reading_therapy21start_reading_therapy0B7_
+FNDA:0,_RNvNtNtCsh6eLa7zxMRk_21terapia_visual_domain9use_cases21start_reading_therapy21start_reading_therapy
+FNF:2
+FNH:0
+DA:11,0
+DA:12,0
+DA:13,0
+DA:14,0
+DA:15,0
+DA:16,0
+DA:17,0
+BRF:0
+BRH:0
+LF:8
+LH:0
+end_of_record
 SF:C:\Users\shiro\Documents\Projects\hex-terapia-visual\terapia-visual\terapia_visual_domain\src\use_cases\stop_overlay_therapy.rs
 FN:50,_RNvNtNtCsh6eLa7zxMRk_21terapia_visual_domain9use_cases20stop_overlay_therapy20stop_overlay_therapy
 FN:50,_RNCNvNtNtCsh6eLa7zxMRk_21terapia_visual_domain9use_cases20stop_overlay_therapy20stop_overlay_therapy0B7_
@@ -1654,6 +1670,38 @@ BRF:0
 BRH:0
 LF:25
 LH:25
+end_of_record
+SF:C:\Users\shiro\Documents\Projects\hex-terapia-visual\terapia-visual\terapia_visual_domain\src\use_cases\stop_reading_therapy.rs
+FN:5,_RNCNvNtNtCsh6eLa7zxMRk_21terapia_visual_domain9use_cases20stop_reading_therapy20stop_reading_therapy0B7_
+FN:3,_RNvNtNtCsh6eLa7zxMRk_21terapia_visual_domain9use_cases20stop_reading_therapy20stop_reading_therapy
+FN:19,_RNCNvNtNtNtCsh6eLa7zxMRk_21terapia_visual_domain9use_cases20stop_reading_therapy5testss_28test_stop_reading_therapy_ok0B9_
+FN:19,_RNvNtNtNtCsh6eLa7zxMRk_21terapia_visual_domain9use_cases20stop_reading_therapy5testss_28test_stop_reading_therapy_ok
+FNDA:1,_RNCNvNtNtCsh6eLa7zxMRk_21terapia_visual_domain9use_cases20stop_reading_therapy20stop_reading_therapy0B7_
+FNDA:1,_RNvNtNtCsh6eLa7zxMRk_21terapia_visual_domain9use_cases20stop_reading_therapy20stop_reading_therapy
+FNDA:1,_RNCNvNtNtNtCsh6eLa7zxMRk_21terapia_visual_domain9use_cases20stop_reading_therapy5testss_28test_stop_reading_therapy_ok0B9_
+FNDA:1,_RNvNtNtNtCsh6eLa7zxMRk_21terapia_visual_domain9use_cases20stop_reading_therapy5testss_28test_stop_reading_therapy_ok
+FNF:4
+FNH:4
+DA:3,1
+DA:4,1
+DA:5,1
+DA:6,1
+DA:7,1
+DA:9,0
+DA:11,1
+DA:19,1
+DA:20,1
+DA:21,1
+DA:22,1
+DA:23,1
+DA:24,1
+DA:25,1
+DA:26,1
+DA:27,1
+BRF:0
+BRH:0
+LF:19
+LH:18
 end_of_record
 SF:C:\Users\shiro\Documents\Projects\hex-terapia-visual\terapia-visual\terapia_visual_domain\src\use_cases\update_app_settings.rs
 FN:76,_RNCNvNtNtNtCsh6eLa7zxMRk_21terapia_visual_domain9use_cases19update_app_settings5testss_27test_update_app_settings_ok0B9_
@@ -1773,6 +1821,44 @@ BRH:0
 LF:54
 LH:54
 end_of_record
+SF:C:\Users\shiro\Documents\Projects\hex-terapia-visual\terapia-visual\terapia_visual_domain\src\use_cases\update_reading_therapy.rs
+FN:34,_RNvNtNtNtCsh6eLa7zxMRk_21terapia_visual_domain9use_cases22update_reading_therapy5testss_33test_update_reading_config_active
+FN:15,_RNvNtNtCsh6eLa7zxMRk_21terapia_visual_domain9use_cases22update_reading_therapy22update_reading_therapy
+FN:34,_RNCNvNtNtNtCsh6eLa7zxMRk_21terapia_visual_domain9use_cases22update_reading_therapy5testss_33test_update_reading_config_active0B9_
+FN:19,_RNCNvNtNtCsh6eLa7zxMRk_21terapia_visual_domain9use_cases22update_reading_therapy22update_reading_therapy0B7_
+FNDA:1,_RNvNtNtNtCsh6eLa7zxMRk_21terapia_visual_domain9use_cases22update_reading_therapy5testss_33test_update_reading_config_active
+FNDA:1,_RNvNtNtCsh6eLa7zxMRk_21terapia_visual_domain9use_cases22update_reading_therapy22update_reading_therapy
+FNDA:1,_RNCNvNtNtNtCsh6eLa7zxMRk_21terapia_visual_domain9use_cases22update_reading_therapy5testss_33test_update_reading_config_active0B9_
+FNDA:1,_RNCNvNtNtCsh6eLa7zxMRk_21terapia_visual_domain9use_cases22update_reading_therapy22update_reading_therapy0B7_
+FNF:4
+FNH:4
+DA:15,1
+DA:16,1
+DA:17,1
+DA:18,1
+DA:19,1
+DA:20,1
+DA:22,1
+DA:23,1
+DA:24,0
+DA:25,1
+DA:26,1
+DA:34,1
+DA:35,1
+DA:36,1
+DA:37,1
+DA:38,1
+DA:39,1
+DA:40,1
+DA:42,1
+DA:43,1
+DA:44,1
+DA:45,1
+BRF:0
+BRH:0
+LF:25
+LH:24
+end_of_record
 </file>
 
 <file path="terapia_visual_adapter/Cargo.toml">
@@ -1828,15 +1914,15 @@ pub use toml_storage::TomlStorage;
 //!
 //! ```no_run
 //! use terapia_visual_adapter::config_storage::TomlStorage;
-//! use terapia_visual_domain::domain::TherapyConfig;
+//! use terapia_visual_domain::domain::OverlayTherapyConfig;
 //! use terapia_visual_domain::ports::ConfigStorage;
 //!
 //! # async fn example() -> Result<(), Box<dyn std::error::Error>> {
-//! // Crear un almacenamiento para TherapyConfig en "therapy_config.toml"
+//! // Crear un almacenamiento para OverlayTherapyConfig en "therapy_config.toml"
 //! let storage = TomlStorage::new("./config", "therapy_config.toml");
 //!
 //! // Cargar la configuración (con fallback a default si no existe)
-//! let config: TherapyConfig = storage.load().await.unwrap_or_default();
+//! let config: OverlayTherapyConfig = storage.load().await.unwrap_or_default();
 //!
 //! // Guardar la configuración
 //! storage.save(&config).await?;
@@ -1959,14 +2045,14 @@ where
     ///
     /// ```no_run
     /// use terapia_visual_adapter::config_storage::TomlStorage;
-    /// use terapia_visual_domain::domain::TherapyConfig;
+    /// use terapia_visual_domain::domain::OverlayTherapyConfig;
     /// use terapia_visual_domain::ports::ConfigStorage;
     ///
     /// # async fn example() -> Result<(), Box<dyn std::error::Error>> {
     /// let storage = TomlStorage::new(".", "config.toml");
     ///
     /// // Intentar cargar, usando default si no existe
-    /// let config: TherapyConfig = storage.load().await.unwrap_or_default();
+    /// let config: OverlayTherapyConfig = storage.load().await.unwrap_or_default();
     /// # Ok(())
     /// # }
     /// ```
@@ -1998,12 +2084,12 @@ where
     ///
     /// ```no_run
     /// use terapia_visual_adapter::config_storage::TomlStorage;
-    /// use terapia_visual_domain::domain::TherapyConfig;
+    /// use terapia_visual_domain::domain::OverlayTherapyConfig;
     /// use terapia_visual_domain::ports::ConfigStorage;
     ///
     /// # async fn example() -> Result<(), Box<dyn std::error::Error>> {
     /// let storage = TomlStorage::new(".", "config.toml");
-    /// let config = TherapyConfig::default();
+    /// let config = OverlayTherapyConfig::default();
     ///
     /// storage.save(&config).await?;
     /// # Ok(())
@@ -2115,10 +2201,12 @@ pub mod config_storage;
 pub mod messages;
 pub mod notifier;
 pub mod overlay;
+pub mod reading_window;
 
 pub use config_storage::TomlStorage;
 pub use notifier::TauriSystemNotifier;
 pub use overlay::TauriOverlay;
+pub use reading_window::TauriReadingWindow;
 </file>
 
 <file path="terapia_visual_adapter/src/messages.rs">
@@ -2568,12 +2656,12 @@ pub use tauri_overlay::TauriOverlay;
 //! ```no_run
 //! use terapia_visual_adapter::overlay::TauriOverlay;
 //! use terapia_visual_domain::ports::OverlayPort;
-//! use terapia_visual_domain::domain::TherapyConfig;
+//! use terapia_visual_domain::domain::OverlayTherapyConfig;
 //! use tauri::AppHandle;
 //!
 //! # async fn example(app_handle: AppHandle) -> Result<(), Box<dyn std::error::Error>> {
 //! let mut overlay = TauriOverlay::new(app_handle);
-//! let config = TherapyConfig::default();
+//! let config = OverlayTherapyConfig::default();
 //!
 //! // Mostrar el overlay
 //! overlay.show(&config, 1920, 1080).await?;
@@ -2788,9 +2876,9 @@ impl OverlayPort for TauriOverlay {
     /// ```no_run
     /// # use terapia_visual_adapter::overlay::TauriOverlay;
     /// # use terapia_visual_domain::ports::OverlayPort;
-    /// # use terapia_visual_domain::domain::TherapyConfig;
+    /// # use terapia_visual_domain::domain::OverlayTherapyConfig;
     /// # async fn example(overlay: &mut TauriOverlay) -> Result<(), Box<dyn std::error::Error>> {
-    /// let config = TherapyConfig::default();
+    /// let config = OverlayTherapyConfig::default();
     /// overlay.show(&config, 1920, 1080).await?;
     /// # Ok(())
     /// # }
@@ -2912,10 +3000,10 @@ impl OverlayPort for TauriOverlay {
     /// ```no_run
     /// # use terapia_visual_adapter::overlay::TauriOverlay;
     /// # use terapia_visual_domain::ports::OverlayPort;
-    /// # use terapia_visual_domain::domain::{TherapyConfig, Layout, Color, Opacity, ZoneConfig, TherapyType};
+    /// # use terapia_visual_domain::domain::{OverlayTherapyConfig, Layout, Color, Opacity, ZoneConfig, TherapyType};
     /// # async fn example(overlay: &mut TauriOverlay) -> Result<(), Box<dyn std::error::Error>> {
     /// // Configuración inicial
-    /// let mut config = TherapyConfig::default();
+    /// let mut config = OverlayTherapyConfig::default();
     /// // Cambiar colores y layout en tiempo real
     /// let mut new_config = config.clone();
     /// new_config.change_layout(Layout::Horizontal);
@@ -3258,6 +3346,148 @@ impl OverlayPort for WindowsOverlay {
 }
 </file>
 
+<file path="terapia_visual_adapter/src/reading_window/mod.rs">
+pub mod tauri_reading_window;
+
+pub use tauri_reading_window::TauriReadingWindow;
+</file>
+
+<file path="terapia_visual_adapter/src/reading_window/tauri_reading_window.rs">
+use std::sync::{
+    Arc,
+    atomic::{AtomicBool, Ordering},
+};
+
+use async_trait::async_trait;
+use serde::Serialize;
+use tauri::{Emitter, WebviewUrl, WebviewWindow, WebviewWindowBuilder};
+use terapia_visual_domain::{
+    domain::reading_therapy_config::ReadingTherapyConfig,
+    ports::{ReadingWindowError, ReadingWindowPort},
+};
+use tracing::info;
+
+/// Paquete de datos que se envia al frontend por eventos IPC
+#[derive(Serialize, Clone)]
+struct ReadingPayload {
+    config: ReadingTherapyConfig,
+    html_content: String,
+}
+
+pub struct TauriReadingWindow {
+    window: Option<WebviewWindow>,
+    is_active: Arc<AtomicBool>,
+    app_handle: tauri::AppHandle,
+    current_html: Option<String>,
+}
+
+impl TauriReadingWindow {
+    pub fn new(app_handle: tauri::AppHandle) -> Self {
+        Self {
+            window: None,
+            is_active: Arc::new(AtomicBool::new(false)),
+            app_handle,
+            current_html: None,
+        }
+    }
+
+    /// Emite los datos actualizados a la ventana de lectura de forma segura.
+    fn emit_udpate(&self, config: &ReadingTherapyConfig) -> Result<(), ReadingWindowError> {
+        if let Some(window) = &self.window {
+            let content = self.current_html.clone().unwrap_or_default();
+            let payload = ReadingPayload {
+                config: config.clone(),
+                html_content: content,
+            };
+
+            window
+                .emit("update-reading-view", payload)
+                .map_err(|e| ReadingWindowError::UpdateError(e.to_string()))?;
+        }
+        Ok(())
+    }
+}
+
+#[async_trait]
+impl ReadingWindowPort for TauriReadingWindow {
+    async fn show(
+        &mut self,
+        config: &ReadingTherapyConfig,
+        html_content: &str,
+    ) -> Result<(), ReadingWindowError> {
+        self.current_html = Some(html_content.to_string());
+
+        // Si la ventana ya existe, se recicla y se le envian los datos
+        if let Some(window) = &self.window {
+            window
+                .show()
+                .map_err(|e| ReadingWindowError::CreationError(e.to_string()))?;
+            let _ = window.set_focus();
+
+            self.emit_udpate(config)?;
+            self.is_active.store(true, Ordering::SeqCst);
+            return Ok(());
+        }
+
+        // Crear una ventana ormal de windows, apuntando al frontend
+        let window = WebviewWindowBuilder::new(
+            &self.app_handle,
+            "reading_window",
+            WebviewUrl::App("src/reading.html".into()),
+        )
+        .title("Terapia de Lectura")
+        .inner_size(1024.0, 768.0)
+        .center()
+        .build()
+        .map_err(|e| ReadingWindowError::CreationError(e.to_string()))?;
+
+        // Escuchar cuando el usuario cierra la ventana con la "X"
+        let is_active_clone = self.is_active.clone();
+        window.on_window_event(move |event| {
+            if let tauri::WindowEvent::Destroyed = event {
+                is_active_clone.store(false, Ordering::SeqCst);
+                tracing::info!("Reading window destroyed by user");
+            }
+        });
+
+        self.window = Some(window);
+        self.is_active.store(true, Ordering::SeqCst);
+
+        // Esperar un instante a que el fronten cargue antes de emitir los datos
+        tokio::time::sleep(tokio::time::Duration::from_millis(500)).await;
+        self.emit_udpate(config)?;
+
+        info!("Reading window created and shown");
+        Ok(())
+    }
+
+    async fn hide(&mut self) -> Result<(), ReadingWindowError> {
+        if let Some(window) = &self.window {
+            window
+                .hide()
+                .map_err(|e| ReadingWindowError::CloseError(e.to_string()))?;
+
+            self.is_active.store(false, Ordering::SeqCst);
+            info!("Reading window hidded");
+            Ok(())
+        } else {
+            Err(ReadingWindowError::NotActive)
+        }
+    }
+
+    async fn update_config(
+        &mut self,
+        config: &ReadingTherapyConfig,
+    ) -> Result<(), ReadingWindowError> {
+        self.emit_udpate(config)
+    }
+
+    fn is_active(&self) -> bool {
+        self.is_active.load(Ordering::SeqCst)
+    }
+}
+</file>
+
 <file path="terapia_visual_app/.gitignore">
 # Logs
 logs
@@ -3291,8 +3521,9 @@ dist-ssr
   <head>
     <meta charset="UTF-8" />
     <title data-i18n="app_title">Terapia Visual</title>
-    <link rel="icon" type="image/png" href="src-tauri/icons/32x32.png" />
-    <link rel="stylesheet" href="src/styles.css" />
+    <!-- Rutas corregidas para que funcionen desde la raíz -->
+    <link rel="icon" type="image/png" href="/src-tauri/icons/32x32.png" />
+    <link rel="stylesheet" href="/src/styles.css" />
   </head>
   <body>
     <div class="app-container">
@@ -3304,35 +3535,61 @@ dist-ssr
         </div>
       </header>
 
-      <div class="main-actions">
-        <button id="btn-start" data-i18n="btn_start">Iniciar Terapia</button>
-        <button id="btn-stop" data-i18n="btn_stop">Detener Terapia</button>
-        <button id="btn-reset" data-i18n="btn_reset">Restablecer</button>
+      <!-- MENÚ PRINCIPAL (siempre visible por defecto) -->
+      <div id="view-home" class="view">
+        <div
+          style="
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 20px;
+          "
+        >
+          <button
+            id="btn-nav-color"
+            style="
+              padding: 20px;
+              font-size: 1.1rem;
+              background-color: #3498db;
+              color: white;
+            "
+            data-i18n="menu_color_division"
+          >
+            Terapia de División de Color
+          </button>
+          <button
+            id="btn-nav-reading"
+            style="
+              padding: 20px;
+              font-size: 1.1rem;
+              background-color: #9b59b6;
+              color: white;
+            "
+            data-i18n="menu_reading"
+          >
+            Terapia de Lectura
+          </button>
+          <button
+            id="btn-exit"
+            style="
+              padding: 15px;
+              margin-top: 20px;
+              background-color: #e74c3c;
+              color: white;
+            "
+            data-i18n="btn_exit"
+          >
+            Salir de la Aplicación
+          </button>
+        </div>
       </div>
 
-      <div class="control-section">
-        <h3 data-i18n="layout_label">Disposición (Layout)</h3>
-        <select id="layout-select" class="layout-selector">
-          <option value="Vertical" data-i18n="layout_vertical">Vertical</option>
-          <option value="Horizontal" data-i18n="layout_horizontal">
-            Horizontal
-          </option>
-          <option value="Checkerboard" data-i18n="layout_checkerboard">
-            Ajedrez
-          </option>
-          <option value="Vertical4Columns" data-i18n="layout_vertical4">
-            Vertical (4 Columnas)
-          </option>
-        </select>
-      </div>
-
-      <div class="control-section">
-        <!-- Aqui se inyectan los color pickers y sliders con typescript -->
-        <div id="zones-container"></div>
-      </div>
+      <!-- CONTENEDOR DINÁMICO PARA TERAPIAS -->
+      <div id="app-content"></div>
 
       <div id="status"></div>
     </div>
+    <!-- Ruta corregida -->
     <script type="module" src="/src/main.ts"></script>
   </body>
 </html>
@@ -3351,11 +3608,12 @@ dist-ssr
     "tauri": "tauri"
   },
   "dependencies": {
-    "@tauri-apps/api": "^2.10.1",
+    "@tauri-apps/api": "^2.11.1",
     "@tauri-apps/plugin-opener": "^2"
   },
   "devDependencies": {
-    "@tauri-apps/cli": "^2",
+    "@tauri-apps/cli": "^2.11.3",
+    "@types/node": "^26.0.0",
     "typescript": "~5.6.2",
     "vite": "^6.0.3"
   }
@@ -3369,6 +3627,19 @@ dist-ssr
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   </head>
+  <body></body>
+</html>
+</file>
+
+<file path="terapia_visual_app/public/reading.html">
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Terapia de Lectura</title>
+  </head>
+  <!-- Rust inyectará todo aquí con window.eval() -->
   <body></body>
 </html>
 </file>
@@ -3404,7 +3675,7 @@ fn main() {
   "$schema": "../gen/schemas/desktop-schema.json",
   "identifier": "default",
   "description": "Capability for the main window",
-  "windows": ["main"],
+  "windows": ["main", "reading_window"],
   "permissions": [
     "core:default",
     "opener:default",
@@ -3478,59 +3749,121 @@ tracing-subscriber = "0.3.23"
 </resources>
 </file>
 
-<file path="terapia_visual_app/src-tauri/src/commands.rs">
+<file path="terapia_visual_app/src-tauri/src/commands/mod.rs">
 //! # Comandos Tauri para el Frontend
 //!
-//! Este módulo contiene todos los comandos que el frontend (TypeScript) puede
-//! invocar para interactuar con la aplicación.
+//! Este módulo organiza todos los comandos que el frontend puede invocar,
+//! agrupados por funcionalidad para mantener un código limpio y mantenible.
 //!
-//! # Comandos disponibles
+//! ## Estructura
 //!
-//! | Comando | Propósito |
-//! |---------|-----------|
-//! | `cmd_get_therapy_config` | Obtener la configuración actual de la terapia |
-//! | `cmd_start_therapy` | Iniciar la terapia visual |
-//! | `cmd_stop_therapy` | Detener la terapia visual |
-//! | `cmd_update_therapy_config` | Actualizar la configuración completa de la terapia |
-//! | `cmd_change_layout` | Cambiar el layout (vertical, horizontal, etc.) |
-//! | `cmd_update_zone_color` | Cambiar el color de una zona específica |
-//! | `cmd_update_zone_opacity` | Cambiar la opacidad de una zona específica |
-//! | `cmd_reset_therapy_config` | Restablecer la configuración a los valores por defecto |
-//! | `cmd_get_app_settings` | Obtener la configuración de la aplicación (idioma, etc.) |
-//! | `cmd_update_app_settings` | Actualizar la configuración de la aplicación |
+//! | Módulo | Propósito |
+//! |--------|-----------|
+//! | [`overlay`] | Comandos para la terapia de overlay (pantalla completa) |
+//! | [`settings`] | Comandos para configuración de la aplicación (idioma, etc.) |
 //!
-//! # Flujo típico
+//! ## Flujo típico
 //!
 //! 1. El frontend llama a un comando usando `invoke()`.
 //! 2. El comando obtiene el estado de la aplicación (`AppState`).
 //! 3. El comando llama al caso de uso correspondiente.
 //! 4. El comando devuelve el resultado al frontend.
 //!
-//! # Ejemplo desde el frontend
+//! ## Ejemplo desde el frontend
 //!
 //! ```typescript
 //! import { invoke } from '@tauri-apps/api/core';
 //!
+//! // Iniciar la terapia de overlay
+//! await invoke('cmd_start_overlay', { screenWidth: 1920, screenHeight: 1080 });
+//!
+//! // Cambiar el layout
+//! await invoke('cmd_change_overlay_layout', { newLayout: 'Horizontal', screenWidth: 1920, screenHeight: 1080 });
+//!
+//! // Actualizar el idioma
+//! await invoke('cmd_update_app_settings', { newSettings: { language: 'en' } });
+//! ```
+
+pub mod overlay;
+pub mod reading;
+pub mod settings;
+
+pub use overlay::*;
+pub use reading::*;
+pub use settings::*;
+
+/// Devuelve todos los comandos de tauri empaquetados y listo para inyectar en el builder
+pub fn get_handlers<R: tauri::Runtime>(
+) -> impl Fn(tauri::ipc::Invoke<R>) -> bool + Send + Sync + 'static {
+    tauri::generate_handler![
+        // Comandos de Overlay
+        overlay::cmd_get_overlay_config,
+        overlay::cmd_start_overlay,
+        overlay::cmd_stop_overlay,
+        overlay::cmd_update_overlay_config,
+        overlay::cmd_change_overlay_layout,
+        overlay::cmd_update_overlay_zone_color,
+        overlay::cmd_update_overlay_zone_opacity,
+        overlay::cmd_reset_overlay_config,
+        // Comandos de Lectura
+        reading::cmd_get_reading_config,
+        reading::cmd_start_reading_therapy,
+        reading::cmd_stop_reading_therapy,
+        reading::cmd_update_reading_config,
+        reading::cmd_change_reading_layout,
+        reading::cmd_update_reading_zone_color,
+        reading::cmd_update_reading_zone_opacity,
+        reading::cmd_update_reading_settings,
+        reading::cmd_reset_reading_config,
+        reading::cmd_reading_window_resized,
+        // Comandos Globales / Settings
+        settings::cmd_get_app_settings,
+        settings::cmd_update_app_settings,
+        settings::cmd_exit_app,
+    ]
+}
+</file>
+
+<file path="terapia_visual_app/src-tauri/src/commands/overlay.rs">
+//! # Comandos de Terapia Overlay
+//!
+//! Este módulo contiene todos los comandos relacionados con la terapia de overlay
+//! (pantalla completa con zonas de color transparentes).
+//!
+//! ## Comandos disponibles
+//!
+//! | Comando | Propósito |
+//! |---------|-----------|
+//! | `cmd_get_overlay_config` | Obtener la configuración actual del overlay |
+//! | `cmd_start_overlay` | Iniciar la terapia de overlay |
+//! | `cmd_stop_overlay` | Detener la terapia de overlay |
+//! | `cmd_update_overlay_config` | Actualizar la configuración completa del overlay |
+//! | `cmd_change_overlay_layout` | Cambiar el layout (vertical, horizontal, etc.) |
+//! | `cmd_update_overlay_zone_color` | Cambiar el color de una zona específica |
+//! | `cmd_update_overlay_zone_opacity` | Cambiar la opacidad de una zona específica |
+//! | `cmd_reset_overlay_config` | Restablecer la configuración a los valores por defecto |
+//!
+//! ## Ejemplo desde el frontend
+//!
+//! ```typescript
+//! import { invoke } from '@tauri-apps/api/core';
+//!
+//! // Obtener la configuración actual
+//! const config = await invoke('cmd_get_overlay_config');
+//!
 //! // Iniciar la terapia
-//! await invoke('cmd_start_therapy', { screenWidth: 1920, screenHeight: 1080 });
+//! await invoke('cmd_start_overlay', { screenWidth: 1920, screenHeight: 1080 });
 //!
-//! // Cambiar el layout a horizontal
-//! await invoke('cmd_change_layout', { newLayout: 'Horizontal', screenWidth: 1920, screenHeight: 1080 });
-//!
-//! // Cambiar el color de la primera zona a azul
-//! await invoke('cmd_update_zone_color', { zoneIndex: 0, newColor: '#0000FF', screenWidth: 1920, screenHeight: 1080 });
+//! // Cambiar el color de la primera zona
+//! await invoke('cmd_update_overlay_zone_color', { zoneIndex: 0, newColor: '#FF0000', screenWidth: 1920, screenHeight: 1080 });
 //! ```
 
 use tauri::State;
-use terapia_visual_adapter::messages::{self, init_language};
-use terapia_visual_domain::domain::{AppSettings, Color, Layout, Opacity, OverlayTherapyConfig};
+use terapia_visual_domain::domain::{Color, Layout, Opacity, OverlayTherapyConfig};
 use terapia_visual_domain::ports::SystemNotifier;
 use terapia_visual_domain::use_cases::{
-    get_app_settings, start_overlay_therapy, stop_overlay_therapy, update_app_settings,
-    update_overlay_therapy,
+    start_overlay_therapy, stop_overlay_therapy, update_overlay_therapy,
 };
-
-use tauri::Manager;
 
 use crate::state::AppState;
 
@@ -3547,7 +3880,7 @@ use crate::state::AppState;
 /// console.log('Configuración:', config);
 /// ```
 #[tauri::command]
-pub async fn cmd_get_therapy_config(
+pub async fn cmd_get_overlay_config(
     state: State<'_, AppState>,
 ) -> Result<OverlayTherapyConfig, String> {
     let config = state.overlay_config.read().await;
@@ -3577,7 +3910,7 @@ pub async fn cmd_get_therapy_config(
 /// }
 /// ```
 #[tauri::command]
-pub async fn cmd_start_therapy(
+pub async fn cmd_start_overlay(
     state: State<'_, AppState>,
     screen_width: u32,
     screen_height: u32,
@@ -3615,7 +3948,7 @@ pub async fn cmd_start_therapy(
 /// }
 /// ```
 #[tauri::command]
-pub async fn cmd_stop_therapy(state: State<'_, AppState>) -> Result<(), String> {
+pub async fn cmd_stop_overlay(state: State<'_, AppState>) -> Result<(), String> {
     let mut overlay = state.overlay.lock().await;
     stop_overlay_therapy(&mut *overlay)
         .await
@@ -3651,7 +3984,7 @@ pub async fn cmd_stop_therapy(state: State<'_, AppState>) -> Result<(), String> 
 /// await invoke('cmd_update_therapy_config', { newConfig, screenWidth: 1920, screenHeight: 1080 });
 /// ```
 #[tauri::command]
-pub async fn cmd_update_therapy_config(
+pub async fn cmd_update_overlay_config(
     state: State<'_, AppState>,
     new_config: OverlayTherapyConfig,
     screen_width: u32,
@@ -3671,69 +4004,6 @@ pub async fn cmd_update_therapy_config(
 
     let mut current = state.overlay_config.write().await;
     *current = new_config;
-    Ok(())
-}
-
-/// Obtiene la configuración de la aplicación (idioma, etc.).
-///
-/// # Retorno
-///
-/// La configuración actual de la aplicación.
-///
-/// # Ejemplo desde el frontend
-///
-/// ```typescript
-/// const settings = await invoke('cmd_get_app_settings');
-/// console.log('Idioma:', settings.language);
-/// ```
-#[tauri::command]
-pub async fn cmd_get_app_settings(state: State<'_, AppState>) -> Result<AppSettings, String> {
-    let settings = get_app_settings(&state.app_storage).await;
-    Ok(settings)
-}
-
-/// Actualiza la configuración de la aplicación (idioma, etc.).
-///
-/// # Argumentos
-///
-/// * `new_settings` - Nueva configuración de la aplicación.
-///
-/// # Efectos secundarios
-///
-/// - Reinicializa el sistema de mensajes con el nuevo idioma.
-/// - Actualiza el tooltip de la bandeja.
-/// - Actualiza el título de la ventana principal.
-///
-/// # Ejemplo desde el frontend
-///
-/// ```typescript
-/// await invoke('cmd_update_app_settings', {
-///     newSettings: { language: 'en' }
-/// });
-/// ```
-#[tauri::command]
-pub async fn cmd_update_app_settings(
-    app_handle: tauri::AppHandle,
-    state: State<'_, AppState>,
-    new_settings: AppSettings,
-) -> Result<(), String> {
-    update_app_settings(&state.app_storage, &new_settings)
-        .await
-        .map_err(|e| e.to_string())?;
-
-    init_language(&new_settings);
-
-    if let Some(tray) = app_handle.tray_by_id("main") {
-        tray.set_tooltip(Some(messages::tooltip_app_name()))
-            .map_err(|e| e.to_string())?;
-    }
-
-    if let Some(main_window) = app_handle.get_webview_window("main") {
-        main_window
-            .set_title(messages::window_title())
-            .map_err(|e| e.to_string())?;
-    }
-
     Ok(())
 }
 
@@ -3757,7 +4027,7 @@ pub async fn cmd_update_app_settings(
 /// await invoke('cmd_change_layout', { newLayout: 'Checkerboard', screenWidth: 1920, screenHeight: 1080 });
 /// ```
 #[tauri::command]
-pub async fn cmd_change_layout(
+pub async fn cmd_change_overlay_layout(
     state: State<'_, AppState>,
     new_layout: Layout,
     screen_width: u32,
@@ -3808,7 +4078,7 @@ pub async fn cmd_change_layout(
 /// });
 /// ```
 #[tauri::command]
-pub async fn cmd_update_zone_color(
+pub async fn cmd_update_overlay_zone_color(
     state: State<'_, AppState>,
     zone_index: usize,
     new_color: String,
@@ -3865,7 +4135,7 @@ pub async fn cmd_update_zone_color(
 /// });
 /// ```
 #[tauri::command]
-pub async fn cmd_update_zone_opacity(
+pub async fn cmd_update_overlay_zone_opacity(
     state: State<'_, AppState>,
     zone_index: usize,
     new_opacity: f32,
@@ -3912,7 +4182,7 @@ pub async fn cmd_update_zone_opacity(
 /// console.log('Configuración restablecida:', defaultConfig);
 /// ```
 #[tauri::command]
-pub async fn cmd_reset_therapy_config(
+pub async fn cmd_reset_overlay_config(
     state: State<'_, AppState>,
     screen_width: u32,
     screen_height: u32,
@@ -3938,6 +4208,301 @@ pub async fn cmd_reset_therapy_config(
 
     // Retornar nueva configuracion
     Ok(default_config)
+}
+</file>
+
+<file path="terapia_visual_app/src-tauri/src/commands/reading.rs">
+use tauri::State;
+use terapia_visual_domain::domain::reading_therapy_config::ReadingTherapyConfig;
+use terapia_visual_domain::domain::{Color, Layout, Opacity, ReadingSettings};
+use terapia_visual_domain::ports::{ReadingWindowPort, SystemNotifier};
+use terapia_visual_domain::use_cases::{
+    start_reading_therapy, stop_reading_therapy, update_reading_therapy,
+};
+
+use crate::state::AppState;
+
+#[tauri::command]
+pub async fn cmd_get_reading_config(
+    state: State<'_, AppState>,
+) -> Result<ReadingTherapyConfig, String> {
+    let config = state.reading_config.read().await;
+    Ok(config.clone())
+}
+
+#[tauri::command]
+pub async fn cmd_start_reading_therapy(
+    state: State<'_, AppState>,
+    html_content: String,
+) -> Result<(), String> {
+    let config = state.reading_config.read().await;
+    let mut window = state.reading_window.lock().await;
+
+    start_reading_therapy(&mut *window, &config, &html_content)
+        .await
+        .map_err(|e| e.to_string())?;
+
+    // Nota: Se podria no cambiar el icono del tray para la lectura si se quiere que
+    // el tray sea exclusivo del overlay, pero por ahora se activa.
+    let _ = state.notifier.set_tray_state(true).await;
+    Ok(())
+}
+
+#[tauri::command]
+pub async fn cmd_stop_reading_therapy(state: State<'_, AppState>) -> Result<(), String> {
+    let mut window = state.reading_window.lock().await;
+    stop_reading_therapy(&mut *window)
+        .await
+        .map_err(|e| e.to_string())?;
+
+    let _ = state.notifier.set_tray_state(false).await;
+    Ok(())
+}
+
+#[tauri::command]
+pub async fn cmd_update_reading_config(
+    state: State<'_, AppState>,
+    new_config: ReadingTherapyConfig,
+) -> Result<(), String> {
+    let mut window = state.reading_window.lock().await;
+    update_reading_therapy(&mut *window, &state.reading_storage, &new_config)
+        .await
+        .map_err(|e| e.to_string())?;
+
+    let mut current = state.reading_config.write().await;
+    *current = new_config;
+    Ok(())
+}
+
+#[tauri::command]
+pub async fn cmd_change_reading_layout(
+    state: State<'_, AppState>,
+    new_layout: Layout,
+) -> Result<(), String> {
+    let mut current = state.reading_config.write().await;
+    current.change_layout(new_layout);
+
+    let mut window = state.reading_window.lock().await;
+    update_reading_therapy(&mut *window, &state.reading_storage, &current)
+        .await
+        .map_err(|e| e.to_string())?;
+
+    Ok(())
+}
+
+#[tauri::command]
+pub async fn cmd_update_reading_zone_color(
+    state: State<'_, AppState>,
+    zone_index: usize,
+    new_color: String,
+) -> Result<(), String> {
+    let color = Color::new(&new_color).map_err(|e| e.to_string())?;
+    let mut current = state.reading_config.write().await;
+
+    current
+        .update_zone_color(zone_index, color)
+        .map_err(|e| e.to_string())?;
+
+    let mut window = state.reading_window.lock().await;
+    update_reading_therapy(&mut *window, &state.reading_storage, &current)
+        .await
+        .map_err(|e| e.to_string())?;
+
+    Ok(())
+}
+
+#[tauri::command]
+pub async fn cmd_update_reading_zone_opacity(
+    state: State<'_, AppState>,
+    zone_index: usize,
+    new_opacity: f32,
+) -> Result<(), String> {
+    let opacity = Opacity::new(new_opacity).map_err(|e| e.to_string())?;
+    let mut current = state.reading_config.write().await;
+
+    current
+        .update_zone_opacity(zone_index, opacity)
+        .map_err(|e| e.to_string())?;
+
+    let mut window = state.reading_window.lock().await;
+    update_reading_therapy(&mut *window, &state.reading_storage, &current)
+        .await
+        .map_err(|e| e.to_string())?;
+
+    Ok(())
+}
+
+#[tauri::command]
+pub async fn cmd_update_reading_settings(
+    state: State<'_, AppState>,
+    new_settings: ReadingSettings,
+) -> Result<(), String> {
+    let mut current = state.reading_config.write().await;
+    current.update_reading_settings(new_settings);
+
+    let mut window = state.reading_window.lock().await;
+    update_reading_therapy(&mut *window, &state.reading_storage, &current)
+        .await
+        .map_err(|e| e.to_string())?;
+
+    Ok(())
+}
+
+#[tauri::command]
+pub async fn cmd_reset_reading_config(
+    state: State<'_, AppState>,
+) -> Result<ReadingTherapyConfig, String> {
+    let default_config = ReadingTherapyConfig::default();
+
+    let mut window = state.reading_window.lock().await;
+    update_reading_therapy(&mut *window, &state.reading_storage, &default_config)
+        .await
+        .map_err(|e| e.to_string())?;
+
+    let mut current = state.reading_config.write().await;
+    *current = default_config.clone();
+
+    Ok(default_config)
+}
+
+/// Comando exclusivo para recalcular cuando el usuario estira la ventana de lectura
+#[tauri::command]
+pub async fn cmd_reading_window_resized(state: State<'_, AppState>) -> Result<(), String> {
+    let mut window = state.reading_window.lock().await;
+
+    if window.is_active() {
+        let config = state.reading_config.read().await;
+        // Al pedirle que se actualice, el Adaptador leerá el tamaño interno actual
+        // de la ventana de Tauri y emitirá el JSON recalculado.
+        let _ = window.update_config(&config).await;
+    }
+
+    Ok(())
+}
+</file>
+
+<file path="terapia_visual_app/src-tauri/src/commands/settings.rs">
+//! # Comandos de Configuración de la Aplicación
+//!
+//! Este módulo contiene los comandos relacionados con la configuración global
+//! de la aplicación (idioma, preferencias, etc.).
+//!
+//! ## Comandos disponibles
+//!
+//! | Comando | Propósito |
+//! |---------|-----------|
+//! | `cmd_get_app_settings` | Obtener la configuración de la aplicación |
+//! | `cmd_update_app_settings` | Actualizar la configuración de la aplicación |
+//!
+//! ## Ejemplo desde el frontend
+//!
+//! ```typescript
+//! import { invoke } from '@tauri-apps/api/core';
+//!
+//! // Obtener la configuración actual
+//! const settings = await invoke('cmd_get_app_settings');
+//! console.log('Idioma actual:', settings.language);
+//!
+//! // Cambiar a inglés
+//! await invoke('cmd_update_app_settings', { newSettings: { language: 'en' } });
+//! ```
+
+use tauri::State;
+use terapia_visual_adapter::messages::{self, init_language};
+use terapia_visual_domain::domain::AppSettings;
+use terapia_visual_domain::ports::ConfigStorage;
+use terapia_visual_domain::use_cases::{get_app_settings, update_app_settings};
+
+use tauri::Manager;
+
+use crate::state::AppState;
+
+/// Obtiene la configuración de la aplicación (idioma, etc.).
+///
+/// # Retorno
+///
+/// La configuración actual de la aplicación.
+///
+/// # Ejemplo desde el frontend
+///
+/// ```typescript
+/// const settings = await invoke('cmd_get_app_settings');
+/// console.log('Idioma:', settings.language);
+/// ```
+#[tauri::command]
+pub async fn cmd_get_app_settings(state: State<'_, AppState>) -> Result<AppSettings, String> {
+    let settings = get_app_settings(&state.app_storage).await;
+    Ok(settings)
+}
+
+/// Actualiza la configuración de la aplicación (idioma, etc.).
+///
+/// # Argumentos
+///
+/// * `new_settings` - Nueva configuración de la aplicación.
+///
+/// # Efectos secundarios
+///
+/// - Reinicializa el sistema de mensajes con el nuevo idioma.
+/// - Actualiza el tooltip de la bandeja.
+/// - Actualiza el título de la ventana principal.
+///
+/// # Ejemplo desde el frontend
+///
+/// ```typescript
+/// await invoke('cmd_update_app_settings', {
+///     newSettings: { language: 'en' }
+/// });
+/// ```
+#[tauri::command]
+pub async fn cmd_update_app_settings<R: tauri::Runtime>(
+    app_handle: tauri::AppHandle<R>,
+    state: State<'_, AppState>,
+    new_settings: AppSettings,
+) -> Result<(), String> {
+    update_app_settings(&state.app_storage, &new_settings)
+        .await
+        .map_err(|e| e.to_string())?;
+
+    init_language(&new_settings);
+
+    if let Some(tray) = app_handle.tray_by_id("main") {
+        tray.set_tooltip(Some(messages::tooltip_app_name()))
+            .map_err(|e| e.to_string())?;
+    }
+
+    if let Some(main_window) = app_handle.get_webview_window("main") {
+        main_window
+            .set_title(messages::window_title())
+            .map_err(|e| e.to_string())?;
+    }
+
+    Ok(())
+}
+
+/// Cierra la aplicación de forma segura guardando la configuración de todas las terapias.
+#[tauri::command]
+pub async fn cmd_exit_app(state: State<'_, AppState>) -> Result<(), String> {
+    // Guardar configuracion del overlay
+    let overlay_config = state.overlay_config.read().await;
+    if let Err(e) = state.overlay_storage.save(&*overlay_config).await {
+        eprintln!("Error saving overlay config: {}", e);
+    }
+
+    // Guardar configuracion de lectura
+    let reading_config = state.reading_config.read().await;
+    if let Err(e) = state.reading_storage.save(&*reading_config).await {
+        eprintln!("Error saving reading config: {}", e);
+    }
+
+    // Guardar la configuracion de la app
+    let app_settings: AppSettings = state.app_storage.load().await.unwrap_or_default();
+    if let Err(e) = state.app_storage.save(&app_settings).await {
+        eprintln!("Error saving app config: {}", e);
+    }
+
+    // Termina el proceso de forma limpia
+    std::process::exit(0);
 }
 </file>
 
@@ -3975,13 +4540,13 @@ pub async fn cmd_reset_therapy_config(
 //! import { invoke } from '@tauri-apps/api/core';
 //!
 //! // Iniciar la terapia
-//! await invoke('cmd_start_therapy', { screenWidth: 1920, screenHeight: 1080 });
+//! await invoke('cmd_start_overlay', { screenWidth: 1920, screenHeight: 1080 });
 //!
 //! // Detener la terapia
-//! await invoke('cmd_stop_therapy');
+//! await invoke('cmd_stop_overlay');
 //!
 //! // Obtener la configuración actual
-//! const config = await invoke('cmd_get_therapy_config');
+//! const config = await invoke('cmd_get_overlay_config');
 //! ```
 
 pub mod commands;
@@ -4031,18 +4596,7 @@ pub fn run() {
             }
         }))
         // Comandos expuestos al frontend
-        .invoke_handler(tauri::generate_handler![
-            commands::cmd_get_therapy_config,
-            commands::cmd_start_therapy,
-            commands::cmd_stop_therapy,
-            commands::cmd_update_therapy_config,
-            commands::cmd_get_app_settings,
-            commands::cmd_update_app_settings,
-            commands::cmd_change_layout,
-            commands::cmd_update_zone_color,
-            commands::cmd_update_zone_opacity,
-            commands::cmd_reset_therapy_config,
-        ])
+        .invoke_handler(commands::get_handlers())
         // Evento de cierre de ventana
         .on_window_event(|window, event| {
             if let tauri::WindowEvent::CloseRequested { api, .. } = event {
@@ -4127,6 +4681,8 @@ use std::sync::atomic::{AtomicBool, Ordering};
 use tauri::async_runtime;
 use tauri::{App, AppHandle, Manager};
 use tauri_plugin_global_shortcut::{GlobalShortcutExt, Shortcut, ShortcutEvent, ShortcutState};
+use terapia_visual_adapter::TauriReadingWindow;
+use terapia_visual_domain::domain::reading_therapy_config::ReadingTherapyConfig;
 use tokio::sync::{Mutex, RwLock};
 
 use terapia_visual_adapter::config_storage::TomlStorage;
@@ -4192,17 +4748,24 @@ pub fn init(app: &mut App) -> Result<(), Box<dyn std::error::Error>> {
 
     // Inicializar adaptadores
     let overlay_storage = TomlStorage::new(&config_dir, "overlay_config.toml");
+    let reading_storage = TomlStorage::new(&config_dir, "reading_config.toml");
     let app_storage = TomlStorage::new(&config_dir, "app_config.toml");
+
     let notifier = TauriSystemNotifier::new(app.handle().clone(), ICON_INACTIVE, ICON_ACTIVE);
     let overlay = TauriOverlay::new(app.handle().clone());
+    let reading_window = TauriReadingWindow::new(app.handle().clone());
 
     // Cargar configuraciones (con valores por defecto en caso de fallo)
     let initial_overlay_config: OverlayTherapyConfig =
         tauri::async_runtime::block_on(overlay_storage.load())
             .unwrap_or_else(|_| OverlayTherapyConfig::default());
 
+    let initial_reading_config = tauri::async_runtime::block_on(reading_storage.load())
+        .unwrap_or_else(|_| ReadingTherapyConfig::default());
+
     // Guardar la inicial por si es la primera vez
     let _ = tauri::async_runtime::block_on(overlay_storage.save(&initial_overlay_config));
+    let _ = tauri::async_runtime::block_on(reading_storage.save(&initial_reading_config));
 
     let app_settings: AppSettings =
         tauri::async_runtime::block_on(app_storage.load()).unwrap_or_default();
@@ -4223,10 +4786,13 @@ pub fn init(app: &mut App) -> Result<(), Box<dyn std::error::Error>> {
     // Inyectar estado a Tauri
     let state = AppState {
         overlay_storage,
+        reading_storage,
         app_storage,
         overlay: Mutex::new(overlay),
+        reading_window: Mutex::new(reading_window),
         notifier,
         overlay_config: RwLock::new(initial_overlay_config),
+        reading_config: RwLock::new(initial_reading_config),
         is_toggling: AtomicBool::new(false),
     };
     app.manage(state);
@@ -4338,11 +4904,20 @@ pub fn global_shortcut_handler(app: &AppHandle, shortcut: &Shortcut, event: Shor
 pub fn save_configs(app_handle: &AppHandle) {
     let state = app_handle.state::<AppState>();
 
+    // Guardar configuracion del overlay
     let therapy_config = async_runtime::block_on(state.overlay_config.read());
     println!("[DEBUG] Saving therapy config: {:?}", therapy_config);
     if let Err(e) = async_runtime::block_on(state.overlay_storage.save(&*therapy_config)) {
         eprintln!("Error saving therapy config: {}", e);
     }
+
+    // Guardar configuracion de lectura
+    let reading_config = async_runtime::block_on(state.reading_config.read());
+    println!("[DEBUG] Saving reading config: {:?}", reading_config);
+    if let Err(e) = async_runtime::block_on(state.reading_storage.save(&*reading_config)) {
+        eprintln!("Error saving reading config: {}", e);
+    }
+
     // Guardar app_settings también
     let app_settings: AppSettings =
         tauri::async_runtime::block_on(state.app_storage.load()).unwrap_or_default();
@@ -4370,7 +4945,7 @@ pub fn save_configs(app_handle: &AppHandle) {
 //! | `app_storage` | `TomlStorage` | Almacenamiento de configuración de la aplicación |
 //! | `overlay` | `Mutex<TauriOverlay>` | Control de la ventana de superposición |
 //! | `notifier` | `TauriSystemNotifier` | Notificaciones y bandeja del sistema |
-//! | `current_config` | `RwLock<TherapyConfig>` | Configuración actual de la terapia (en memoria) |
+//! | `overlay_config` | `RwLock<TherapyConfig>` | Configuración actual de la terapia (en memoria) |
 //! | `is_toggling` | `AtomicBool` | Bandera para evitar múltiples pulsaciones del atajo |
 //!
 //! # Ejemplo de acceso al estado
@@ -4382,7 +4957,7 @@ pub fn save_configs(app_handle: &AppHandle) {
 //! #[tauri::command]
 //! async fn example_command(state: State<'_, AppState>) -> Result<(), String> {
 //!     // Leer la configuración actual
-//!     let config = state.current_config.read().await;
+//!     let config = state.overlay_config.read().await;
 //!     println!("Layout actual: {:?}", config.layout());
 //!     Ok(())
 //! }
@@ -4390,9 +4965,10 @@ pub fn save_configs(app_handle: &AppHandle) {
 
 use std::sync::atomic::AtomicBool;
 
-use terapia_visual_adapter::config_storage::TomlStorage;
 use terapia_visual_adapter::notifier::TauriSystemNotifier;
 use terapia_visual_adapter::overlay::TauriOverlay;
+use terapia_visual_adapter::{config_storage::TomlStorage, TauriReadingWindow};
+use terapia_visual_domain::domain::reading_therapy_config::ReadingTherapyConfig;
 use terapia_visual_domain::domain::OverlayTherapyConfig;
 use tokio::sync::{Mutex, RwLock};
 
@@ -4418,13 +4994,16 @@ use tokio::sync::{Mutex, RwLock};
 ///
 /// #[tauri::command]
 /// async fn get_layout(state: State<'_, AppState>) -> Result<String, String> {
-///     let config = state.current_config.read().await;
+///     let config = state.overlay_config.read().await;
 ///     Ok(format!("{:?}", config.layout()))
 /// }
 /// ```
 pub struct AppState {
-    /// Almacenamiento de configuración de terapia (colores, layout, opacidades).
+    /// Almacenamiento de configuración de terapia de overlay.
     pub overlay_storage: TomlStorage,
+
+    /// Almacenamiento de configuracion de lectura.
+    pub reading_storage: TomlStorage,
 
     /// Almacenamiento de configuración de la aplicación (idioma, etc.).
     pub app_storage: TomlStorage,
@@ -4433,12 +5012,20 @@ pub struct AppState {
     /// Usa `Mutex` porque las operaciones requieren acceso exclusivo.
     pub overlay: Mutex<TauriOverlay>,
 
+    /// Adaptador de lectura para controlar la ventana de lectura.
+    /// Usa `Mutex` porque las operaciones requieren acceso exclusivo.
+    pub reading_window: Mutex<TauriReadingWindow>,
+
     /// Adaptador de notificaciones y bandeja del sistema.
     pub notifier: TauriSystemNotifier,
 
-    /// Configuración actual de la terapia en memoria.
+    /// Configuración actual de la terapia  de overlay en memoria.
     /// Usa `RwLock` para permitir múltiples lecturas concurrentes.
     pub overlay_config: RwLock<OverlayTherapyConfig>,
+
+    /// configuracion actual de la terapia de lectura.
+    /// Usa `RwLock` para permitir múltiples lecturas concurrentes.
+    pub reading_config: RwLock<ReadingTherapyConfig>,
 
     /// Bandera para evitar múltiples pulsaciones del atajo de teclado.
     /// Usa `AtomicBool` para operaciones atómicas sin bloqueos.
@@ -4625,17 +5212,66 @@ m3931 -2383 c48 -9 120 -26 160 -39 l74 -23 3 -237 c1 -130 0 -237 -2 -237 -3
 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" class="iconify iconify--logos" width="31.88" height="32" preserveAspectRatio="xMidYMid meet" viewBox="0 0 256 257"><defs><linearGradient id="IconifyId1813088fe1fbc01fb466" x1="-.828%" x2="57.636%" y1="7.652%" y2="78.411%"><stop offset="0%" stop-color="#41D1FF"></stop><stop offset="100%" stop-color="#BD34FE"></stop></linearGradient><linearGradient id="IconifyId1813088fe1fbc01fb467" x1="43.376%" x2="50.316%" y1="2.242%" y2="89.03%"><stop offset="0%" stop-color="#FFEA83"></stop><stop offset="8.333%" stop-color="#FFDD35"></stop><stop offset="100%" stop-color="#FFA800"></stop></linearGradient></defs><path fill="url(#IconifyId1813088fe1fbc01fb466)" d="M255.153 37.938L134.897 252.976c-2.483 4.44-8.862 4.466-11.382.048L.875 37.958c-2.746-4.814 1.371-10.646 6.827-9.67l120.385 21.517a6.537 6.537 0 0 0 2.322-.004l117.867-21.483c5.438-.991 9.574 4.796 6.877 9.62Z"></path><path fill="url(#IconifyId1813088fe1fbc01fb467)" d="M185.432.063L96.44 17.501a3.268 3.268 0 0 0-2.634 3.014l-5.474 92.456a3.268 3.268 0 0 0 3.997 3.378l24.777-5.718c2.318-.535 4.413 1.507 3.936 3.838l-7.361 36.047c-.495 2.426 1.782 4.5 4.151 3.78l15.304-4.649c2.372-.72 4.652 1.36 4.15 3.788l-11.698 56.621c-.732 3.542 3.979 5.473 5.943 2.437l1.313-2.028l72.516-144.72c1.215-2.423-.88-5.186-3.54-4.672l-25.505 4.922c-2.396.462-4.435-1.77-3.759-4.114l16.646-57.705c.677-2.35-1.37-4.583-3.769-4.113Z"></path></svg>
 </file>
 
-<file path="terapia_visual_app/src/localization/i18n.ts">
+<file path="terapia_visual_app/src/core/commands/index.ts">
+export * from "./overlay";
+export * from "./settings";
+export * from "./reading";
+</file>
+
+<file path="terapia_visual_app/src/core/commands/overlay.ts">
+export const CMD_GET_OVERLAY_CONFIG = "cmd_get_overlay_config";
+export const CMD_START_OVERLAY = "cmd_start_overlay";
+export const CMD_STOP_OVERLAY = "cmd_stop_overlay";
+export const CMD_UPDATE_OVERLAY_CONFIG = "cmd_update_overlay_config";
+export const CMD_CHANGE_OVERLAY_LAYOUT = "cmd_change_overlay_layout";
+export const CMD_UPDATE_OVERLAY_ZONE_COLOR = "cmd_update_overlay_zone_color";
+export const CMD_UPDATE_OVERLAY_ZONE_OPACITY =
+  "cmd_update_overlay_zone_opacity";
+export const CMD_RESET_OVERLAY_CONFIG = "cmd_reset_overlay_config";
+</file>
+
+<file path="terapia_visual_app/src/core/commands/reading.ts">
+export const CMD_GET_READING_CONFIG = "cmd_get_reading_config";
+export const CMD_START_READING_THERAPY = "cmd_start_reading_therapy";
+export const CMD_STOP_READING_THERAPY = "cmd_stop_reading_therapy";
+export const CMD_UPDATE_READING_CONFIG = "cmd_update_reading_config";
+export const CMD_CHANGE_READING_LAYOUT = "cmd_change_reading_layout";
+export const CMD_UPDATE_READING_ZONE_COLOR = "cmd_update_reading_zone_color";
+export const CMD_UPDATE_READING_ZONE_OPACITY =
+  "cmd_update_reading_zone_opacity";
+export const CMD_UPDATE_READING_SETTINGS = "cmd_update_reading_settings";
+export const CMD_RESET_READING_CONFIG = "cmd_reset_reading_config";
+export const CMD_READING_WINDOW_RESIZED = "cmd_reading_window_resized";
+</file>
+
+<file path="terapia_visual_app/src/core/commands/settings.ts">
+export const CMD_GET_APP_SETTINGS = "cmd_get_app_settings";
+export const CMD_UPDATE_APP_SETTINGS = "cmd_update_app_settings";
+export const CMD_EXIT_APP = "cmd_exit_app";
+</file>
+
+<file path="terapia_visual_app/src/core/localization/i18n.ts">
 export type Language = "es" | "en";
 
 export const translations = {
   es: {
+    // Titulo de la App
     app_title: "Terapia Visual",
+
+    // Menu principal
+    menu_color_division: "Terapia de División de Color",
+    menu_reading: "Terapia de Lectura",
+
+    // Botones
     btn_start: "Iniciar Terapia",
     btn_stop: "Detener Terapia",
     btn_spanish: "Español",
     btn_english: "English",
     btn_reset: "Restablecer",
+    btn_start_reading: "Abrir Ventana de Lectura",
+    btn_stop_reading: "Cerrar Ventana",
+    btn_back: "← Volver al Menú",
+    btn_exit: "Salir de la Aplicación",
 
     // Layouts
     layout_label: "Disposición (Layout)",
@@ -4649,20 +5285,37 @@ export const translations = {
     color_label: "Color",
     opacity_label: "Opacidad",
 
+    // Placeholders
+    reading_input_placeholder:
+      "Pega aquí el contenido de tu novela, artículo o documento HTML...",
+
     // Estados
     status_started: "Terapia iniciada",
     status_stopped: "Terapia detenida",
     status_updated: "Configuración actualizada",
     status_reset: "Valores por defecto restaurados",
+    status_reading_started: "Ventana de lectura abierta",
+    status_reading_stopped: "Ventana de lectura cerrada",
     error_generic: "Ha ocurrido un error inesperado",
   },
   en: {
+    //Titulo de la App
     app_title: "Visual Therapy",
+
+    // Menu
+    menu_color_division: "Color Division Therapy",
+    menu_reading: "Reading Therapy",
+
+    // Botones
     btn_start: "Start Therapy",
     btn_stop: "Stop Therapy",
     btn_spanish: "Spanish",
     btn_english: "English",
     btn_reset: "Reset Defaults",
+    btn_start_reading: "Open Reading Window",
+    btn_stop_reading: "Close Window",
+    btn_back: "← Back to Menu",
+    btn_exit: "Exit Application",
 
     // Layouts
     layout_label: "Layout",
@@ -4676,11 +5329,17 @@ export const translations = {
     color_label: "Color",
     opacity_label: "Opacity",
 
+    // Placeholders
+    reading_input_placeholder:
+      "Paste your novel, article or HTML document here...",
+
     // Estados
     status_started: "Therapy started",
     status_stopped: "Therapy stopped",
     status_updated: "Configuration updated",
     status_reset: "Default values restored",
+    status_reading_started: "Reading window opened",
+    status_reading_stopped: "Reading window closed",
     error_generic: "An unexpected error occurred",
   },
 };
@@ -4701,36 +5360,179 @@ export function translate(key: keyof typeof translations.es): string {
 }
 
 export function applyTranslations() {
-  // Actualizar titulo de la pagina
+  // Actualizar titulo de la app
   document.title = translate("app_title");
-  // Actualizar textos de elementos con el atributo data-i18n
+  // Actualizar elementos con la etiqueta `data-i18n`
   document.querySelectorAll("[data-i18n]").forEach((element) => {
     const key = element.getAttribute("data-i18n");
     if (key && element instanceof HTMLElement) {
-      element.innerText = translate(key as any);
+      // Si el elemento es un text area, se actualiza su placeholder
+      if (
+        element instanceof HTMLTextAreaElement ||
+        element instanceof HTMLInputElement
+      ) {
+        element.placeholder = translate(key as any);
+      } else {
+        element.innerText = translate(key as any);
+      }
     }
   });
 }
 </file>
 
-<file path="terapia_visual_app/src/main.ts">
-import { invoke } from "@tauri-apps/api/core";
-import { setLanguage, translate, type Language } from "./localization/i18n";
+<file path="terapia_visual_app/src/core/services/index.ts">
+// src/services/index.ts
+export * from "./overlay";
+export * from "./settings";
+export * from "./reading";
+</file>
 
-// Variables globales de estado del Frontend
-let currentConfig: any = null;
+<file path="terapia_visual_app/src/core/services/overlay.ts">
+// src/services/overlay.ts
+import { invoke } from "@tauri-apps/api/core";
+import {
+  CMD_GET_OVERLAY_CONFIG,
+  CMD_START_OVERLAY,
+  CMD_STOP_OVERLAY,
+  CMD_UPDATE_OVERLAY_CONFIG,
+  CMD_CHANGE_OVERLAY_LAYOUT,
+  CMD_UPDATE_OVERLAY_ZONE_COLOR,
+  CMD_UPDATE_OVERLAY_ZONE_OPACITY,
+  CMD_RESET_OVERLAY_CONFIG,
+} from "../commands";
+import { OverlayConfig } from "../types";
+
+export async function getOverlayConfig(): Promise<OverlayConfig> {
+  return await invoke(CMD_GET_OVERLAY_CONFIG);
+}
+
+export async function startOverlay(screenWidth: number, screenHeight: number) {
+  return await invoke(CMD_START_OVERLAY, { screenWidth, screenHeight });
+}
+
+export async function stopOverlay() {
+  return await invoke(CMD_STOP_OVERLAY);
+}
+
+export async function updateOverlayConfig(
+  newConfig: any,
+  screenWidth: number,
+  screenHeight: number,
+) {
+  return await invoke(CMD_UPDATE_OVERLAY_CONFIG, {
+    newConfig,
+    screenWidth,
+    screenHeight,
+  });
+}
+
+export async function changeOverlayLayout(
+  newLayout: string,
+  screenWidth: number,
+  screenHeight: number,
+) {
+  return await invoke(CMD_CHANGE_OVERLAY_LAYOUT, {
+    newLayout,
+    screenWidth,
+    screenHeight,
+  });
+}
+
+export async function updateOverlayZoneColor(
+  zoneIndex: number,
+  newColor: string,
+  screenWidth: number,
+  screenHeight: number,
+) {
+  return await invoke(CMD_UPDATE_OVERLAY_ZONE_COLOR, {
+    zoneIndex,
+    newColor,
+    screenWidth,
+    screenHeight,
+  });
+}
+
+export async function updateOverlayZoneOpacity(
+  zoneIndex: number,
+  newOpacity: number,
+  screenWidth: number,
+  screenHeight: number,
+) {
+  return await invoke(CMD_UPDATE_OVERLAY_ZONE_OPACITY, {
+    zoneIndex,
+    newOpacity,
+    screenWidth,
+    screenHeight,
+  });
+}
+
+export async function resetOverlayConfig(
+  screenWidth: number,
+  screenHeight: number,
+) {
+  return await invoke(CMD_RESET_OVERLAY_CONFIG, {
+    screenWidth,
+    screenHeight,
+  });
+}
+</file>
+
+<file path="terapia_visual_app/src/core/services/reading.ts">
+import { invoke } from "@tauri-apps/api/core";
+import {
+  CMD_START_READING_THERAPY,
+  CMD_STOP_READING_THERAPY,
+} from "../commands/reading";
+
+export async function startReading(htmlContent: string) {
+  return await invoke(CMD_START_READING_THERAPY, { htmlContent });
+}
+
+export async function stopReading() {
+  return await invoke(CMD_STOP_READING_THERAPY);
+}
+</file>
+
+<file path="terapia_visual_app/src/core/services/settings.ts">
+// src/services/settings.ts
+import { invoke } from "@tauri-apps/api/core";
+import {
+  CMD_GET_APP_SETTINGS,
+  CMD_UPDATE_APP_SETTINGS,
+  CMD_EXIT_APP,
+} from "../commands";
+import { type Language } from "../localization/i18n";
+
+// Definir el tipo de respuesta de AppSettings
+interface AppSettingsResponse {
+  language: string;
+}
+
+export async function getAppSettings(): Promise<AppSettingsResponse> {
+  return await invoke(CMD_GET_APP_SETTINGS);
+}
+
+export async function updateAppSettings(language: Language) {
+  return await invoke(CMD_UPDATE_APP_SETTINGS, {
+    newSettings: { language },
+  });
+}
+
+export async function exitApp() {
+  return await invoke(CMD_EXIT_APP);
+}
+</file>
+
+<file path="terapia_visual_app/src/core/services/ui.ts">
+// src/services/ui.ts
+import { translate } from "../localization/i18n";
+
+// Variables globales de estado
 let statusTimeout: number | undefined;
 
-// Referencias a elementos del DOM
-const statusDiv = document.getElementById("status");
-const layoutSelect = document.getElementById(
-  "layout-select",
-) as HTMLSelectElement;
-const zonesContainer = document.getElementById("zones-container");
-
-// Utilidad para mostrar estado
-function showStatus(
-  messageKey: keyof typeof import("./localization/i18n").translations.es,
+export function showStatus(
+  messageKey: keyof typeof import("../localization/i18n").translations.es,
+  statusDiv: HTMLElement | null,
 ) {
   if (!statusDiv) return;
   statusDiv.classList.remove("status-error");
@@ -4742,8 +5544,7 @@ function showStatus(
   }, 3000);
 }
 
-// Utilidad para mostrar errores
-function showError(errorMsg: string) {
+export function showError(errorMsg: string, statusDiv: HTMLElement | null) {
   if (!statusDiv) return;
 
   statusDiv.classList.add("status-error");
@@ -4755,217 +5556,510 @@ function showError(errorMsg: string) {
     statusDiv.classList.remove("status-error");
   }, 3000);
 }
+</file>
 
-async function loadInitialState() {
+<file path="terapia_visual_app/src/core/types/index.ts">
+export interface ZoneConfig {
+  color: string;
+  opacity: number;
+}
+
+export interface OverlayConfig {
+  layout: string;
+  zones_config: ZoneConfig[];
+}
+
+export interface ReadingSettings {
+  font_size: number;
+  text_color: string;
+  bg_color: string;
+  line_height: string;
+}
+
+export interface ReadingConfig {
+  layout: string;
+  zones_config: ZoneConfig[];
+  reading_settings: ReadingSettings;
+}
+
+export interface AppSettings {
+  language: string;
+}
+
+export interface TherapyModule {
+  mount: (container: HTMLElement) => void | Promise<void>;
+  unmount: () => void | Promise<void>;
+}
+</file>
+
+<file path="terapia_visual_app/src/main.ts">
+// main.ts
+import { setLanguage, applyTranslations } from "./core/localization/i18n";
+import {
+  getAppSettings,
+  exitApp,
+  updateAppSettings,
+} from "./core/services/settings";
+import { switchTherapy } from "./ui/router";
+import { showError } from "./ui/components/status";
+
+async function init() {
+  const statusDiv = document.getElementById("status");
+
   try {
     // Cargar idioma
-    const settings: { language: string } = await invoke("cmd_get_app_settings");
+    const settings = await getAppSettings();
     setLanguage(settings.language === "en" ? "en" : "es");
-
-    // Cargar configuracion de Terapia
-    currentConfig = await invoke("cmd_get_therapy_config");
-
-    // Renderizar la UI
-    layoutSelect.value = currentConfig.layout;
-    renderZoneControls();
   } catch (err) {
-    console.error("Error loading initial state: ", err);
+    console.error("Error loading initial state:", err);
+    showError(String(err), statusDiv);
   }
-}
 
-async function changeLanguage(lang: Language) {
-  try {
-    await invoke("cmd_update_app_settings", {
-      newSettings: { language: lang },
-    });
-    setLanguage(lang);
-    renderZoneControls(); // Re-renderizar para traducir las zonas
-  } catch (error) {
-    console.error("Error updating language: ", error);
-    showError(String(error));
-  }
-}
+  // Configurar eventos de navegación
+  document.getElementById("btn-nav-color")?.addEventListener("click", () => {
+    switchTherapy("overlay");
+  });
 
-function renderZoneControls() {
-  if (!zonesContainer || !currentConfig) return;
-  zonesContainer.innerHTML = ""; // Limpiar contenedor
+  document.getElementById("btn-nav-reading")?.addEventListener("click", () => {
+    switchTherapy("reading");
+  });
 
-  currentConfig.zones_config.forEach((zone: any, index: number) => {
-    // Crear la tarjeta de la zona
-    const card = document.createElement("div");
-    card.className = "zone-card";
+  // Cambio de idioma
+  document.getElementById("btn-es")?.addEventListener("click", async () => {
+    await updateAppSettings("es");
+    setLanguage("es");
+    applyTranslations();
+  });
 
-    // Titulo de la zona
-    const title = document.createElement("h4");
-    title.innerText = `${translate("zone_title")} ${index + 1}`;
-    card.appendChild(title);
+  document.getElementById("btn-en")?.addEventListener("click", async () => {
+    await updateAppSettings("en");
+    setLanguage("en");
+    applyTranslations();
+  });
 
-    // Control de color
-    const colorGroup = document.createElement("div");
-    colorGroup.className = "control-group";
-
-    const colorLabel = document.createElement("label");
-    colorLabel.innerText = translate("color_label");
-
-    const colorInput = document.createElement("input");
-    colorInput.type = "color";
-    colorInput.value = zone.color;
-
-    // Cuando el usuario elige un color y cierra el picker ("change")
-    colorInput.addEventListener("change", (e) => {
-      updateZoneConfig(index, (e.target as HTMLInputElement).value, null);
-    });
-
-    colorGroup.appendChild(colorLabel);
-    colorGroup.appendChild(colorInput);
-    card.appendChild(colorGroup);
-
-    // Control de Opacidad
-    const opacityGroup = document.createElement("div");
-    opacityGroup.className = "control-group";
-
-    const opacityLabel = document.createElement("label");
-    // Mostrar el % actual
-    opacityLabel.innerText = `${translate("opacity_label")} (${Math.round(zone.opacity * 100)}%)`;
-
-    const opacityInput = document.createElement("input");
-    opacityInput.type = "range";
-    opacityInput.min = "0";
-    opacityInput.max = "0.8";
-    opacityInput.step = "0.01";
-    opacityInput.value = zone.opacity;
-
-    // Al soltar el slider ("change")
-    opacityInput.addEventListener("change", (e) => {
-      const val = parseFloat((e.target as HTMLInputElement).value);
-      opacityLabel.innerText = `${translate("opacity_label")} (${Math.round(val * 100)}%)`;
-      updateZoneConfig(index, null, val);
-    });
-
-    opacityGroup.appendChild(opacityLabel);
-    opacityGroup.appendChild(opacityInput);
-    card.appendChild(opacityGroup);
-
-    // Añadir tarjeta al contenedor
-    zonesContainer.appendChild(card);
+  // Salir de la aplicación
+  document.getElementById("btn-exit")?.addEventListener("click", async () => {
+    try {
+      await exitApp();
+    } catch (err) {
+      console.error("Error al cerrar la app:", err);
+      showError(String(err), statusDiv);
+    }
   });
 }
 
-// Comunicación con el Backend (Rust)
-async function startTherapy() {
-  try {
-    const screenWidth = window.screen.width;
-    const screenHeight = window.screen.height;
-    await invoke("cmd_start_therapy", { screenWidth, screenHeight });
-    showStatus("status_started");
-  } catch (error) {
-    console.error("Error starting:", error);
-    showError(String(error));
-  }
+window.addEventListener("DOMContentLoaded", init);
+</file>
+
+<file path="terapia_visual_app/src/pages/index.html">
+<!doctype html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title data-i18n="app_title">Terapia Visual</title>
+    <link rel="icon" type="image/png" href="../src-tauri/icons/32x32.png" />
+    <link rel="stylesheet" href="../styles.css" />
+  </head>
+  <body>
+    <div class="app-container">
+      <!-- HEADER FIJO -->
+      <header>
+        <h1 data-i18n="app_title">Terapia Visual</h1>
+        <div class="lang-controls">
+          <button id="btn-es" data-i18n="btn_spanish">Español</button>
+          <button id="btn-en" data-i18n="btn_english">English</button>
+        </div>
+      </header>
+
+      <!-- MENÚ PRINCIPAL (siempre visible) -->
+      <div id="view-home" class="view">
+        <div
+          style="
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 20px;
+          "
+        >
+          <button
+            id="btn-nav-color"
+            style="
+              padding: 20px;
+              font-size: 1.1rem;
+              background-color: #3498db;
+              color: white;
+            "
+            data-i18n="menu_color_division"
+          >
+            Terapia de División de Color
+          </button>
+          <button
+            id="btn-nav-reading"
+            style="
+              padding: 20px;
+              font-size: 1.1rem;
+              background-color: #9b59b6;
+              color: white;
+            "
+            data-i18n="menu_reading"
+          >
+            Terapia de Lectura
+          </button>
+          <button
+            id="btn-exit"
+            style="
+              padding: 15px;
+              margin-top: 20px;
+              background-color: #e74c3c;
+              color: white;
+            "
+            data-i18n="btn_exit"
+          >
+            Salir de la Aplicación
+          </button>
+        </div>
+      </div>
+
+      <!-- CONTENEDOR DINÁMICO PARA TERAPIAS -->
+      <div id="app-content"></div>
+
+      <!-- STATUS GLOBAL -->
+      <div id="status"></div>
+    </div>
+    <script type="module" src="../main.ts"></script>
+  </body>
+</html>
+</file>
+
+<file path="terapia_visual_app/src/reading.html">
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Terapia de Lectura</title>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        overflow-x: hidden;
+        transition: background-color 0.3s;
+      }
+
+      /* Contenedor de las zonas de color (Fondo) */
+      #zones-container {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 0;
+        pointer-events: none;
+      }
+
+      /* Contenedor del Texto */
+      #content-wrapper {
+        position: relative;
+        z-index: 1;
+        background-color: rgba(0, 0, 0, 0.4);
+        min-height: 100vh;
+        width: 100%;
+        padding: 40px 20px;
+        box-sizing: border-box;
+      }
+      #chaptercontent {
+        margin: 0 auto;
+        max-width: 900px;
+      }
+      #chaptercontent p {
+        margin-bottom: 1.2rem;
+      }
+
+      /* Botón Flotante */
+      #floating-btn {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 1000;
+        background: #34495e;
+        color: white;
+        border: none;
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        font-size: 24px;
+        cursor: pointer;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        transition: 0.3s;
+      }
+      #floating-btn:hover {
+        background: #2c3e50;
+        transform: scale(1.1);
+      }
+
+      /* Panel Lateral de Ajustes */
+      #settings-panel {
+        position: fixed;
+        top: 0;
+        right: -350px;
+        width: 300px;
+        height: 100%;
+        background: #fdfdfd;
+        box-shadow: -4px 0 15px rgba(0, 0, 0, 0.2);
+        z-index: 999;
+        transition: right 0.3s ease;
+        padding: 20px;
+        box-sizing: border-box;
+        overflow-y: auto;
+        font-family: Arial, sans-serif;
+        color: #333;
+      }
+      #settings-panel.open {
+        right: 0;
+      }
+
+      .control-group {
+        margin-bottom: 15px;
+      }
+      .control-group label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: bold;
+        font-size: 0.9rem;
+      }
+      .control-group input,
+      .control-group select {
+        width: 100%;
+        padding: 8px;
+        border-radius: 4px;
+        border: 1px solid #ccc;
+        box-sizing: border-box;
+      }
+      .control-group input[type="color"] {
+        padding: 0;
+        height: 35px;
+        cursor: pointer;
+      }
+      hr {
+        border: 0;
+        border-top: 1px solid #ddd;
+        margin: 20px 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="zones-container"></div>
+
+    <div id="content-wrapper">
+      <div id="chaptercontent">
+        <h2 style="text-align: center; color: #7f8c8d; margin-top: 20vh">
+          Cargando lectura...
+        </h2>
+      </div>
+    </div>
+
+    <!-- UI Flotante -->
+    <button id="floating-btn">⚙️</button>
+    <div id="settings-panel">
+      <h2 style="margin-top: 0">Ajustes de Lectura</h2>
+
+      <div class="control-group">
+        <label>Tamaño de Fuente (px)</label>
+        <input type="number" id="inp-font-size" min="10" max="50" />
+      </div>
+      <div class="control-group">
+        <label>Color de Letra</label>
+        <input type="color" id="inp-text-color" />
+      </div>
+      <div class="control-group">
+        <label>Color de Fondo</label>
+        <input type="color" id="inp-bg-color" />
+      </div>
+      <hr />
+      <div class="control-group">
+        <label>Layout de Terapia</label>
+        <select id="inp-layout">
+          <option value="Vertical">Vertical</option>
+          <option value="Horizontal">Horizontal</option>
+          <option value="Checkerboard">Ajedrez</option>
+          <option value="Vertical4Columns">Vertical (4 Columnas)</option>
+        </select>
+      </div>
+      <div id="zones-controls"></div>
+    </div>
+
+    <script type="module" src="reading.ts"></script>
+  </body>
+</html>
+</file>
+
+<file path="terapia_visual_app/src/reading.ts">
+// reading.ts
+import { invoke } from "@tauri-apps/api/core";
+import { listen } from "@tauri-apps/api/event";
+
+// Elementos del DOM
+const panel = document.getElementById("settings-panel")!;
+const btnToggle = document.getElementById("floating-btn")!;
+const contentDiv = document.getElementById("chaptercontent")!;
+const zonesContainer = document.getElementById("zones-container")!;
+
+const inpFontSize = document.getElementById(
+  "inp-font-size",
+) as HTMLInputElement;
+const inpTextColor = document.getElementById(
+  "inp-text-color",
+) as HTMLInputElement;
+const inpBgColor = document.getElementById("inp-bg-color") as HTMLInputElement;
+const inpLayout = document.getElementById("inp-layout") as HTMLSelectElement;
+const zonesControls = document.getElementById("zones-controls")!;
+
+let currentConfig: any = null;
+
+// Alternar Panel Lateral
+btnToggle.addEventListener("click", () => {
+  panel.classList.toggle("open");
+});
+
+// Escuchar los eventos IPC que manda Rust
+listen("update-reading-view", (event: any) => {
+  console.log("Datos recibidos de Rust:", event.payload);
+  currentConfig = event.payload.config;
+
+  contentDiv.innerHTML = event.payload.html_content;
+  applyReadingSettings();
+  renderZones();
+  renderPanelControls();
+});
+
+// Aplicar colores y fuentes al texto
+function applyReadingSettings() {
+  const settings = currentConfig.reading_settings;
+  document.body.style.backgroundColor = settings.bg_color;
+
+  contentDiv.style.fontSize = `${settings.font_size}px`;
+  contentDiv.style.color = settings.text_color;
+  contentDiv.style.lineHeight = settings.line_height;
+
+  contentDiv.querySelectorAll("p").forEach((p) => {
+    p.style.color = settings.text_color;
+    p.style.lineHeight = settings.line_height;
+  });
 }
 
-async function stopTherapy() {
-  try {
-    await invoke("cmd_stop_therapy");
-    showStatus("status_stopped");
-  } catch (error) {
-    console.error("Error stopping:", error);
-    showError(String(error));
+// Calcular y dibujar las zonas
+function renderZones() {
+  zonesContainer.innerHTML = "";
+  const w = window.innerWidth;
+  const h = window.innerHeight;
+  const layout = currentConfig.layout;
+  const zones = currentConfig.zones_config;
+
+  let rects: { x: number; y: number; w: number; h: number }[] = [];
+
+  if (layout === "Vertical") {
+    rects = [
+      { x: 0, y: 0, w: w / 2, h: h },
+      { x: w / 2, y: 0, w: w / 2, h: h },
+    ];
+  } else if (layout === "Horizontal") {
+    rects = [
+      { x: 0, y: 0, w: w, h: h / 2 },
+      { x: 0, y: h / 2, w: w, h: h / 2 },
+    ];
+  } else if (layout === "Checkerboard") {
+    rects = [
+      { x: 0, y: 0, w: w / 2, h: h / 2 },
+      { x: w / 2, y: 0, w: w / 2, h: h / 2 },
+      { x: 0, y: h / 2, w: w / 2, h: h / 2 },
+      { x: w / 2, y: h / 2, w: w / 2, h: h / 2 },
+    ];
+  } else if (layout === "Vertical4Columns") {
+    const col = w / 4;
+    rects = [
+      { x: 0, y: 0, w: col, h },
+      { x: col, y: 0, w: col, h },
+      { x: col * 2, y: 0, w: col, h },
+      { x: col * 3, y: 0, w: col, h },
+    ];
   }
+
+  rects.forEach((rect, i) => {
+    if (!zones[i]) return;
+    const div = document.createElement("div");
+    div.style.position = "absolute";
+    div.style.left = `${rect.x}px`;
+    div.style.top = `${rect.y}px`;
+    div.style.width = `${rect.w}px`;
+    div.style.height = `${rect.h}px`;
+    div.style.backgroundColor = zones[i].color;
+    div.style.opacity = zones[i].opacity.toString();
+    zonesContainer.appendChild(div);
+  });
 }
 
-async function resetTherapy() {
-  try {
-    const screenWidth = window.screen.width;
-    const screenHeight = window.screen.height;
+// Llenar el panel flotante
+function renderPanelControls() {
+  inpFontSize.value = currentConfig.reading_settings.font_size;
+  inpTextColor.value = currentConfig.reading_settings.text_color;
+  inpBgColor.value = currentConfig.reading_settings.bg_color;
+  inpLayout.value = currentConfig.layout;
 
-    // LLamar al backend para que reinicie todo y retorne configuracion limpia
-    currentConfig = await invoke("cmd_reset_therapy_config", {
-      screenWidth,
-      screenHeight,
-    });
+  zonesControls.innerHTML = "";
+  currentConfig.zones_config.forEach((zone: any, index: number) => {
+    const group = document.createElement("div");
+    group.className = "control-group";
+    group.innerHTML = `
+      <label>Zona ${index + 1} - Color y Opacidad</label>
+      <div style="display: flex; gap: 5px;">
+        <input type="color" value="${zone.color}" id="z-color-${index}" style="flex: 1;">
+        <input type="range" min="0" max="0.8" step="0.01" value="${zone.opacity}" id="z-op-${index}" style="flex: 2;">
+      </div>
+    `;
+    zonesControls.appendChild(group);
 
-    // Sincronizar UI con los nuevos valores
-    layoutSelect.value = currentConfig.layout;
-    renderZoneControls();
-    showStatus("status_reset");
-  } catch (error) {
-    console.error("Error reseteando configuracion:", error);
-    showError(String(error));
-  }
-}
-
-async function handleLayoutChange(e: Event) {
-  const newLayout = (e.target as HTMLSelectElement).value;
-
-  try {
-    const screenWidth = window.screen.width;
-    const screenHeight = window.screen.height;
-
-    await invoke("cmd_change_layout", { newLayout, screenWidth, screenHeight });
-
-    currentConfig = await invoke("cmd_get_therapy_config");
-    renderZoneControls();
-    showStatus("status_updated");
-  } catch (error) {
-    console.error("Error cambiando layout:", error);
-    showError(String(error));
-  }
-}
-
-async function updateZoneConfig(
-  index: number,
-  newColor: string | null,
-  newOpacity: number | null,
-) {
-  try {
-    const screenWidth = window.screen.width;
-    const screenHeight = window.screen.height;
-
-    // Mandar el comando especifico segun lo que se toco
-    if (newColor !== null) {
-      await invoke("cmd_update_zone_color", {
-        zoneIndex: index,
-        newColor: newColor.toUpperCase(),
-        screenWidth,
-        screenHeight,
+    document
+      .getElementById(`z-color-${index}`)
+      ?.addEventListener("change", (e) => {
+        invoke("cmd_update_reading_zone_color", {
+          zoneIndex: index,
+          newColor: (e.target as HTMLInputElement).value.toUpperCase(),
+        });
       });
-    }
-    if (newOpacity !== null) {
-      await invoke("cmd_update_zone_opacity", {
-        zoneIndex: index,
-        newOpacity,
-        screenWidth,
-        screenHeight,
+    document
+      .getElementById(`z-op-${index}`)
+      ?.addEventListener("change", (e) => {
+        invoke("cmd_update_reading_zone_opacity", {
+          zoneIndex: index,
+          newOpacity: parseFloat((e.target as HTMLInputElement).value),
+        });
       });
-    }
-
-    // Refrescar la UI por si el backend sincronizo colores (como en el Ajedrez)
-    currentConfig = await invoke("cmd_get_therapy_config");
-    renderZoneControls();
-    showStatus("status_updated");
-  } catch (error) {
-    console.error("Error actualizando zona:", error);
-    showError(String(error));
-  }
+  });
 }
 
-// Event Listeners
+// Enviar cambios a Rust
+async function saveReadingSettings() {
+  const newSettings = {
+    font_size: parseInt(inpFontSize.value),
+    text_color: inpTextColor.value.toUpperCase(),
+    bg_color: inpBgColor.value.toUpperCase(),
+    line_height: "1.65",
+  };
+  await invoke("cmd_update_reading_settings", { newSettings });
+}
 
-window.addEventListener("DOMContentLoaded", async () => {
-  await loadInitialState();
+inpFontSize.addEventListener("change", saveReadingSettings);
+inpTextColor.addEventListener("change", saveReadingSettings);
+inpBgColor.addEventListener("change", saveReadingSettings);
+inpLayout.addEventListener("change", (e) => {
+  invoke("cmd_change_reading_layout", {
+    newLayout: (e.target as HTMLSelectElement).value,
+  });
+});
 
-  document.getElementById("btn-start")?.addEventListener("click", startTherapy);
-  document.getElementById("btn-stop")?.addEventListener("click", stopTherapy);
-  document.getElementById("btn-reset")?.addEventListener("click", resetTherapy);
-  document
-    .getElementById("btn-es")
-    ?.addEventListener("click", () => changeLanguage("es"));
-  document
-    .getElementById("btn-en")
-    ?.addEventListener("click", () => changeLanguage("en"));
-
-  layoutSelect?.addEventListener("change", handleLayoutChange);
+// Redimensionar ventana
+window.addEventListener("resize", () => {
+  if (currentConfig) renderZones();
 });
 </file>
 
@@ -5162,6 +6256,461 @@ input[type="range"] {
 }
 </file>
 
+<file path="terapia_visual_app/src/therapies/overlay/index.ts">
+import type { TherapyModule } from "../../core/types";
+import { renderOverlayView } from "./view";
+import {
+  getOverlayConfig,
+  startOverlay,
+  stopOverlay,
+  resetOverlayConfig,
+  changeOverlayLayout,
+  updateOverlayZoneColor,
+  updateOverlayZoneOpacity,
+} from "../../core/services/overlay";
+import { renderZoneControls } from "../../ui/components/zone-controls";
+import { showStatus, showError } from "../../ui/components/status";
+import { goHome } from "../../ui/router";
+
+let cleanupFunctions: (() => void)[] = [];
+
+export const overlayTherapy: TherapyModule = {
+  mount: async (container: HTMLElement) => {
+    // Renderizar HTML
+    renderOverlayView(container);
+
+    const statusDiv = document.getElementById("status");
+    const layoutSelect = document.getElementById(
+      "layout-select",
+    ) as HTMLSelectElement;
+
+    // Cargar configuracion y renderizar controles
+    async function loadConfig() {
+      try {
+        const config = await getOverlayConfig();
+        renderZoneControls(config, (index, newColor, newOpacity) => {
+          updateZoneConfig(index, newColor, newOpacity);
+        });
+        if (layoutSelect) layoutSelect.value = config.layout;
+      } catch (error) {
+        console.error("Error loading overlay config:", error);
+        showError(String(error), statusDiv);
+      }
+    }
+
+    await loadConfig();
+
+    // Handlers de eventos
+    const startHandler = () => {
+      startOverlay(window.screen.width, window.screen.height)
+        .then(() => showStatus("status_started", statusDiv))
+        .catch((err) => showError(String(err), statusDiv));
+    };
+
+    const stopHandler = () => {
+      stopOverlay()
+        .then(() => showStatus("status_stopped", statusDiv))
+        .catch((err) => showError(String(err), statusDiv));
+    };
+
+    const resetHandler = async () => {
+      try {
+        await resetOverlayConfig(window.screen.width, window.screen.height);
+        await loadConfig();
+        showStatus("status_reset", statusDiv);
+      } catch (err) {
+        showError(String(err), statusDiv);
+      }
+    };
+
+    const layoutHandler = async (e: Event) => {
+      const newLayout = (e.target as HTMLSelectElement).value;
+      try {
+        await changeOverlayLayout(
+          newLayout,
+          window.screen.width,
+          window.screen.height,
+        );
+        await loadConfig();
+        showStatus("status_updated", statusDiv);
+      } catch (err) {
+        showError(String(err), statusDiv);
+      }
+    };
+
+    const startBtn = document.getElementById("btn-start");
+    const stopBtn = document.getElementById("btn-stop");
+    const resetBtn = document.getElementById("btn-reset");
+    const backBtn = document.getElementById("btn-back-overlay");
+
+    startBtn?.addEventListener("click", startHandler);
+    stopBtn?.addEventListener("click", stopHandler);
+    resetBtn?.addEventListener("click", resetHandler);
+    layoutSelect?.addEventListener("change", layoutHandler);
+    backBtn?.addEventListener("click", goHome);
+
+    // Guardar funciones de limpieza
+    cleanupFunctions = [
+      () => startBtn?.removeEventListener("click", startHandler),
+      () => stopBtn?.removeEventListener("click", stopHandler),
+      () => resetBtn?.removeEventListener("click", resetHandler),
+      () => layoutSelect?.removeEventListener("change", layoutHandler),
+      () => backBtn?.removeEventListener("click", goHome),
+    ];
+  },
+
+  unmount: async () => {
+    cleanupFunctions.forEach((fn) => fn());
+    cleanupFunctions = [];
+  },
+};
+
+// Funcion auxiliar para actualizar zonas
+async function updateZoneConfig(
+  index: number,
+  newColor: string | null,
+  newOpacity: number | null,
+) {
+  const statusDiv = document.getElementById("status");
+
+  try {
+    const screenWidth = window.screen.width;
+    const screenHeight = window.screen.height;
+
+    if (newColor !== null) {
+      await updateOverlayZoneColor(
+        index,
+        newColor.toUpperCase(),
+        screenWidth,
+        screenHeight,
+      );
+    }
+    if (newOpacity !== null) {
+      await updateOverlayZoneOpacity(
+        index,
+        newOpacity,
+        screenWidth,
+        screenHeight,
+      );
+    }
+
+    // Recargar configuracion para actualizar la UI
+    const config = await getOverlayConfig();
+    renderZoneControls(config, (i, c, o) => {
+      updateZoneConfig(i, c, o);
+    });
+    showStatus("status_updated", statusDiv);
+  } catch (err) {
+    showError(String(err), statusDiv);
+  }
+}
+</file>
+
+<file path="terapia_visual_app/src/therapies/overlay/view.ts">
+export function renderOverlayView(container: HTMLElement) {
+  container.innerHTML = `
+    <div class="therapy-view">
+      <button id="btn-back-overlay" class="btn-back" data-i18n="btn_back">← Volver al Menú</button>
+      <hr style="border:0; border-top:1px solid #eee; margin:15px 0" />
+      
+      <div class="main-actions">
+        <button id="btn-start" data-i18n="btn_start">Iniciar Terapia</button>
+        <button id="btn-stop" data-i18n="btn_stop">Detener Terapia</button>
+        <button id="btn-reset" data-i18n="btn_reset">Restablecer</button>
+      </div>
+      
+      <div class="control-section">
+        <h3 data-i18n="layout_label">Disposición (Layout)</h3>
+        <select id="layout-select" class="layout-selector">
+          <option value="Vertical" data-i18n="layout_vertical">Vertical</option>
+          <option value="Horizontal" data-i18n="layout_horizontal">Horizontal</option>
+          <option value="Checkerboard" data-i18n="layout_checkerboard">Ajedrez</option>
+          <option value="Vertical4Columns" data-i18n="layout_vertical4">Vertical (4 Columnas)</option>
+        </select>
+      </div>
+      
+      <div class="control-section">
+        <div id="zones-container"></div>
+      </div>
+    </div>
+  `;
+}
+</file>
+
+<file path="terapia_visual_app/src/therapies/reading/index.ts">
+import type { TherapyModule } from "../../core/types";
+import { renderReadingView } from "./view";
+import { startReading, stopReading } from "../../core/services/reading";
+import { showStatus, showError } from "../../ui/components/status";
+import { goHome } from "../../ui/router";
+
+let cleanupFunctions: (() => void)[] = [];
+
+function processReadingText(rawText: string): string {
+  if (rawText.includes("<p>") || rawText.includes("<div>")) {
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(rawText, "text/html");
+    doc
+      .querySelectorAll("script, style, link, meta, head")
+      .forEach((el) => el.remove());
+    doc.querySelectorAll("*").forEach((el) => {
+      el.removeAttribute("class");
+      el.removeAttribute("style");
+      el.removeAttribute("id");
+    });
+    return doc.body.innerHTML;
+  }
+
+  const escaped = rawText
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;");
+  return escaped
+    .split(/\n\n+/)
+    .filter((p) => p.trim() !== "")
+    .map((p) => `<p>${p.replace(/\n/g, "<br>")}</p>`)
+    .join("\n");
+}
+
+export const readingTherapy: TherapyModule = {
+  mount: async (container: HTMLElement) => {
+    renderReadingView(container);
+
+    const statusDiv = document.getElementById("status");
+    const startBtn = document.getElementById("btn-start-reading");
+    const stopBtn = document.getElementById("btn-stop-reading");
+    const backBtn = document.getElementById("btn-back-reading");
+
+    const startHandler = async () => {
+      const textarea = document.getElementById(
+        "reading-input",
+      ) as HTMLTextAreaElement;
+      if (!textarea || !textarea.value.trim()) {
+        showError("Por favor, pega algún texto o HTML primero.", statusDiv);
+        return;
+      }
+      try {
+        const cleanHtml = processReadingText(textarea.value);
+        await startReading(cleanHtml);
+        showStatus("status_reading_started", statusDiv);
+      } catch (err) {
+        showError(String(err), statusDiv);
+      }
+    };
+
+    const stopHandler = () => {
+      stopReading()
+        .then(() => showStatus("status_reading_stopped", statusDiv))
+        .catch((err) => showError(String(err), statusDiv));
+    };
+
+    backBtn?.addEventListener("click", goHome);
+    startBtn?.addEventListener("click", startHandler);
+    stopBtn?.addEventListener("click", stopHandler);
+
+    cleanupFunctions = [
+      () => backBtn?.removeEventListener("click", goHome),
+      () => startBtn?.removeEventListener("click", startHandler),
+      () => stopBtn?.removeEventListener("click", stopHandler),
+    ];
+  },
+
+  unmount: async () => {
+    cleanupFunctions.forEach((fn) => fn());
+    cleanupFunctions = [];
+  },
+};
+</file>
+
+<file path="terapia_visual_app/src/therapies/reading/view.ts">
+export function renderReadingView(container: HTMLElement) {
+  container.innerHTML = `
+    <div class="therapy-view">
+      <button id="btn-back-reading" class="btn-back" data-i18n="btn_back">← Volver al Menú</button>
+      <hr style="border:0; border-top:1px solid #eee; margin:15px 0" />
+      
+      <div class="main-actions">
+        <button id="btn-start-reading" style="background-color: #9b59b6; color: white" data-i18n="btn_start_reading">
+          Abrir Ventana
+        </button>
+        <button id="btn-stop-reading" style="background-color: #e74c3c; color: white" data-i18n="btn_stop_reading">
+          Cerrar Ventana
+        </button>
+      </div>
+
+      <div class="control-section">
+        <textarea id="reading-input" style="width:100%; height:250px; padding:15px; border-radius:8px; border:1px solid #ddd; resize:vertical; box-sizing:border-box; font-family:inherit;" data-i18n="reading_input_placeholder" placeholder="Pega aquí el contenido..."></textarea>
+      </div>
+    </div>
+  `;
+}
+</file>
+
+<file path="terapia_visual_app/src/ui/components/status.ts">
+import { translate } from "../../core/localization/i18n";
+
+let statusTimeout: number | undefined;
+
+export function showStatus(
+  messageKey: keyof typeof import("../../core/localization/i18n").translations.es,
+  statusDiv: HTMLElement | null,
+) {
+  if (!statusDiv) return;
+
+  statusDiv.classList.remove("status-error");
+  statusDiv.innerText = translate(messageKey);
+
+  clearTimeout(statusTimeout);
+  statusTimeout = window.setTimeout(() => {
+    statusDiv.innerText = "";
+  }, 3000);
+}
+
+export function showError(errorMsg: string, statusDiv: HTMLElement | null) {
+  if (!statusDiv) return;
+
+  statusDiv.classList.add("status-error");
+  statusDiv.innerText = `${translate("error_generic")}: ${errorMsg}`;
+
+  clearTimeout(statusTimeout);
+  statusTimeout = window.setTimeout(() => {
+    statusDiv.innerText = "";
+    statusDiv.classList.remove("status-error");
+  }, 3000);
+}
+</file>
+
+<file path="terapia_visual_app/src/ui/components/zone-controls.ts">
+import { translate } from "../../core/localization/i18n";
+
+export function renderZoneControls(
+  config: any,
+  onUpdate: (
+    index: number,
+    newColor: string | null,
+    newOpacity: number | null,
+  ) => void,
+) {
+  const container = document.getElementById("zones-container");
+  if (!container) return;
+
+  container.innerHTML = "";
+
+  config.zones_config.forEach((zone: any, index: number) => {
+    const card = document.createElement("div");
+    card.className = "zone-card";
+
+    // Titulo de la zona
+    const title = document.createElement("h4");
+    title.innerText = `${translate("zone_title")} ${index + 1}`;
+    card.appendChild(title);
+
+    // Control de color
+    const colorGroup = document.createElement("div");
+    colorGroup.className = "control-group";
+
+    const colorLabel = document.createElement("label");
+    colorLabel.innerText = translate("color_label");
+
+    const colorInput = document.createElement("input");
+    colorInput.type = "color";
+    colorInput.value = zone.color;
+
+    colorInput.addEventListener("change", (e) => {
+      const newColor = (e.target as HTMLInputElement).value;
+      onUpdate(index, newColor, null);
+    });
+
+    colorGroup.appendChild(colorLabel);
+    colorGroup.appendChild(colorInput);
+    card.appendChild(colorGroup);
+
+    // Control de opacidad
+    const opacityGroup = document.createElement("div");
+    opacityGroup.className = "control-group";
+
+    const opacityLabel = document.createElement("label");
+    opacityLabel.innerText = `${translate("opacity_label")} (${Math.round(zone.opacity * 100)}%)`;
+
+    const opacityInput = document.createElement("input");
+    opacityInput.type = "range";
+    opacityInput.min = "0";
+    opacityInput.max = "0.8";
+    opacityInput.step = "0.01";
+    opacityInput.value = zone.opacity;
+
+    opacityInput.addEventListener("change", (e) => {
+      const val = parseFloat((e.target as HTMLInputElement).value);
+      opacityLabel.innerText = `${translate("opacity_label")} (${Math.round(val * 100)}%)`;
+      onUpdate(index, null, val);
+    });
+
+    opacityGroup.appendChild(opacityLabel);
+    opacityGroup.appendChild(opacityInput);
+    card.appendChild(opacityGroup);
+
+    container.appendChild(card);
+  });
+}
+</file>
+
+<file path="terapia_visual_app/src/ui/router.ts">
+import type { TherapyModule } from "../core/types";
+import { overlayTherapy } from "../therapies/overlay";
+import { readingTherapy } from "../therapies/reading";
+import { applyTranslations } from "../core/localization/i18n";
+
+const therapyMap: Record<string, TherapyModule> = {
+  overlay: overlayTherapy,
+  reading: readingTherapy,
+};
+
+let currentTherapy: TherapyModule | null = null;
+
+export async function switchTherapy(therapyId: "overlay" | "reading") {
+  const container = document.getElementById("app-content");
+  const homeView = document.getElementById("view-home");
+  if (!container) return;
+
+  // Limpiar módulo anterior
+  if (currentTherapy) {
+    await currentTherapy.unmount();
+  }
+
+  // Ocultar menu principal
+  if (homeView) homeView.style.display = "none";
+
+  // Limpiar DOM
+  container.innerHTML = "";
+
+  // Cargar nuevo modulo
+  const module = therapyMap[therapyId];
+  if (!module) return;
+
+  currentTherapy = module;
+  await module.mount(container);
+
+  applyTranslations();
+}
+
+export function goHome() {
+  const container = document.getElementById("app-content");
+  const homeView = document.getElementById("view-home");
+
+  // Limpiar módulo actual
+  if (currentTherapy) {
+    currentTherapy.unmount();
+    currentTherapy = null;
+  }
+
+  // Mostrar el menú principal
+  if (homeView) homeView.style.display = "block";
+
+  // Limpiar el contenedor de contenido
+  if (container) container.innerHTML = "";
+}
+</file>
+
 <file path="terapia_visual_app/tsconfig.json">
 {
   "compilerOptions": {
@@ -5190,13 +6739,12 @@ input[type="range"] {
 
 <file path="terapia_visual_app/vite.config.ts">
 import { defineConfig } from "vite";
+import { resolve } from "path";
 
-// @ts-expect-error process is a nodejs global
 const host = process.env.TAURI_DEV_HOST;
 
 // https://vite.dev/config/
 export default defineConfig(async () => ({
-
   // Vite options tailored for Tauri development and only applied in `tauri dev` or `tauri build`
   //
   // 1. prevent Vite from obscuring rust errors
@@ -5216,6 +6764,14 @@ export default defineConfig(async () => ({
     watch: {
       // 3. tell Vite to ignore watching `src-tauri`
       ignored: ["**/src-tauri/**"],
+    },
+  },
+  build: {
+    rollupOptions: {
+      input: {
+        main: resolve(__dirname, "index.html"),
+        reading: resolve(__dirname, "src/reading.html"),
+      },
     },
   },
 }));
@@ -5991,16 +7547,16 @@ mod tests {
 //! - [`ZoneRect`]: Rectángulos que definen áreas en la pantalla
 //! - [`Zone`]: Zona de color con posición, color y opacidad
 //! - [`ZoneConfig`]: Configuración de una zona (color + opacidad)
-//! - [`TherapyConfig`]: Configuración completa de la terapia
+//! - [`OverlayTherapyConfig`]: Configuración completa de la terapia
 //! - [`AppSettings`]: Preferencias globales de la aplicación
 //!
 //! # Ejemplo de uso
 //!
 //! ```
-//! use terapia_visual_domain::domain::{TherapyConfig, TherapyType, Layout, ZoneConfig, Color, Opacity};
+//! use terapia_visual_domain::domain::{OverlayTherapyConfig, TherapyType, Layout, ZoneConfig, Color, Opacity};
 //!
 //! // Crear una configuración de terapia
-//! let config = TherapyConfig::new(
+//! let config = OverlayTherapyConfig::new(
 //!     TherapyType::ColorDivision,
 //!     Layout::Vertical,
 //!     vec![
@@ -6167,7 +7723,7 @@ mod tests {
 <file path="terapia_visual_domain/src/domain/overlay_therapy_config.rs">
 //! # Módulo de Configuración de Terapia
 //!
-//! Define el agregado principal [`TherapyConfig`], que representa la configuración
+//! Define el agregado principal [`OverlayTherapyConfig`], que representa la configuración
 //! completa de una terapia visual.
 //!
 //! Una configuración incluye:
@@ -6181,10 +7737,10 @@ mod tests {
 //! # Ejemplos
 //!
 //! ```
-//! use terapia_visual_domain::domain::{TherapyConfig, TherapyType, Layout, ZoneConfig, Color, Opacity};
+//! use terapia_visual_domain::domain::{OverlayTherapyConfig, TherapyType, Layout, ZoneConfig, Color, Opacity};
 //!
 //! // Crear una configuración vertical con dos zonas (rojo y verde)
-//! let config = TherapyConfig::new(
+//! let config = OverlayTherapyConfig::new(
 //!     TherapyType::ColorDivision,
 //!     Layout::Vertical,
 //!     vec![
@@ -6234,7 +7790,7 @@ pub enum ConfigError {
 ///
 /// Este enum está diseñado para ser extensible. Para añadir un nuevo tipo de terapia:
 /// 1. Añadir una nueva variante aquí.
-/// 2. Modificar el método [`TherapyConfig::new`] para manejar la nueva variante.
+/// 2. Modificar el método [`OverlayTherapyConfig::new`] para manejar la nueva variante.
 /// 3. Implementar cualquier lógica específica del nuevo tipo.
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
 pub enum TherapyType {
@@ -6299,10 +7855,10 @@ impl OverlayTherapyConfig {
     /// # Ejemplos
     ///
     /// ```
-    /// use terapia_visual_domain::domain::{TherapyConfig, TherapyType, Layout, ZoneConfig, Color, Opacity};
+    /// use terapia_visual_domain::domain::{OverlayTherapyConfig, TherapyType, Layout, ZoneConfig, Color, Opacity};
     ///
     /// // Configuración válida
-    /// let config = TherapyConfig::new(
+    /// let config = OverlayTherapyConfig::new(
     ///     TherapyType::ColorDivision,
     ///     Layout::Vertical,
     ///     vec![
@@ -6313,7 +7869,7 @@ impl OverlayTherapyConfig {
     /// assert!(config.is_ok());
     ///
     /// // Configuración inválida (número incorrecto de zonas)
-    /// let invalid = TherapyConfig::new(
+    /// let invalid = OverlayTherapyConfig::new(
     ///     TherapyType::ColorDivision,
     ///     Layout::Vertical,
     ///     vec![
@@ -6363,9 +7919,9 @@ impl OverlayTherapyConfig {
     /// # Ejemplos
     ///
     /// ```
-    /// use terapia_visual_domain::domain::{TherapyConfig, Layout};
+    /// use terapia_visual_domain::domain::{OverlayTherapyConfig, Layout};
     ///
-    /// let mut config = TherapyConfig::default(); // Layout::Vertical (2 zonas)
+    /// let mut config = OverlayTherapyConfig::default(); // Layout::Vertical (2 zonas)
     ///
     /// // Cambiar a Checkerboard (4 zonas)
     /// config.change_layout(Layout::Checkerboard);
@@ -6436,9 +7992,9 @@ impl OverlayTherapyConfig {
     /// # Ejemplos
     ///
     /// ```
-    /// use terapia_visual_domain::domain::{TherapyConfig, Color};
+    /// use terapia_visual_domain::domain::{OverlayTherapyConfig, Color};
     ///
-    /// let mut config = TherapyConfig::default();
+    /// let mut config = OverlayTherapyConfig::default();
     /// let new_color = Color::new("#0000FF").unwrap();
     ///
     /// // Cambiar el color de la primera zona a azul
@@ -6480,9 +8036,9 @@ impl OverlayTherapyConfig {
     /// # Ejemplos
     ///
     /// ```
-    /// use terapia_visual_domain::domain::{TherapyConfig, Opacity};
+    /// use terapia_visual_domain::domain::{OverlayTherapyConfig, Opacity};
     ///
-    /// let mut config = TherapyConfig::default();
+    /// let mut config = OverlayTherapyConfig::default();
     /// let new_opacity = Opacity::new(0.3).unwrap();
     ///
     /// // Cambiar la opacidad de la primera zona a 0.3
@@ -6563,9 +8119,9 @@ impl OverlayTherapyConfig {
     /// # Ejemplos
     ///
     /// ```
-    /// use terapia_visual_domain::domain::TherapyConfig;
+    /// use terapia_visual_domain::domain::OverlayTherapyConfig;
     ///
-    /// let config = TherapyConfig::default(); // Layout::Vertical
+    /// let config = OverlayTherapyConfig::default(); // Layout::Vertical
     /// let zones = config.generate_zones(1920, 1080);
     ///
     /// assert_eq!(zones.len(), 2);
@@ -6592,9 +8148,9 @@ impl OverlayTherapyConfig {
 /// # Ejemplos
 ///
 /// ```
-/// use terapia_visual_domain::domain::{TherapyConfig, Layout};
+/// use terapia_visual_domain::domain::{OverlayTherapyConfig, Layout};
 ///
-/// let config = TherapyConfig::default();
+/// let config = OverlayTherapyConfig::default();
 /// assert_eq!(config.layout(), Layout::Vertical);
 /// assert_eq!(config.zones_config().len(), 2);
 /// ```
@@ -6903,6 +8459,56 @@ mod tests {
         let _ = config.update_zone_opacity(3, op_d);
         assert_eq!(config.zones_config()[1].opacity, op_d); // 3 actualiza 1
     }
+    // ==========================================
+    // REGLAS DE SINCRONIZACIÓN - CASOS NONE
+    // ==========================================
+
+    #[test]
+    fn test_get_sync_pair_returns_none_for_vertical_layout() {
+        let config = OverlayTherapyConfig::default(); // Layout::Vertical
+        // Verificar que para cualquier índice en Vertical, get_sync_pair retorna None
+        for i in 0..config.zones_config().len() {
+            assert_eq!(config.get_sync_pair(i), None);
+        }
+    }
+
+    #[test]
+    fn test_get_sync_pair_returns_none_for_horizontal_layout() {
+        let mut config = OverlayTherapyConfig::default();
+        config.change_layout(Layout::Horizontal);
+        for i in 0..config.zones_config().len() {
+            assert_eq!(config.get_sync_pair(i), None);
+        }
+    }
+
+    #[test]
+    fn test_get_sync_pair_returns_none_for_out_of_range_index() {
+        let config = OverlayTherapyConfig::default();
+        // Intentar con índices fuera del rango de zonas
+        // (aunque el método no valida el índice, el match lo maneja con _)
+        assert_eq!(config.get_sync_pair(99), None);
+        assert_eq!(config.get_sync_pair(100), None);
+    }
+
+    #[test]
+    fn test_get_sync_pair_returns_none_for_unpaired_index_in_checkerboard() {
+        let mut config = OverlayTherapyConfig::default();
+        config.change_layout(Layout::Checkerboard);
+        // En Checkerboard, los índices válidos son 0,1,2,3
+        // Los índices fuera de ese rango retornan None
+        assert_eq!(config.get_sync_pair(4), None);
+        assert_eq!(config.get_sync_pair(5), None);
+    }
+
+    #[test]
+    fn test_get_sync_pair_returns_none_for_unpaired_index_in_vertical4() {
+        let mut config = OverlayTherapyConfig::default();
+        config.change_layout(Layout::Vertical4Columns);
+        // En Vertical4Columns, los índices válidos son 0,1,2,3
+        // Los índices fuera de ese rango retornan None
+        assert_eq!(config.get_sync_pair(4), None);
+        assert_eq!(config.get_sync_pair(5), None);
+    }
 }
 </file>
 
@@ -6942,214 +8548,14 @@ impl Default for ReadingSettings {
 
 #[cfg(test)]
 mod tests {
-    use crate::domain::{
-        ConfigError, Layout, Opacity, ZoneConfig, reading_therapy_config::ReadingTherapyConfig,
-    };
-
     use super::*;
 
-    fn two_zones_config() -> Vec<ZoneConfig> {
-        vec![
-            ZoneConfig {
-                color: Color::new("#FF0000").unwrap(),
-                opacity: Opacity::new(0.8).unwrap(),
-            },
-            ZoneConfig {
-                color: Color::new("#00FF00").unwrap(),
-                opacity: Opacity::new(0.5).unwrap(),
-            },
-        ]
-    }
-
-    // ==========================================
-    // 1. LECTURA ESPECÍFICA
-    // ==========================================
-
     #[test]
-    fn test_reading_config_creation() {
-        let config = ReadingTherapyConfig::default();
-        assert_eq!(config.layout(), Layout::Horizontal);
-        assert_eq!(config.zones_config().len(), 2);
-        assert_eq!(config.reading_settings().font_size, 22);
-    }
-
-    #[test]
-    fn test_reading_config_update_settings() {
-        let mut config = ReadingTherapyConfig::default();
-        let mut new_settings = ReadingSettings::default();
-        new_settings.font_size = 30;
-
-        config.update_reading_settings(new_settings);
-        assert_eq!(config.reading_settings().font_size, 30);
-    }
-
-    // ==========================================
-    // 2. CREACIÓN Y GENERACIÓN BÁSICA
-    // ==========================================
-
-    #[test]
-    fn test_new_config_valid() {
-        let config = ReadingTherapyConfig::new(
-            Layout::Vertical,
-            two_zones_config(),
-            ReadingSettings::default(),
-        );
-        assert!(config.is_ok());
-        assert_eq!(config.unwrap().layout(), Layout::Vertical);
-    }
-
-    #[test]
-    fn test_new_config_invalid_zone_count() {
-        let zones = vec![ZoneConfig {
-            color: Color::default(),
-            opacity: Opacity::default(),
-        }];
-        let result = ReadingTherapyConfig::new(Layout::Vertical, zones, ReadingSettings::default());
-        assert_eq!(
-            result,
-            Err(ConfigError::ZoneCountMismatch {
-                expected: 2,
-                got: 1
-            })
-        );
-    }
-
-    #[test]
-    fn test_generate_zones() {
-        let config = ReadingTherapyConfig::new(
-            Layout::Vertical,
-            two_zones_config(),
-            ReadingSettings::default(),
-        )
-        .unwrap();
-        let zones = config.generate_zones(1920, 1080);
-        assert_eq!(zones.len(), 2);
-        assert_eq!(zones[0].rect().width, 960);
-        assert_eq!(zones[1].color().as_str(), "#00FF00");
-    }
-
-    // ==========================================
-    // 3. CAMBIOS DE LAYOUT
-    // ==========================================
-
-    #[test]
-    fn test_change_layout_truncates_when_reducing_zones() {
-        let mut config = ReadingTherapyConfig::default();
-        config.change_layout(Layout::Checkerboard); // Sube a 4
-        config.change_layout(Layout::Horizontal); // Baja a 2
-        assert_eq!(config.layout(), Layout::Horizontal);
-        assert_eq!(config.zones_config().len(), 2);
-    }
-
-    #[test]
-    fn test_change_layout_to_vertical4_expands_and_syncs() {
-        let mut config = ReadingTherapyConfig::default();
-        config.change_layout(Layout::Vertical4Columns);
-        assert_eq!(config.layout(), Layout::Vertical4Columns);
-        assert_eq!(config.zones_config().len(), 4);
-        // Regla: 0 sincroniza con 2, 1 sincroniza con 3
-        assert_eq!(
-            config.zones_config()[0].color,
-            config.zones_config()[2].color
-        );
-        assert_eq!(
-            config.zones_config()[1].color,
-            config.zones_config()[3].color
-        );
-    }
-
-    // ==========================================
-    // 4. ACTUALIZACIONES BÁSICAS Y ERRORES
-    // ==========================================
-
-    #[test]
-    fn test_update_zone_color_success_and_out_of_bounds() {
-        let mut config = ReadingTherapyConfig::default();
-        let new_color = Color::new("#0000FF").unwrap();
-
-        assert!(config.update_zone_color(0, new_color.clone()).is_ok());
-        assert_eq!(config.zones_config()[0].color, new_color);
-
-        assert_eq!(
-            config.update_zone_color(99, new_color),
-            Err(ConfigError::InvalidZoneIndex(99))
-        );
-    }
-
-    #[test]
-    fn test_update_zone_opacity_success_and_out_of_bounds() {
-        let mut config = ReadingTherapyConfig::default();
-        let new_opacity = Opacity::new(0.2).unwrap();
-
-        assert!(config.update_zone_opacity(1, new_opacity).is_ok());
-        assert_eq!(config.zones_config()[1].opacity, new_opacity);
-
-        assert_eq!(
-            config.update_zone_opacity(99, new_opacity),
-            Err(ConfigError::InvalidZoneIndex(99))
-        );
-    }
-
-    #[test]
-    fn test_updates_no_sync_for_horizontal_layout() {
-        let mut config = ReadingTherapyConfig::default(); // Inicia Horizontal
-        let new_color = Color::new("#FFFFFF").unwrap();
-        let new_opacity = Opacity::new(0.3).unwrap();
-
-        let _ = config.update_zone_color(0, new_color.clone());
-        let _ = config.update_zone_opacity(0, new_opacity);
-
-        assert_eq!(config.zones_config()[0].color, new_color);
-        assert_eq!(config.zones_config()[0].opacity, new_opacity);
-        assert_ne!(config.zones_config()[1].color, new_color); // No debe sincronizar
-        assert_ne!(config.zones_config()[1].opacity, new_opacity);
-    }
-
-    // ==========================================
-    // 5. REGLAS DE SINCRONIZACIÓN (AJEDREZ)
-    // ==========================================
-
-    #[test]
-    fn test_checkerboard_syncs_updates_and_reverse() {
-        let mut config = ReadingTherapyConfig::default();
-        config.change_layout(Layout::Checkerboard);
-
-        let color_a = Color::new("#111111").unwrap();
-        let color_b = Color::new("#222222").unwrap();
-        let op_a = Opacity::new(0.1).unwrap();
-
-        // 0 actualiza 3
-        let _ = config.update_zone_color(0, color_a.clone());
-        assert_eq!(config.zones_config()[3].color, color_a);
-
-        // Camino inverso: 3 actualiza 0 (Opacidad)
-        let _ = config.update_zone_opacity(3, op_a);
-        assert_eq!(config.zones_config()[0].opacity, op_a);
-
-        // Camino inverso: 2 actualiza 1
-        let _ = config.update_zone_color(2, color_b.clone());
-        assert_eq!(config.zones_config()[1].color, color_b);
-    }
-
-    // ==========================================
-    // 6. REGLAS DE SINCRONIZACIÓN (4 COLUMNAS)
-    // ==========================================
-
-    #[test]
-    fn test_vertical4_syncs_updates_and_reverse() {
-        let mut config = ReadingTherapyConfig::default();
-        config.change_layout(Layout::Vertical4Columns);
-
-        let color_c = Color::new("#333333").unwrap();
-        let op_d = Opacity::new(0.4).unwrap();
-
-        // 1 actualiza 3
-        let _ = config.update_zone_color(1, color_c.clone());
-        assert_eq!(config.zones_config()[3].color, color_c);
-
-        // Camino inverso: 2 actualiza 0
-        let _ = config.update_zone_opacity(2, op_d);
-        assert_eq!(config.zones_config()[0].opacity, op_d);
+    fn test_reading_settings_default() {
+        let settings = ReadingSettings::default();
+        assert_eq!(settings.font_size, 22);
+        assert_eq!(settings.text_color.as_str(), "#242424");
+        assert_eq!(settings.bg_color.as_str(), "#000000");
     }
 }
 </file>
@@ -7563,6 +8969,54 @@ mod tests {
         let _ = config.update_zone_opacity(3, op);
         assert_eq!(config.zones_config()[1].opacity, op);
     }
+
+    // ==========================================
+    // REGLAS DE SINCRONIZACIÓN - CASOS NONE
+    // ==========================================
+
+    #[test]
+    fn test_get_sync_pair_returns_none_for_vertical_layout() {
+        let config = ReadingTherapyConfig::new(
+            Layout::Vertical,
+            two_zones_config(),
+            ReadingSettings::default(),
+        )
+        .unwrap();
+        for i in 0..config.zones_config().len() {
+            assert_eq!(config.get_sync_pair(i), None);
+        }
+    }
+
+    #[test]
+    fn test_get_sync_pair_returns_none_for_horizontal_layout() {
+        let config = ReadingTherapyConfig::default(); // Ya es Horizontal
+        for i in 0..config.zones_config().len() {
+            assert_eq!(config.get_sync_pair(i), None);
+        }
+    }
+
+    #[test]
+    fn test_get_sync_pair_returns_none_for_out_of_range_index() {
+        let config = ReadingTherapyConfig::default();
+        assert_eq!(config.get_sync_pair(99), None);
+        assert_eq!(config.get_sync_pair(100), None);
+    }
+
+    #[test]
+    fn test_get_sync_pair_returns_none_for_unpaired_index_in_checkerboard() {
+        let mut config = ReadingTherapyConfig::default();
+        config.change_layout(Layout::Checkerboard);
+        assert_eq!(config.get_sync_pair(4), None);
+        assert_eq!(config.get_sync_pair(5), None);
+    }
+
+    #[test]
+    fn test_get_sync_pair_returns_none_for_unpaired_index_in_vertical4() {
+        let mut config = ReadingTherapyConfig::default();
+        config.change_layout(Layout::Vertical4Columns);
+        assert_eq!(config.get_sync_pair(4), None);
+        assert_eq!(config.get_sync_pair(5), None);
+    }
 }
 </file>
 
@@ -7832,16 +9286,16 @@ pub mod use_cases;
 //!
 //! Este puerto utiliza un tipo genérico `T` para permitir almacenar
 //! diferentes tipos de configuración:
-//! - [`crate::domain::TherapyConfig`]: Configuración de la terapia (colores, layout, etc.)
+//! - [`crate::domain::OverlayTherapyConfig`]: Configuración de la terapia (colores, layout, etc.)
 //! - [`crate::domain::AppSettings`]: Preferencias globales de la aplicación (idioma, etc.)
 //!
 //! # Ejemplos
 //!
 //! ```
 //! use terapia_visual_domain::ports::{ConfigStorage, StorageError};
-//! use terapia_visual_domain::domain::TherapyConfig;
+//! use terapia_visual_domain::domain::OverlayTherapyConfig;
 //!
-//! async fn load_config(storage: &dyn ConfigStorage<TherapyConfig>) -> Result<TherapyConfig, StorageError> {
+//! async fn load_config(storage: &dyn ConfigStorage<OverlayTherapyConfig>) -> Result<OverlayTherapyConfig, StorageError> {
 //!     storage.load().await
 //! }
 //! ```
@@ -7875,7 +9329,7 @@ pub enum StorageError {
 /// Puerto para guardar y cargar la configuración de la terapia visual.
 ///
 /// Este trait es genérico para soportar diferentes tipos de configuración:
-/// - `ConfigStorage<TherapyConfig>` para la configuración de la terapia.
+/// - `ConfigStorage<OverlayTherapyConfig>` para la configuración de la terapia.
 /// - `ConfigStorage<AppSettings>` para las preferencias globales.
 ///
 /// # Requisitos del tipo `T`
@@ -7888,11 +9342,11 @@ pub enum StorageError {
 ///
 /// ```
 /// use terapia_visual_domain::ports::{ConfigStorage, StorageError};
-/// use terapia_visual_domain::domain::TherapyConfig;
+/// use terapia_visual_domain::domain::OverlayTherapyConfig;
 ///
 /// async fn save_and_load(
-///     storage: &dyn ConfigStorage<TherapyConfig>,
-///     config: &TherapyConfig,
+///     storage: &dyn ConfigStorage<OverlayTherapyConfig>,
+///     config: &OverlayTherapyConfig,
 /// ) -> Result<(), StorageError> {
 ///     storage.save(config).await?;
 ///     let loaded = storage.load().await?;
@@ -7918,11 +9372,11 @@ where
     /// # Ejemplos
     ///
     /// ```
-    /// use terapia_visual_domain::domain::TherapyConfig;
+    /// use terapia_visual_domain::domain::OverlayTherapyConfig;
     /// # use terapia_visual_domain::ports::ConfigStorage;
     ///
-    /// # async fn example(storage: &dyn ConfigStorage<TherapyConfig>) {
-    /// let config = TherapyConfig::default();
+    /// # async fn example(storage: &dyn ConfigStorage<OverlayTherapyConfig>) {
+    /// let config = OverlayTherapyConfig::default();
     /// storage.save(&config).await.unwrap();
     /// # }
     /// ```
@@ -7939,11 +9393,11 @@ where
     /// # Ejemplos
     ///
     /// ```
-    /// # use terapia_visual_domain::domain::TherapyConfig;
+    /// # use terapia_visual_domain::domain::OverlayTherapyConfig;
     /// # use terapia_visual_domain::ports::ConfigStorage;
     ///
-    /// # async fn example(storage: &dyn ConfigStorage<TherapyConfig>) {
-    /// let config = storage.load().await.unwrap_or_else(|_| TherapyConfig::default());
+    /// # async fn example(storage: &dyn ConfigStorage<OverlayTherapyConfig>) {
+    /// let config = storage.load().await.unwrap_or_else(|_| OverlayTherapyConfig::default());
     /// # }
     /// ```
     async fn load(&self) -> Result<T, StorageError>;
@@ -7978,19 +9432,21 @@ where
 //!
 //! ```
 //! use terapia_visual_domain::ports::{ConfigStorage, StorageError};
-//! use terapia_visual_domain::domain::TherapyConfig;
+//! use terapia_visual_domain::domain::OverlayTherapyConfig;
 //!
-//! async fn load_config(storage: &dyn ConfigStorage<TherapyConfig>) -> Result<TherapyConfig, StorageError> {
+//! async fn load_config(storage: &dyn ConfigStorage<OverlayTherapyConfig>) -> Result<OverlayTherapyConfig, StorageError> {
 //!     storage.load().await
 //! }
 //! ```
 
 pub mod config_storage;
 pub mod overlay;
+pub mod reading_window;
 pub mod system_notifier;
 
 pub use config_storage::{ConfigStorage, StorageError};
 pub use overlay::{OverlayError, OverlayPort};
+pub use reading_window::{ReadingWindowError, ReadingWindowPort};
 pub use system_notifier::{NotifierError, SystemNotifier};
 </file>
 
@@ -8014,10 +9470,10 @@ pub use system_notifier::{NotifierError, SystemNotifier};
 //!
 //! ```
 //! use terapia_visual_domain::ports::{OverlayPort, OverlayError};
-//! use terapia_visual_domain::domain::TherapyConfig;
+//! use terapia_visual_domain::domain::OverlayTherapyConfig;
 //!
 //! # async fn example(overlay: &mut dyn OverlayPort) -> Result<(), OverlayError> {
-//! let config = TherapyConfig::default();
+//! let config = OverlayTherapyConfig::default();
 //! overlay.show(&config, 1920, 1080).await?;
 //! # Ok(())
 //! # }
@@ -8066,11 +9522,11 @@ pub enum OverlayError {
 ///
 /// ```
 /// use terapia_visual_domain::ports::{OverlayPort, OverlayError};
-/// use terapia_visual_domain::domain::TherapyConfig;
+/// use terapia_visual_domain::domain::OverlayTherapyConfig;
 ///
 /// # async fn example(overlay: &mut dyn OverlayPort) -> Result<(), OverlayError> {
 /// // Mostrar el overlay
-/// let config = TherapyConfig::default();
+/// let config = OverlayTherapyConfig::default();
 /// overlay.show(&config, 1920, 1080).await?;
 ///
 /// // Verificar si está activo
@@ -8102,9 +9558,9 @@ pub trait OverlayPort: Send + Sync {
     ///
     /// ```
     /// # use terapia_visual_domain::ports::OverlayPort;
-    /// # use terapia_visual_domain::domain::TherapyConfig;
+    /// # use terapia_visual_domain::domain::OverlayTherapyConfig;
     /// # async fn example(overlay: &mut dyn OverlayPort) {
-    /// let config = TherapyConfig::default();
+    /// let config = OverlayTherapyConfig::default();
     /// if let Err(e) = overlay.show(&config, 1920, 1080).await {
     ///     eprintln!("Failed to show overlay: {}", e);
     /// }
@@ -8155,9 +9611,9 @@ pub trait OverlayPort: Send + Sync {
     ///
     /// ```
     /// # use terapia_visual_domain::ports::OverlayPort;
-    /// # use terapia_visual_domain::domain::TherapyConfig;
+    /// # use terapia_visual_domain::domain::OverlayTherapyConfig;
     /// # async fn example(overlay: &mut dyn OverlayPort) {
-    /// let mut config = TherapyConfig::default();
+    /// let mut config = OverlayTherapyConfig::default();
     /// // ... modificar config ...
     /// if let Err(e) = overlay.update_config(&config, 1920, 1080).await {
     ///     eprintln!("Failed to update overlay: {}", e);
@@ -8185,6 +9641,84 @@ pub trait OverlayPort: Send + Sync {
     /// }
     /// # }
     /// ```
+    fn is_active(&self) -> bool;
+}
+</file>
+
+<file path="terapia_visual_domain/src/ports/reading_window.rs">
+//! # Puerto de la Ventana de Lectura
+//!
+//! Define el contrato para controlar la ventana interactiva donde
+//! se ejecuta la terapia de lectura.
+//!
+//! A diferencia de la terapia de overlay global, esta ventana está pensada
+//! para ser una ventana normal del sistema operativo (opaca, con bordes,
+//! redimensionable y que permite interactuar con el contenido).
+
+use async_trait::async_trait;
+
+use crate::domain::reading_therapy_config::ReadingTherapyConfig;
+
+/// Errores que pueden ocurrir al interactuar con la ventana de lectura.
+#[derive(Debug, thiserror::Error, PartialEq)]
+pub enum ReadingWindowError {
+    /// Error al crear o abrir la ventana de lectura.
+    #[error("Error creating the reading window: {0}")]
+    CreationError(String),
+
+    /// Error al intentar cerrar o esconder la ventana de lectura.
+    #[error("Error closing the reading window: {0}")]
+    CloseError(String),
+
+    /// Error al intentar actualizar el contenido o la configuración de la ventana.
+    #[error("Error updating the reading window: {0}")]
+    UpdateError(String),
+
+    /// Se intentó abrir la ventana cuando ya estaba abierta.
+    #[error("Reading window is already active")]
+    AlreadyActive,
+
+    /// Se intentó cerrar o actualizar la ventana cuando estaba cerrada.
+    #[error("Reading window is not active")]
+    NotActive,
+}
+
+/// Puerto para controlar la ventana de la terapia de lectura.
+///
+/// Este trait define las operaciones básicas para mostrar el texto,
+/// ocultar la ventana y actualizar los colores/tamaño de letra en tiempo real.
+#[async_trait]
+pub trait ReadingWindowPort: Send + Sync {
+    /// Abre la ventana de lectura, inyectando el texto y aplicando la configuración.
+    ///
+    /// # Argumentos
+    ///
+    /// * `config` - Configuración de la terapia (colores, layout y ajustes de fuente).
+    /// * `html_content` - El texto limpio (párrafos HTML) a mostrar.
+    ///
+    /// # Errores
+    ///
+    /// - [`ReadingWindowError::AlreadyActive`] si la ventana ya está activa.
+    /// - [`ReadingWindowError::CreationError`] si el sistema falla al crear la ventana.
+    async fn show(
+        &mut self,
+        config: &ReadingTherapyConfig,
+        html_content: &str,
+    ) -> Result<(), ReadingWindowError>;
+
+    /// Cierra u oculta la ventana de lectura.
+    async fn hide(&mut self) -> Result<(), ReadingWindowError>;
+
+    /// Actualiza la configuración visual de la ventana en tiempo real.
+    ///
+    /// Esto permite cambiar el tamaño de letra, color de fondo o el layout
+    /// sin perder la posición de lectura (scroll) del usuario.
+    async fn update_config(
+        &mut self,
+        config: &ReadingTherapyConfig,
+    ) -> Result<(), ReadingWindowError>;
+
+    /// Devuelve `true` si la ventana de lectura está actualmente abierta.
     fn is_active(&self) -> bool;
 }
 </file>
@@ -8398,12 +9932,12 @@ mod tests {
 //! # Ejemplos
 //!
 //! ```
-//! use terapia_visual_domain::use_cases::get_therapy_config;
+//! use terapia_visual_domain::use_cases::get_overlay_therapy;
 //! use terapia_visual_domain::ports::ConfigStorage;
-//! use terapia_visual_domain::domain::TherapyConfig;
+//! use terapia_visual_domain::domain::OverlayTherapyConfig;
 //!
-//! # async fn example(storage: &dyn ConfigStorage<TherapyConfig>) {
-//! let config = get_therapy_config::get_therapy_config(storage).await;
+//! # async fn example(storage: &dyn ConfigStorage<OverlayTherapyConfig>) {
+//! let config = get_overlay_therapy::get_overlay_therapy(storage).await;
 //! # }
 //! ```
 
@@ -8416,7 +9950,7 @@ use crate::{domain::OverlayTherapyConfig, ports::ConfigStorage};
 ///
 /// # Argumentos
 ///
-/// * `storage` - Adaptador que implementa `ConfigStorage<TherapyConfig>`.
+/// * `storage` - Adaptador que implementa `ConfigStorage<OverlayTherapyConfig>`.
 ///
 /// # Retorno
 ///
@@ -8425,13 +9959,13 @@ use crate::{domain::OverlayTherapyConfig, ports::ConfigStorage};
 /// # Ejemplos
 ///
 /// ```
-/// use terapia_visual_domain::use_cases::get_therapy_config;
+/// use terapia_visual_domain::use_cases::get_overlay_therapy;
 /// use terapia_visual_domain::ports::ConfigStorage;
-/// use terapia_visual_domain::domain::TherapyConfig;
+/// use terapia_visual_domain::domain::OverlayTherapyConfig;
 ///
-/// # async fn example(storage: &dyn ConfigStorage<TherapyConfig>) {
-/// let config = get_therapy_config::get_therapy_config(storage).await;
-/// assert_eq!(config, TherapyConfig::default());
+/// # async fn example(storage: &dyn ConfigStorage<OverlayTherapyConfig>) {
+/// let config = get_overlay_therapy::get_overlay_therapy(storage).await;
+/// assert_eq!(config, OverlayTherapyConfig::default());
 /// # }
 /// ```
 pub async fn get_overlay_therapy(
@@ -8480,6 +10014,46 @@ mod tests {
 }
 </file>
 
+<file path="terapia_visual_domain/src/use_cases/get_reading_therapy.rs">
+use crate::{domain::reading_therapy_config::ReadingTherapyConfig, ports::ConfigStorage};
+
+pub async fn get_reading_therapy(
+    storage: &dyn ConfigStorage<ReadingTherapyConfig>,
+) -> ReadingTherapyConfig {
+    storage.load().await.unwrap_or_default()
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use crate::domain::Layout;
+    use crate::use_cases::mocks::MockReadingConfigStorage;
+
+    #[tokio::test]
+    async fn test_get_reading_therapy_returns_default_on_error() {
+        let storage = MockReadingConfigStorage {
+            should_fail_load: true,
+            ..Default::default()
+        };
+        let config = get_reading_therapy(&storage).await;
+        assert_eq!(config, ReadingTherapyConfig::default());
+    }
+
+    #[tokio::test]
+    async fn test_get_reading_therapy_returns_stored() {
+        let mut expected = ReadingTherapyConfig::default();
+        expected.change_layout(Layout::Vertical);
+
+        let storage = MockReadingConfigStorage {
+            config: Some(expected.clone()),
+            ..Default::default()
+        };
+        let config = get_reading_therapy(&storage).await;
+        assert_eq!(config, expected);
+    }
+}
+</file>
+
 <file path="terapia_visual_domain/src/use_cases/mocks.rs">
 //! # Mocks para pruebas unitarias
 //!
@@ -8520,9 +10094,10 @@ mod tests {
 use async_trait::async_trait;
 
 use crate::{
-    domain::{AppSettings, OverlayTherapyConfig},
+    domain::{AppSettings, OverlayTherapyConfig, reading_therapy_config::ReadingTherapyConfig},
     ports::{
-        ConfigStorage, NotifierError, OverlayError, OverlayPort, StorageError, SystemNotifier,
+        ConfigStorage, NotifierError, OverlayError, OverlayPort, ReadingWindowError,
+        ReadingWindowPort, StorageError, SystemNotifier,
     },
 };
 
@@ -8692,6 +10267,90 @@ impl SystemNotifier for MockSystemNotifier {
         Ok(())
     }
 }
+
+/// Mock de ventana de lectura
+///
+/// Simula el comportamiento de la ventana de lectura
+#[derive(Debug, Default)]
+pub struct MockReadingWindow {
+    pub active: bool,
+    pub show_called: bool,
+    pub hide_called: bool,
+    pub update_config_called: bool,
+    pub last_html: Option<String>,
+    pub should_fail: bool,
+}
+
+#[async_trait]
+impl ReadingWindowPort for MockReadingWindow {
+    async fn show(
+        &mut self,
+        _config: &ReadingTherapyConfig,
+        html_content: &str,
+    ) -> Result<(), ReadingWindowError> {
+        self.show_called = true;
+        self.last_html = Some(html_content.to_string());
+        if self.should_fail {
+            Err(ReadingWindowError::CreationError("Error forzaddo".into()))
+        } else {
+            self.active = true;
+            Ok(())
+        }
+    }
+
+    async fn hide(&mut self) -> Result<(), ReadingWindowError> {
+        self.hide_called = true;
+        if self.should_fail {
+            Err(ReadingWindowError::NotActive)
+        } else {
+            self.active = false;
+            Ok(())
+        }
+    }
+
+    async fn update_config(
+        &mut self,
+        _config: &ReadingTherapyConfig,
+    ) -> Result<(), ReadingWindowError> {
+        self.update_config_called = true;
+        if self.should_fail {
+            Err(ReadingWindowError::UpdateError("Error forzado".into()))
+        } else {
+            Ok(())
+        }
+    }
+
+    fn is_active(&self) -> bool {
+        self.active
+    }
+}
+
+/// Mock de almacenamiento de configuración de lectura.
+#[derive(Debug, Default)]
+pub struct MockReadingConfigStorage {
+    pub config: Option<ReadingTherapyConfig>,
+    pub should_fail_load: bool,
+    pub should_fail_save: bool,
+}
+
+#[async_trait]
+impl ConfigStorage<ReadingTherapyConfig> for MockReadingConfigStorage {
+    async fn load(&self) -> Result<ReadingTherapyConfig, StorageError> {
+        if self.should_fail_load {
+            Err(StorageError::NotFound)
+        } else {
+            self.config.clone().ok_or(StorageError::NotFound)
+        }
+    }
+
+    async fn save(&self, _config: &ReadingTherapyConfig) -> Result<(), StorageError> {
+        if self.should_fail_save {
+            Err(StorageError::WriteError("forced error".into()))
+        } else {
+            Ok(())
+        }
+    }
+}
 </file>
 
 <file path="terapia_visual_domain/src/use_cases/mod.rs">
@@ -8707,7 +10366,7 @@ impl SystemNotifier for MockSystemNotifier {
 //!
 //! | Caso de uso | Propósito |
 //! |-------------|-----------|
-//! | [`start_therapy()`] | Iniciar la terapia visual |
+//! | [`start_overlay_therapy()`] | Iniciar la terapia visual |
 //! | [`stop_therapy()`] | Detener la terapia visual |
 //! | [`update_therapy_config()`] | Actualizar la configuración de la terapia |
 //! | [`get_therapy_config()`] | Obtener la configuración de la terapia |
@@ -8724,23 +10383,27 @@ impl SystemNotifier for MockSystemNotifier {
 //! # Ejemplo
 //!
 //! ```
-//! use terapia_visual_domain::use_cases::start_therapy;
+//! use terapia_visual_domain::use_cases::start_overlay_therapy;
 //! use terapia_visual_domain::ports::OverlayPort;
-//! use terapia_visual_domain::domain::TherapyConfig;
+//! use terapia_visual_domain::domain::OverlayTherapyConfig;
 //!
 //! # async fn example(overlay: &mut dyn OverlayPort) -> Result<(), Box<dyn std::error::Error>> {
-//! let config = TherapyConfig::default();
-//! start_therapy::start_therapy(overlay, &config, 1920, 1080).await?;
+//! let config = OverlayTherapyConfig::default();
+//! start_overlay_therapy::start_overlay_therapy(overlay, &config, 1920, 1080).await?;
 //! # Ok(())
 //! # }
 //! ```
 
 pub mod get_app_settings;
 pub mod get_overlay_therapy;
+pub mod get_reading_therapy;
 pub mod start_overlay_therapy;
+pub mod start_reading_therapy;
 pub mod stop_overlay_therapy;
+pub mod stop_reading_therapy;
 pub mod update_app_settings;
 pub mod update_overlay_therapy;
+pub mod update_reading_therapy;
 
 #[cfg(test)]
 pub mod mocks;
@@ -8748,9 +10411,12 @@ pub mod mocks;
 pub use get_app_settings::get_app_settings;
 pub use get_overlay_therapy::get_overlay_therapy;
 pub use start_overlay_therapy::start_overlay_therapy;
+pub use start_reading_therapy::start_reading_therapy;
 pub use stop_overlay_therapy::stop_overlay_therapy;
+pub use stop_reading_therapy::stop_reading_therapy;
 pub use update_app_settings::{UpdateAppSettingsError, update_app_settings};
 pub use update_overlay_therapy::{UpdateConfigError, update_overlay_therapy};
+pub use update_reading_therapy::{UpdateReadingConfigError, update_reading_therapy};
 </file>
 
 <file path="terapia_visual_domain/src/use_cases/start_overlay_therapy.rs">
@@ -8767,13 +10433,13 @@ pub use update_overlay_therapy::{UpdateConfigError, update_overlay_therapy};
 //! # Ejemplos
 //!
 //! ```
-//! use terapia_visual_domain::use_cases::start_therapy;
+//! use terapia_visual_domain::use_cases::start_overlay_therapy;
 //! use terapia_visual_domain::ports::OverlayPort;
-//! use terapia_visual_domain::domain::TherapyConfig;
+//! use terapia_visual_domain::domain::OverlayTherapyConfig;
 //!
 //! # async fn example(overlay: &mut dyn OverlayPort) -> Result<(), Box<dyn std::error::Error>> {
-//! let config = TherapyConfig::default();
-//! start_therapy::start_therapy(overlay, &config, 1920, 1080).await?;
+//! let config = OverlayTherapyConfig::default();
+//! start_overlay_therapy::start_overlay_therapy(overlay, &config, 1920, 1080).await?;
 //! # Ok(())
 //! # }
 //! ```
@@ -8803,13 +10469,13 @@ use crate::{
 /// # Ejemplos
 ///
 /// ```
-/// use terapia_visual_domain::use_cases::start_therapy;
+/// use terapia_visual_domain::use_cases::start_overlay_therapy;
 /// use terapia_visual_domain::ports::{OverlayPort, OverlayError};
-/// use terapia_visual_domain::domain::TherapyConfig;
+/// use terapia_visual_domain::domain::OverlayTherapyConfig;
 ///
 /// # async fn example(overlay: &mut dyn OverlayPort) -> Result<(), OverlayError> {
-/// let config = TherapyConfig::default();
-/// start_therapy::start_therapy(overlay, &config, 1920, 1080).await?;
+/// let config = OverlayTherapyConfig::default();
+/// start_overlay_therapy::start_overlay_therapy(overlay, &config, 1920, 1080).await?;
 /// # Ok(())
 /// # }
 /// ```
@@ -8874,6 +10540,58 @@ mod tests {
 }
 </file>
 
+<file path="terapia_visual_domain/src/use_cases/start_reading_therapy.rs">
+//! # Caso de Uso: Iniciar Terapia de Lectura
+
+use crate::{
+    domain::reading_therapy_config::ReadingTherapyConfig,
+    ports::{ReadingWindowError, ReadingWindowPort},
+};
+
+/// Inicia la terapia de lectura en una ventana separada.
+///
+/// Si la ventana ya está activa, se actualiza el contenido.
+pub async fn start_reading_therapy(
+    window: &mut dyn ReadingWindowPort,
+    config: &ReadingTherapyConfig,
+    html_content: &str,
+) -> Result<(), ReadingWindowError> {
+    window.show(config, html_content).await
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use crate::use_cases::mocks::MockReadingWindow;
+
+    #[tokio::test]
+    async fn test_start_reading_therapy_ok() {
+        let mut window = MockReadingWindow::default();
+        let config = ReadingTherapyConfig::default();
+        let html = "<p>Hola</p>";
+
+        let result = start_reading_therapy(&mut window, &config, html).await;
+
+        assert!(result.is_ok());
+        assert!(window.is_active());
+        assert!(window.show_called);
+        assert_eq!(window.last_html.unwrap(), html);
+    }
+
+    #[tokio::test]
+    async fn test_start_reading_therapy_fails() {
+        let mut window = MockReadingWindow {
+            should_fail: true, // Simular un fallo al abrir la ventana
+            ..Default::default()
+        };
+        let config = ReadingTherapyConfig::default();
+
+        let result = start_reading_therapy(&mut window, &config, "texto").await;
+        assert!(result.is_err());
+    }
+}
+</file>
+
 <file path="terapia_visual_domain/src/use_cases/stop_overlay_therapy.rs">
 //! # Caso de Uso: Detener Terapia
 //!
@@ -8888,11 +10606,11 @@ mod tests {
 //! # Ejemplos
 //!
 //! ```
-//! use terapia_visual_domain::use_cases::stop_therapy;
+//! use terapia_visual_domain::use_cases::stop_overlay_therapy;
 //! use terapia_visual_domain::ports::OverlayPort;
 //!
 //! # async fn example(overlay: &mut dyn OverlayPort) -> Result<(), Box<dyn std::error::Error>> {
-//! stop_therapy::stop_therapy(overlay).await?;
+//! stop_overlay_therapy::stop_overlay_therapy(overlay).await?;
 //! # Ok(())
 //! # }
 //! ```
@@ -8916,11 +10634,11 @@ use crate::ports::{OverlayError, OverlayPort};
 /// # Ejemplos
 ///
 /// ```
-/// use terapia_visual_domain::use_cases::stop_therapy;
+/// use terapia_visual_domain::use_cases::stop_overlay_therapy;
 /// use terapia_visual_domain::ports::{OverlayPort, OverlayError};
 ///
 /// # async fn example(overlay: &mut dyn OverlayPort) -> Result<(), OverlayError> {
-/// stop_therapy::stop_therapy(overlay).await?;
+/// stop_overlay_therapy::stop_overlay_therapy(overlay).await?;
 /// # Ok(())
 /// # }
 /// ```
@@ -8954,6 +10672,55 @@ mod tests {
         let mut overlay = MockOverlay::default();
         let result = stop_overlay_therapy(&mut overlay).await;
         assert_eq!(result.unwrap_err(), OverlayError::NotActive);
+    }
+}
+</file>
+
+<file path="terapia_visual_domain/src/use_cases/stop_reading_therapy.rs">
+use crate::ports::{ReadingWindowError, ReadingWindowPort};
+
+pub async fn stop_reading_therapy(
+    window: &mut dyn ReadingWindowPort,
+) -> Result<(), ReadingWindowError> {
+    if window.is_active() {
+        window.hide().await
+    } else {
+        Err(ReadingWindowError::NotActive)
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use crate::use_cases::mocks::MockReadingWindow;
+
+    #[tokio::test]
+    async fn test_stop_reading_therapy_ok() {
+        let mut window = MockReadingWindow {
+            active: true,
+            ..Default::default()
+        };
+        let result = stop_reading_therapy(&mut window).await;
+        assert!(result.is_ok());
+        assert!(!window.is_active());
+    }
+
+    #[tokio::test]
+    async fn test_stop_reading_therapy_not_active() {
+        let mut window = MockReadingWindow::default();
+        let result = stop_reading_therapy(&mut window).await;
+        assert_eq!(result.unwrap_err(), ReadingWindowError::NotActive);
+    }
+
+    #[tokio::test]
+    async fn test_stop_reading_therapy_fails() {
+        let mut window = MockReadingWindow {
+            active: true,
+            should_fail: true, // Simular fallo de ventana
+            ..Default::default()
+        };
+        let result = stop_reading_therapy(&mut window).await;
+        assert!(result.is_err());
     }
 }
 </file>
@@ -9074,16 +10841,16 @@ mod tests {
 //! # Ejemplos
 //!
 //! ```
-//! use terapia_visual_domain::use_cases::update_therapy_config;
+//! use terapia_visual_domain::use_cases::update_overlay_therapy;
 //! use terapia_visual_domain::ports::{ConfigStorage, OverlayPort};
-//! use terapia_visual_domain::domain::TherapyConfig;
+//! use terapia_visual_domain::domain::OverlayTherapyConfig;
 //!
 //! # async fn example(
 //! #     overlay: &mut dyn OverlayPort,
-//! #     storage: &dyn ConfigStorage<TherapyConfig>,
+//! #     storage: &dyn ConfigStorage<OverlayTherapyConfig>,
 //! # ) -> Result<(), Box<dyn std::error::Error>> {
-//! let config = TherapyConfig::default();
-//! update_therapy_config::update_therapy_config(overlay, storage, &config, 1920, 1080).await?;
+//! let config = OverlayTherapyConfig::default();
+//! update_overlay_therapy::update_overlay_therapy(overlay, storage, &config, 1920, 1080).await?;
 //! # Ok(())
 //! # }
 //! ```
@@ -9113,7 +10880,7 @@ pub enum UpdateConfigError {
 /// # Argumentos
 ///
 /// * `overlay` - Adaptador que implementa `OverlayPort`.
-/// * `storage` - Adaptador que implementa `ConfigStorage<TherapyConfig>`.
+/// * `storage` - Adaptador que implementa `ConfigStorage<OverlayTherapyConfig>`.
 /// * `new_config` - La nueva configuración de la terapia.
 /// * `screen_width` - Ancho de la pantalla en píxeles.
 /// * `screen_height` - Alto de la pantalla en píxeles.
@@ -9126,16 +10893,16 @@ pub enum UpdateConfigError {
 /// # Ejemplos
 ///
 /// ```
-/// use terapia_visual_domain::use_cases::update_therapy_config;
+/// use terapia_visual_domain::use_cases::update_overlay_therapy;
 /// use terapia_visual_domain::ports::{ConfigStorage, OverlayPort};
-/// use terapia_visual_domain::domain::TherapyConfig;
+/// use terapia_visual_domain::domain::OverlayTherapyConfig;
 ///
 /// # async fn example(
 /// #     overlay: &mut dyn OverlayPort,
-/// #     storage: &dyn ConfigStorage<TherapyConfig>,
+/// #     storage: &dyn ConfigStorage<OverlayTherapyConfig>,
 /// # ) -> Result<(), Box<dyn std::error::Error>> {
-/// let config = TherapyConfig::default();
-/// update_therapy_config::update_therapy_config(overlay, storage, &config, 1920, 1080).await?;
+/// let config = OverlayTherapyConfig::default();
+/// update_overlay_therapy::update_overlay_therapy(overlay, storage, &config, 1920, 1080).await?;
 /// # Ok(())
 /// # }
 /// ```
@@ -9204,6 +10971,100 @@ mod tests {
         let result = update_overlay_therapy(&mut overlay, &storage, &new_config, 1920, 1080).await;
         assert!(result.is_ok());
         assert!(overlay.update_config_called);
+    }
+}
+</file>
+
+<file path="terapia_visual_domain/src/use_cases/update_reading_therapy.rs">
+use crate::{
+    domain::reading_therapy_config::ReadingTherapyConfig,
+    ports::{ConfigStorage, ReadingWindowError, ReadingWindowPort, StorageError},
+};
+
+#[derive(Debug, thiserror::Error)]
+pub enum UpdateReadingConfigError {
+    #[error(transparent)]
+    Storage(#[from] StorageError),
+    #[error(transparent)]
+    Window(#[from] ReadingWindowError),
+}
+
+/// Actualiza la configuracion y la aplica a la ventana si esta abierta
+pub async fn update_reading_therapy(
+    window: &mut dyn ReadingWindowPort,
+    storage: &dyn ConfigStorage<ReadingTherapyConfig>,
+    new_config: &ReadingTherapyConfig,
+) -> Result<(), UpdateReadingConfigError> {
+    storage.save(new_config).await?;
+
+    if window.is_active() {
+        window.update_config(new_config).await?;
+    }
+    Ok(())
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use crate::use_cases::mocks::{MockReadingConfigStorage, MockReadingWindow};
+
+    #[tokio::test]
+    async fn test_update_reading_config_active() {
+        let mut window = MockReadingWindow {
+            active: true,
+            ..Default::default()
+        };
+        let storage = MockReadingConfigStorage::default();
+        let config = ReadingTherapyConfig::default();
+
+        let result = update_reading_therapy(&mut window, &storage, &config).await;
+        assert!(result.is_ok());
+        assert!(window.update_config_called);
+    }
+
+    #[tokio::test]
+    async fn test_update_reading_config_inactive() {
+        let mut window = MockReadingWindow::default();
+        let storage = MockReadingConfigStorage::default();
+        let config = ReadingTherapyConfig::default();
+
+        let result = update_reading_therapy(&mut window, &storage, &config).await;
+        assert!(result.is_ok());
+    }
+
+    #[tokio::test]
+    async fn test_update_reading_config_storage_fails() {
+        let mut window = MockReadingWindow::default();
+        // simular que falla al guardar en disco
+        let storage = MockReadingConfigStorage {
+            should_fail_save: true,
+            ..Default::default()
+        };
+        let config = ReadingTherapyConfig::default();
+
+        let result = update_reading_therapy(&mut window, &storage, &config).await;
+        assert!(matches!(
+            result.unwrap_err(),
+            UpdateReadingConfigError::Storage(_)
+        ));
+    }
+
+    #[tokio::test]
+    async fn test_update_reading_config_window_fails() {
+        // Simular que la ventana falla al actualizarse
+        let mut window = MockReadingWindow {
+            active: true,
+            should_fail: true,
+            ..Default::default()
+        };
+        let storage = MockReadingConfigStorage::default();
+        let config = ReadingTherapyConfig::default();
+
+        let result = update_reading_therapy(&mut window, &storage, &config).await;
+        assert!(matches!(
+            result.unwrap_err(),
+            UpdateReadingConfigError::Window(_)
+        ));
     }
 }
 </file>

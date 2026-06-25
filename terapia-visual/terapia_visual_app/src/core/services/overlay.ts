@@ -10,8 +10,9 @@ import {
   CMD_UPDATE_OVERLAY_ZONE_OPACITY,
   CMD_RESET_OVERLAY_CONFIG,
 } from "../commands";
+import { OverlayConfig } from "../types";
 
-export async function getOverlayConfig() {
+export async function getOverlayConfig(): Promise<OverlayConfig> {
   return await invoke(CMD_GET_OVERLAY_CONFIG);
 }
 

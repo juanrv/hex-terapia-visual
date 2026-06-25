@@ -1,3 +1,4 @@
+// reading.ts
 import { invoke } from "@tauri-apps/api/core";
 import { listen } from "@tauri-apps/api/event";
 
@@ -19,25 +20,23 @@ const zonesControls = document.getElementById("zones-controls")!;
 
 let currentConfig: any = null;
 
-// 1. Alternar Panel Lateral
+// Alternar Panel Lateral
 btnToggle.addEventListener("click", () => {
   panel.classList.toggle("open");
 });
 
-// 2. Escuchar los eventos IPC que manda Rust
+// Escuchar los eventos IPC que manda Rust
 listen("update-reading-view", (event: any) => {
   console.log("Datos recibidos de Rust:", event.payload);
   currentConfig = event.payload.config;
 
-  // Inyectar el texto
   contentDiv.innerHTML = event.payload.html_content;
-
   applyReadingSettings();
   renderZones();
   renderPanelControls();
 });
 
-// 3. Aplicar colores y fuentes al texto
+// Aplicar colores y fuentes al texto
 function applyReadingSettings() {
   const settings = currentConfig.reading_settings;
   document.body.style.backgroundColor = settings.bg_color;
@@ -46,14 +45,13 @@ function applyReadingSettings() {
   contentDiv.style.color = settings.text_color;
   contentDiv.style.lineHeight = settings.line_height;
 
-  // Forzar el color a los párrafos internos
   contentDiv.querySelectorAll("p").forEach((p) => {
     p.style.color = settings.text_color;
     p.style.lineHeight = settings.line_height;
   });
 }
 
-// 4. Calcular y dibujar las zonas matemáticamente en el Frontend
+// Calcular y dibujar las zonas
 function renderZones() {
   zonesContainer.innerHTML = "";
   const w = window.innerWidth;
@@ -90,7 +88,6 @@ function renderZones() {
     ];
   }
 
-  // Dibujar
   rects.forEach((rect, i) => {
     if (!zones[i]) return;
     const div = document.createElement("div");
@@ -105,7 +102,7 @@ function renderZones() {
   });
 }
 
-// 5. Llenar el panel flotante
+// Llenar el panel flotante
 function renderPanelControls() {
   inpFontSize.value = currentConfig.reading_settings.font_size;
   inpTextColor.value = currentConfig.reading_settings.text_color;
@@ -144,7 +141,7 @@ function renderPanelControls() {
   });
 }
 
-// 6. Enviar cambios a Rust
+// Enviar cambios a Rust
 async function saveReadingSettings() {
   const newSettings = {
     font_size: parseInt(inpFontSize.value),
@@ -164,7 +161,7 @@ inpLayout.addEventListener("change", (e) => {
   });
 });
 
-// 7. Si el usuario redimensiona la ventana, recalculamos las zonas instantáneamente
+// Redimensionar ventana
 window.addEventListener("resize", () => {
   if (currentConfig) renderZones();
 });

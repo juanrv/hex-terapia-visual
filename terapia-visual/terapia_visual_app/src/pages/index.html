@@ -3,12 +3,12 @@
   <head>
     <meta charset="UTF-8" />
     <title data-i18n="app_title">Terapia Visual</title>
-    <!-- Rutas corregidas para que funcionen desde la raíz -->
-    <link rel="icon" type="image/png" href="/src-tauri/icons/32x32.png" />
-    <link rel="stylesheet" href="/src/styles.css" />
+    <link rel="icon" type="image/png" href="../src-tauri/icons/32x32.png" />
+    <link rel="stylesheet" href="../styles.css" />
   </head>
   <body>
     <div class="app-container">
+      <!-- HEADER FIJO -->
       <header>
         <h1 data-i18n="app_title">Terapia Visual</h1>
         <div class="lang-controls">
@@ -17,7 +17,7 @@
         </div>
       </header>
 
-      <!-- MENÚ PRINCIPAL (siempre visible por defecto) -->
+      <!-- MENÚ PRINCIPAL (siempre visible) -->
       <div id="view-home" class="view">
         <div
           style="
@@ -69,9 +69,9 @@
       <!-- CONTENEDOR DINÁMICO PARA TERAPIAS -->
       <div id="app-content"></div>
 
+      <!-- STATUS GLOBAL -->
       <div id="status"></div>
     </div>
-    <!-- Ruta corregida -->
-    <script type="module" src="/src/main.ts"></script>
+    <script type="module" src="../main.ts"></script>
   </body>
 </html>
