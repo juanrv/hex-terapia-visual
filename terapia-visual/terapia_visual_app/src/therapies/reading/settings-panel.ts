@@ -10,8 +10,8 @@ import {
   CMD_GET_READING_CONFIG,
   CMD_STOP_READING_THERAPY,
   CMD_UPDATE_APP_SETTINGS,
-  CMD_UPDATE_OVERLAY_ZONE_COLOR,
   CMD_UPDATE_READING_SETTINGS,
+  CMD_UPDATE_READING_ZONE_COLOR,
   CMD_UPDATE_READING_ZONE_OPACITY,
 } from "../../core/commands";
 
@@ -134,7 +134,7 @@ export function updatePanelControls(config: any) {
     document
       .getElementById(`z-color-${index}`)
       ?.addEventListener("change", (e) => {
-        invoke(CMD_UPDATE_OVERLAY_ZONE_COLOR, {
+        invoke(CMD_UPDATE_READING_ZONE_COLOR, {
           zoneIndex: index,
           newColor: (e.target as HTMLInputElement).value.toUpperCase(),
         });

@@ -37,7 +37,7 @@ impl TauriReadingWindow {
     }
 
     /// Emite los datos actualizados a la ventana de lectura de forma segura.
-    fn emit_udpate(&self, config: &ReadingTherapyConfig) -> Result<(), ReadingWindowError> {
+    fn emit_update(&self, config: &ReadingTherapyConfig) -> Result<(), ReadingWindowError> {
         if let Some(window) = &self.window {
             let content = self.current_html.clone().unwrap_or_default();
             let payload = ReadingPayload {
@@ -69,7 +69,7 @@ impl ReadingWindowPort for TauriReadingWindow {
                 .map_err(|e| ReadingWindowError::CreationError(e.to_string()))?;
             let _ = window.set_focus();
 
-            self.emit_udpate(config)?;
+            self.emit_update(config)?;
             self.is_active.store(true, Ordering::SeqCst);
             return Ok(());
         }
@@ -106,7 +106,7 @@ impl ReadingWindowPort for TauriReadingWindow {
 
         // Esperar un instante a que el fronten cargue antes de emitir los datos
         tokio::time::sleep(tokio::time::Duration::from_millis(500)).await;
-        self.emit_udpate(config)?;
+        self.emit_update(config)?;
 
         info!("Reading window created and shown");
         Ok(())
@@ -130,7 +130,7 @@ impl ReadingWindowPort for TauriReadingWindow {
         &mut self,
         config: &ReadingTherapyConfig,
     ) -> Result<(), ReadingWindowError> {
-        self.emit_udpate(config)
+        self.emit_update(config)
     }
 
     fn is_active(&self) -> bool {

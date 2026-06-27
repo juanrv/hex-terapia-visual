@@ -98,25 +98,31 @@ pub async fn cmd_update_app_settings<R: tauri::Runtime>(
 
 /// Cierra la aplicación de forma segura guardando la configuración de todas las terapias.
 #[tauri::command]
-pub async fn cmd_exit_app(state: State<'_, AppState>) -> Result<(), String> {
-    // Guardar configuracion del overlay
+pub async fn cmd_exit_app<R: tauri::Runtime>(
+    state: State<'_, AppState>,
+    app_handle: tauri::AppHandle<R>,
+) -> Result<(), String> {
+    // Guardar todo
     let overlay_config = state.overlay_config.read().await;
     if let Err(e) = state.overlay_storage.save(&*overlay_config).await {
         eprintln!("Error saving overlay config: {}", e);
     }
 
-    // Guardar configuracion de lectura
     let reading_config = state.reading_config.read().await;
     if let Err(e) = state.reading_storage.save(&*reading_config).await {
         eprintln!("Error saving reading config: {}", e);
     }
 
-    // Guardar la configuracion de la app
     let app_settings: AppSettings = state.app_storage.load().await.unwrap_or_default();
     if let Err(e) = state.app_storage.save(&app_settings).await {
         eprintln!("Error saving app config: {}", e);
     }
 
-    // Termina el proceso de forma limpia
-    std::process::exit(0);
+    // Apagado en segundo plano con micro-retraso
+    tauri::async_runtime::spawn(async move {
+        tokio::time::sleep(std::time::Duration::from_millis(50)).await;
+        app_handle.exit(0);
+    });
+
+    Ok(())
 }
