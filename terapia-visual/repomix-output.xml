@@ -32,7 +32,7 @@ The content is organized as follows:
 <notes>
 - Some files may have been excluded based on .gitignore rules and Repomix's configuration
 - Binary files are not included in this packed representation. Please refer to the Repository Structure section for a complete list of file paths, including binary files
-- Only files matching these patterns are included: terapia_visual_app/src/therapies/reading/**/*
+- Only files matching these patterns are included: terapia_visual_app/src/**/*
 - Files matching patterns in .gitignore are excluded
 - Files matching default ignore patterns are excluded
 - Files are sorted by Git change count (files with more changes are at the bottom)
@@ -41,15 +41,985 @@ The content is organized as follows:
 </file_summary>
 
 <directory_structure>
+terapia_visual_app/src/assets/tauri.svg
+terapia_visual_app/src/assets/typescript.svg
+terapia_visual_app/src/assets/vite.svg
+terapia_visual_app/src/core/commands/index.ts
+terapia_visual_app/src/core/commands/overlay.ts
+terapia_visual_app/src/core/commands/reading.ts
+terapia_visual_app/src/core/commands/settings.ts
+terapia_visual_app/src/core/localization/i18n.ts
+terapia_visual_app/src/core/services/index.ts
+terapia_visual_app/src/core/services/overlay.ts
+terapia_visual_app/src/core/services/reading.ts
+terapia_visual_app/src/core/services/settings.ts
+terapia_visual_app/src/core/services/ui.ts
+terapia_visual_app/src/core/types/index.ts
+terapia_visual_app/src/main.ts
+terapia_visual_app/src/styles.css
+terapia_visual_app/src/therapies/overlay/index.ts
+terapia_visual_app/src/therapies/overlay/view.ts
 terapia_visual_app/src/therapies/reading/index.ts
-terapia_visual_app/src/therapies/reading/reading-window.css
+terapia_visual_app/src/therapies/reading/reader.css
+terapia_visual_app/src/therapies/reading/reader.html
+terapia_visual_app/src/therapies/reading/reader.ts
+terapia_visual_app/src/therapies/reading/settings-panel.ts
 terapia_visual_app/src/therapies/reading/view.ts
-terapia_visual_app/src/therapies/reading/window.html
-terapia_visual_app/src/therapies/reading/window.ts
+terapia_visual_app/src/ui/components/status.ts
+terapia_visual_app/src/ui/components/zone-controls.ts
+terapia_visual_app/src/ui/router.ts
+terapia_visual_app/src/vite-env.d.ts
 </directory_structure>
 
 <files>
 This section contains the contents of the repository's files.
+
+<file path="terapia_visual_app/src/assets/tauri.svg">
+<svg width="206" height="231" viewBox="0 0 206 231" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M143.143 84C143.143 96.1503 133.293 106 121.143 106C108.992 106 99.1426 96.1503 99.1426 84C99.1426 71.8497 108.992 62 121.143 62C133.293 62 143.143 71.8497 143.143 84Z" fill="#FFC131"/>
+<ellipse cx="84.1426" cy="147" rx="22" ry="22" transform="rotate(180 84.1426 147)" fill="#24C8DB"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M166.738 154.548C157.86 160.286 148.023 164.269 137.757 166.341C139.858 160.282 141 153.774 141 147C141 144.543 140.85 142.121 140.558 139.743C144.975 138.204 149.215 136.139 153.183 133.575C162.73 127.404 170.292 118.608 174.961 108.244C179.63 97.8797 181.207 86.3876 179.502 75.1487C177.798 63.9098 172.884 53.4021 165.352 44.8883C157.82 36.3744 147.99 30.2165 137.042 27.1546C126.095 24.0926 114.496 24.2568 103.64 27.6274C92.7839 30.998 83.1319 37.4317 75.8437 46.1553C74.9102 47.2727 74.0206 48.4216 73.176 49.5993C61.9292 50.8488 51.0363 54.0318 40.9629 58.9556C44.2417 48.4586 49.5653 38.6591 56.679 30.1442C67.0505 17.7298 80.7861 8.57426 96.2354 3.77762C111.685 -1.01901 128.19 -1.25267 143.769 3.10474C159.348 7.46215 173.337 16.2252 184.056 28.3411C194.775 40.457 201.767 55.4101 204.193 71.404C206.619 87.3978 204.374 103.752 197.73 118.501C191.086 133.25 180.324 145.767 166.738 154.548ZM41.9631 74.275L62.5557 76.8042C63.0459 72.813 63.9401 68.9018 65.2138 65.1274C57.0465 67.0016 49.2088 70.087 41.9631 74.275Z" fill="#FFC131"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M38.4045 76.4519C47.3493 70.6709 57.2677 66.6712 67.6171 64.6132C65.2774 70.9669 64 77.8343 64 85.0001C64 87.1434 64.1143 89.26 64.3371 91.3442C60.0093 92.8732 55.8533 94.9092 51.9599 97.4256C42.4128 103.596 34.8505 112.392 30.1816 122.756C25.5126 133.12 23.9357 144.612 25.6403 155.851C27.3449 167.09 32.2584 177.598 39.7906 186.112C47.3227 194.626 57.153 200.784 68.1003 203.846C79.0476 206.907 90.6462 206.743 101.502 203.373C112.359 200.002 122.011 193.568 129.299 184.845C130.237 183.722 131.131 182.567 131.979 181.383C143.235 180.114 154.132 176.91 164.205 171.962C160.929 182.49 155.596 192.319 148.464 200.856C138.092 213.27 124.357 222.426 108.907 227.222C93.458 232.019 76.9524 232.253 61.3736 227.895C45.7948 223.538 31.8055 214.775 21.0867 202.659C10.3679 190.543 3.37557 175.59 0.949823 159.596C-1.47592 143.602 0.768139 127.248 7.41237 112.499C14.0566 97.7497 24.8183 85.2327 38.4045 76.4519ZM163.062 156.711L163.062 156.711C162.954 156.773 162.846 156.835 162.738 156.897C162.846 156.835 162.954 156.773 163.062 156.711Z" fill="#24C8DB"/>
+</svg>
+</file>
+
+<file path="terapia_visual_app/src/assets/typescript.svg">
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 20010904//EN"
+ "http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd">
+<svg version="1.0" xmlns="http://www.w3.org/2000/svg"
+ width="512.000000pt" height="512.000000pt" viewBox="0 0 512.000000 512.000000"
+ preserveAspectRatio="xMidYMid meet">
+
+<g transform="translate(0.000000,512.000000) scale(0.100000,-0.100000)"
+fill="#2D79C7" stroke="none">
+<path d="M430 5109 c-130 -19 -248 -88 -325 -191 -53 -71 -83 -147 -96 -247
+-6 -49 -9 -813 -7 -2166 l3 -2090 22 -65 c54 -159 170 -273 328 -323 l70 -22
+2140 0 2140 0 66 23 c160 55 272 169 322 327 l22 70 0 2135 0 2135 -22 70
+c-49 157 -155 265 -319 327 l-59 23 -2115 1 c-1163 1 -2140 -2 -2170 -7z
+m3931 -2383 c48 -9 120 -26 160 -39 l74 -23 3 -237 c1 -130 0 -237 -2 -237 -3
+0 -26 14 -53 30 -61 38 -197 84 -310 106 -110 20 -293 15 -368 -12 -111 -39
+-175 -110 -175 -193 0 -110 97 -197 335 -300 140 -61 309 -146 375 -189 30
+-20 87 -68 126 -107 119 -117 164 -234 164 -426 0 -310 -145 -518 -430 -613
+-131 -43 -248 -59 -445 -60 -243 -1 -405 24 -577 90 l-68 26 0 242 c0 175 -3
+245 -12 254 -9 9 -9 12 0 12 7 0 12 -4 12 -9 0 -17 139 -102 223 -138 136 -57
+233 -77 382 -76 145 0 224 19 295 68 75 52 100 156 59 242 -41 84 -135 148
+-374 253 -367 161 -522 300 -581 520 -23 86 -23 253 -1 337 73 275 312 448
+682 492 109 13 401 6 506 -13z m-1391 -241 l0 -205 -320 0 -320 0 0 -915 0
+-915 -255 0 -255 0 0 915 0 915 -320 0 -320 0 0 205 0 205 895 0 895 0 0 -205z"/>
+</g>
+</svg>
+</file>
+
+<file path="terapia_visual_app/src/assets/vite.svg">
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" class="iconify iconify--logos" width="31.88" height="32" preserveAspectRatio="xMidYMid meet" viewBox="0 0 256 257"><defs><linearGradient id="IconifyId1813088fe1fbc01fb466" x1="-.828%" x2="57.636%" y1="7.652%" y2="78.411%"><stop offset="0%" stop-color="#41D1FF"></stop><stop offset="100%" stop-color="#BD34FE"></stop></linearGradient><linearGradient id="IconifyId1813088fe1fbc01fb467" x1="43.376%" x2="50.316%" y1="2.242%" y2="89.03%"><stop offset="0%" stop-color="#FFEA83"></stop><stop offset="8.333%" stop-color="#FFDD35"></stop><stop offset="100%" stop-color="#FFA800"></stop></linearGradient></defs><path fill="url(#IconifyId1813088fe1fbc01fb466)" d="M255.153 37.938L134.897 252.976c-2.483 4.44-8.862 4.466-11.382.048L.875 37.958c-2.746-4.814 1.371-10.646 6.827-9.67l120.385 21.517a6.537 6.537 0 0 0 2.322-.004l117.867-21.483c5.438-.991 9.574 4.796 6.877 9.62Z"></path><path fill="url(#IconifyId1813088fe1fbc01fb467)" d="M185.432.063L96.44 17.501a3.268 3.268 0 0 0-2.634 3.014l-5.474 92.456a3.268 3.268 0 0 0 3.997 3.378l24.777-5.718c2.318-.535 4.413 1.507 3.936 3.838l-7.361 36.047c-.495 2.426 1.782 4.5 4.151 3.78l15.304-4.649c2.372-.72 4.652 1.36 4.15 3.788l-11.698 56.621c-.732 3.542 3.979 5.473 5.943 2.437l1.313-2.028l72.516-144.72c1.215-2.423-.88-5.186-3.54-4.672l-25.505 4.922c-2.396.462-4.435-1.77-3.759-4.114l16.646-57.705c.677-2.35-1.37-4.583-3.769-4.113Z"></path></svg>
+</file>
+
+<file path="terapia_visual_app/src/core/commands/index.ts">
+export * from "./overlay";
+export * from "./settings";
+export * from "./reading";
+</file>
+
+<file path="terapia_visual_app/src/core/commands/overlay.ts">
+export const CMD_GET_OVERLAY_CONFIG = "cmd_get_overlay_config";
+export const CMD_START_OVERLAY = "cmd_start_overlay";
+export const CMD_STOP_OVERLAY = "cmd_stop_overlay";
+export const CMD_UPDATE_OVERLAY_CONFIG = "cmd_update_overlay_config";
+export const CMD_CHANGE_OVERLAY_LAYOUT = "cmd_change_overlay_layout";
+export const CMD_UPDATE_OVERLAY_ZONE_COLOR = "cmd_update_overlay_zone_color";
+export const CMD_UPDATE_OVERLAY_ZONE_OPACITY =
+  "cmd_update_overlay_zone_opacity";
+export const CMD_RESET_OVERLAY_CONFIG = "cmd_reset_overlay_config";
+</file>
+
+<file path="terapia_visual_app/src/core/commands/reading.ts">
+export const CMD_GET_READING_CONFIG = "cmd_get_reading_config";
+export const CMD_START_READING_THERAPY = "cmd_start_reading_therapy";
+export const CMD_STOP_READING_THERAPY = "cmd_stop_reading_therapy";
+export const CMD_UPDATE_READING_CONFIG = "cmd_update_reading_config";
+export const CMD_CHANGE_READING_LAYOUT = "cmd_change_reading_layout";
+export const CMD_UPDATE_READING_ZONE_COLOR = "cmd_update_reading_zone_color";
+export const CMD_UPDATE_READING_ZONE_OPACITY =
+  "cmd_update_reading_zone_opacity";
+export const CMD_UPDATE_READING_SETTINGS = "cmd_update_reading_settings";
+export const CMD_RESET_READING_CONFIG = "cmd_reset_reading_config";
+export const CMD_READING_WINDOW_RESIZED = "cmd_reading_window_resized";
+</file>
+
+<file path="terapia_visual_app/src/core/commands/settings.ts">
+export const CMD_GET_APP_SETTINGS = "cmd_get_app_settings";
+export const CMD_UPDATE_APP_SETTINGS = "cmd_update_app_settings";
+export const CMD_EXIT_APP = "cmd_exit_app";
+</file>
+
+<file path="terapia_visual_app/src/core/localization/i18n.ts">
+export type Language = "es" | "en";
+
+export const translations = {
+  es: {
+    // Titulo de la App
+    app_title: "Terapia Visual",
+
+    // Menu principal
+    menu_color_division: "Terapia de División de Color",
+    menu_reading: "Terapia de Lectura",
+
+    // Panel Lateral
+    reading_settings_title: "Ajustes de Lectura",
+    font_size_label: "Tamaño de Fuente (px)",
+    text_color_label: "Color de Letra",
+    bg_color_label: "Color de Fondo",
+    btn_close_window: "Cerrar Ventana",
+
+    // Botones
+    btn_start: "Iniciar Terapia",
+    btn_stop: "Detener Terapia",
+    btn_spanish: "Español",
+    btn_english: "English",
+    btn_reset: "Restablecer",
+    btn_start_reading: "Abrir Ventana de Lectura",
+    btn_stop_reading: "Cerrar Ventana",
+    btn_back: "← Volver al Menú",
+    btn_exit: "Salir de la Aplicación",
+
+    // Layouts
+    layout_label: "Disposición (Layout)",
+    layout_vertical: "Vertical",
+    layout_horizontal: "Horizontal",
+    layout_checkerboard: "Ajedrez",
+    layout_vertical4: "Vertical (4 Columnas)",
+
+    // Zonas
+    zone_title: "Zona",
+    color_label: "Color",
+    opacity_label: "Opacidad",
+
+    // Placeholders
+    reading_input_placeholder:
+      "Pega aquí el contenido de tu novela, artículo o documento HTML...",
+
+    // Estados
+    status_started: "Terapia iniciada",
+    status_stopped: "Terapia detenida",
+    status_updated: "Configuración actualizada",
+    status_reset: "Valores por defecto restaurados",
+    status_reading_started: "Ventana de lectura abierta",
+    status_reading_stopped: "Ventana de lectura cerrada",
+    error_generic: "Ha ocurrido un error inesperado",
+  },
+  en: {
+    //Titulo de la App
+    app_title: "Visual Therapy",
+
+    // Menu
+    menu_color_division: "Color Division Therapy",
+    menu_reading: "Reading Therapy",
+
+    // Panel lateral
+    reading_settings_title: "Reading Settings",
+    font_size_label: "Font Size (px)",
+    text_color_label: "Text Color",
+    bg_color_label: "Background Color",
+    btn_close_window: "Close Window",
+
+    // Botones
+    btn_start: "Start Therapy",
+    btn_stop: "Stop Therapy",
+    btn_spanish: "Spanish",
+    btn_english: "English",
+    btn_reset: "Reset Defaults",
+    btn_start_reading: "Open Reading Window",
+    btn_stop_reading: "Close Window",
+    btn_back: "← Back to Menu",
+    btn_exit: "Exit Application",
+
+    // Layouts
+    layout_label: "Layout",
+    layout_vertical: "Vertical",
+    layout_horizontal: "Horizontal",
+    layout_checkerboard: "Checkerboard",
+    layout_vertical4: "Vertical (4 Columns)",
+
+    // Zonas
+    zone_title: "Zone",
+    color_label: "Color",
+    opacity_label: "Opacity",
+
+    // Placeholders
+    reading_input_placeholder:
+      "Paste your novel, article or HTML document here...",
+
+    // Estados
+    status_started: "Therapy started",
+    status_stopped: "Therapy stopped",
+    status_updated: "Configuration updated",
+    status_reset: "Default values restored",
+    status_reading_started: "Reading window opened",
+    status_reading_stopped: "Reading window closed",
+    error_generic: "An unexpected error occurred",
+  },
+};
+
+let currentLang: Language = "es";
+
+export function setLanguage(lang: Language) {
+  currentLang = lang;
+  applyTranslations();
+}
+
+export function getCurrentLanguage(): Language {
+  return currentLang;
+}
+
+export function translate(key: keyof typeof translations.es): string {
+  return translations[currentLang][key];
+}
+
+export function applyTranslations() {
+  // Actualizar titulo de la app
+  document.title = translate("app_title");
+  // Actualizar elementos con la etiqueta `data-i18n`
+  document.querySelectorAll("[data-i18n]").forEach((element) => {
+    const key = element.getAttribute("data-i18n");
+    if (key && element instanceof HTMLElement) {
+      // Si el elemento es un text area, se actualiza su placeholder
+      if (
+        element instanceof HTMLTextAreaElement ||
+        element instanceof HTMLInputElement
+      ) {
+        element.placeholder = translate(key as any);
+      } else {
+        element.innerText = translate(key as any);
+      }
+    }
+  });
+}
+</file>
+
+<file path="terapia_visual_app/src/core/services/index.ts">
+// src/services/index.ts
+export * from "./overlay";
+export * from "./settings";
+export * from "./reading";
+</file>
+
+<file path="terapia_visual_app/src/core/services/overlay.ts">
+// src/services/overlay.ts
+import { invoke } from "@tauri-apps/api/core";
+import {
+  CMD_GET_OVERLAY_CONFIG,
+  CMD_START_OVERLAY,
+  CMD_STOP_OVERLAY,
+  CMD_UPDATE_OVERLAY_CONFIG,
+  CMD_CHANGE_OVERLAY_LAYOUT,
+  CMD_UPDATE_OVERLAY_ZONE_COLOR,
+  CMD_UPDATE_OVERLAY_ZONE_OPACITY,
+  CMD_RESET_OVERLAY_CONFIG,
+} from "../commands";
+import { OverlayConfig } from "../types";
+
+export async function getOverlayConfig(): Promise<OverlayConfig> {
+  return await invoke(CMD_GET_OVERLAY_CONFIG);
+}
+
+export async function startOverlay(screenWidth: number, screenHeight: number) {
+  return await invoke(CMD_START_OVERLAY, { screenWidth, screenHeight });
+}
+
+export async function stopOverlay() {
+  return await invoke(CMD_STOP_OVERLAY);
+}
+
+export async function updateOverlayConfig(
+  newConfig: any,
+  screenWidth: number,
+  screenHeight: number,
+) {
+  return await invoke(CMD_UPDATE_OVERLAY_CONFIG, {
+    newConfig,
+    screenWidth,
+    screenHeight,
+  });
+}
+
+export async function changeOverlayLayout(
+  newLayout: string,
+  screenWidth: number,
+  screenHeight: number,
+) {
+  return await invoke(CMD_CHANGE_OVERLAY_LAYOUT, {
+    newLayout,
+    screenWidth,
+    screenHeight,
+  });
+}
+
+export async function updateOverlayZoneColor(
+  zoneIndex: number,
+  newColor: string,
+  screenWidth: number,
+  screenHeight: number,
+) {
+  return await invoke(CMD_UPDATE_OVERLAY_ZONE_COLOR, {
+    zoneIndex,
+    newColor,
+    screenWidth,
+    screenHeight,
+  });
+}
+
+export async function updateOverlayZoneOpacity(
+  zoneIndex: number,
+  newOpacity: number,
+  screenWidth: number,
+  screenHeight: number,
+) {
+  return await invoke(CMD_UPDATE_OVERLAY_ZONE_OPACITY, {
+    zoneIndex,
+    newOpacity,
+    screenWidth,
+    screenHeight,
+  });
+}
+
+export async function resetOverlayConfig(
+  screenWidth: number,
+  screenHeight: number,
+) {
+  return await invoke(CMD_RESET_OVERLAY_CONFIG, {
+    screenWidth,
+    screenHeight,
+  });
+}
+</file>
+
+<file path="terapia_visual_app/src/core/services/reading.ts">
+import { invoke } from "@tauri-apps/api/core";
+import {
+  CMD_START_READING_THERAPY,
+  CMD_STOP_READING_THERAPY,
+} from "../commands/reading";
+
+export async function startReading(htmlContent: string) {
+  return await invoke(CMD_START_READING_THERAPY, { htmlContent });
+}
+
+export async function stopReading() {
+  return await invoke(CMD_STOP_READING_THERAPY);
+}
+</file>
+
+<file path="terapia_visual_app/src/core/services/settings.ts">
+// src/services/settings.ts
+import { invoke } from "@tauri-apps/api/core";
+import {
+  CMD_GET_APP_SETTINGS,
+  CMD_UPDATE_APP_SETTINGS,
+  CMD_EXIT_APP,
+} from "../commands";
+import { type Language } from "../localization/i18n";
+
+// Definir el tipo de respuesta de AppSettings
+interface AppSettingsResponse {
+  language: string;
+}
+
+export async function getAppSettings(): Promise<AppSettingsResponse> {
+  return await invoke(CMD_GET_APP_SETTINGS);
+}
+
+export async function updateAppSettings(language: Language) {
+  return await invoke(CMD_UPDATE_APP_SETTINGS, {
+    newSettings: { language },
+  });
+}
+
+export async function exitApp() {
+  return await invoke(CMD_EXIT_APP);
+}
+</file>
+
+<file path="terapia_visual_app/src/core/services/ui.ts">
+// src/services/ui.ts
+import { translate } from "../localization/i18n";
+
+// Variables globales de estado
+let statusTimeout: number | undefined;
+
+export function showStatus(
+  messageKey: keyof typeof import("../localization/i18n").translations.es,
+  statusDiv: HTMLElement | null,
+) {
+  if (!statusDiv) return;
+  statusDiv.classList.remove("status-error");
+  statusDiv.innerText = translate(messageKey);
+
+  clearTimeout(statusTimeout);
+  statusTimeout = window.setTimeout(() => {
+    statusDiv.innerText = "";
+  }, 3000);
+}
+
+export function showError(errorMsg: string, statusDiv: HTMLElement | null) {
+  if (!statusDiv) return;
+
+  statusDiv.classList.add("status-error");
+  statusDiv.innerText = `${translate("error_generic")}: ${errorMsg}`;
+
+  clearTimeout(statusTimeout);
+  statusTimeout = window.setTimeout(() => {
+    statusDiv.innerText = "";
+    statusDiv.classList.remove("status-error");
+  }, 3000);
+}
+</file>
+
+<file path="terapia_visual_app/src/core/types/index.ts">
+export interface ZoneConfig {
+  color: string;
+  opacity: number;
+}
+
+export interface OverlayConfig {
+  layout: string;
+  zones_config: ZoneConfig[];
+}
+
+export interface ReadingSettings {
+  font_size: number;
+  text_color: string;
+  bg_color: string;
+  line_height: string;
+}
+
+export interface ReadingConfig {
+  layout: string;
+  zones_config: ZoneConfig[];
+  reading_settings: ReadingSettings;
+}
+
+export interface AppSettings {
+  language: string;
+}
+
+export interface TherapyModule {
+  mount: (container: HTMLElement) => void | Promise<void>;
+  unmount: () => void | Promise<void>;
+}
+</file>
+
+<file path="terapia_visual_app/src/main.ts">
+// main.ts
+import { setLanguage, applyTranslations } from "./core/localization/i18n";
+import {
+  getAppSettings,
+  exitApp,
+  updateAppSettings,
+} from "./core/services/settings";
+import { switchTherapy } from "./ui/router";
+import { showError } from "./ui/components/status";
+
+async function init() {
+  const statusDiv = document.getElementById("status");
+
+  try {
+    // Cargar idioma
+    const settings = await getAppSettings();
+    setLanguage(settings.language === "en" ? "en" : "es");
+  } catch (err) {
+    console.error("Error loading initial state:", err);
+    showError(String(err), statusDiv);
+  }
+
+  // Configurar eventos de navegación
+  document.getElementById("btn-nav-color")?.addEventListener("click", () => {
+    switchTherapy("overlay");
+  });
+
+  document.getElementById("btn-nav-reading")?.addEventListener("click", () => {
+    switchTherapy("reading");
+  });
+
+  // Cambio de idioma
+  document.getElementById("btn-es")?.addEventListener("click", async () => {
+    await updateAppSettings("es");
+    setLanguage("es");
+    applyTranslations();
+  });
+
+  document.getElementById("btn-en")?.addEventListener("click", async () => {
+    await updateAppSettings("en");
+    setLanguage("en");
+    applyTranslations();
+  });
+
+  // Salir de la aplicación
+  document.getElementById("btn-exit")?.addEventListener("click", async () => {
+    try {
+      await exitApp();
+    } catch (err) {
+      console.error("Error al cerrar la app:", err);
+      showError(String(err), statusDiv);
+    }
+  });
+}
+
+window.addEventListener("DOMContentLoaded", init);
+</file>
+
+<file path="terapia_visual_app/src/styles.css">
+:root {
+  font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
+  font-size: 16px;
+  color: #2c3e50;
+  background-color: #f4f6f8;
+}
+
+body {
+  margin: 0;
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+}
+
+.app-container {
+  max-width: 600px;
+  width: 100%;
+  background: white;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 15px;
+  margin-bottom: 20px;
+}
+
+h1 {
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+.lang-controls button {
+  background: none;
+  border: 1px solid #ddd;
+  box-shadow: none;
+  padding: 4px 8px;
+  font-size: 0.85rem;
+  margin-left: 5px;
+}
+
+.main-actions {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 30px;
+}
+
+button {
+  flex: 1;
+  padding: 12px;
+  border-radius: 8px;
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+#btn-start {
+  background-color: #27ae60;
+  color: white;
+}
+
+#btn-stop {
+  background-color: #e74c3c;
+  color: white;
+}
+#btn-reset {
+  background-color: #95a5a6;
+  color: white;
+}
+
+button:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
+}
+button:active {
+  transform: translateY(0);
+}
+
+.control-section {
+  margin-bottom: 25px;
+}
+
+.control-section h3 {
+  margin-top: 0;
+  margin-bottom: 10px;
+  font-size: 1rem;
+  color: #7f8c8d;
+}
+
+.layout-selector {
+  width: 100%;
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid #ddd;
+  font-size: 1rem;
+}
+
+/* Grilla dinámica para las zonas de colores */
+#zones-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 15px;
+}
+
+.zone-card {
+  background: #f8f9fa;
+  border: 1px solid #e9ecef;
+  padding: 15px;
+  border-radius: 8px;
+}
+
+.zone-card h4 {
+  margin: 0 0 15px 0;
+  font-size: 0.95rem;
+  text-align: center;
+}
+
+.control-group {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.control-group label {
+  font-size: 0.9rem;
+}
+
+input[type="color"] {
+  width: 40px;
+  height: 30px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  padding: 0;
+}
+
+input[type="range"] {
+  width: 100px;
+}
+
+#status {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 0.9rem;
+  color: #7f8c8d;
+  min-height: 20px;
+}
+
+.status-error {
+  color: #e74c3c !important; /* Rojo fuerte */
+  font-weight: 600;
+}
+
+/* Modo oscuro */
+@media (prefers-color-scheme: dark) {
+  :root {
+    color: #ecf0f1;
+    background-color: #1e272e;
+  }
+  .app-container {
+    background: #2d3436;
+  }
+  header {
+    border-bottom-color: #444;
+  }
+  .lang-controls button {
+    border-color: #555;
+    color: white;
+  }
+  .control-section h3 {
+    color: #bdc3c7;
+  }
+  .layout-selector {
+    background: #3d4446;
+    color: white;
+    border-color: #555;
+  }
+  .zone-card {
+    background: #353b3e;
+    border-color: #444;
+  }
+}
+
+/* =========================================
+   UTILS y COMPONENTES GLOBALES
+   ========================================= */
+
+/* Línea separadora limpia */
+.divider {
+  border: 0;
+  border-top: 1px solid #eee;
+  margin: 15px 0;
+}
+
+/* Menú Principal */
+.menu-container {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.menu-btn {
+  padding: 20px;
+  font-size: 1.1rem;
+  color: white;
+  border-radius: 8px;
+}
+
+.menu-btn-color {
+  background-color: #3498db;
+}
+.menu-btn-reading {
+  background-color: #9b59b6;
+}
+.menu-btn-exit {
+  background-color: #e74c3c;
+  padding: 15px;
+  margin-top: 20px;
+}
+
+/* Botones de acción genéricos */
+.btn-primary {
+  background-color: #9b59b6;
+  color: white;
+}
+.btn-danger {
+  background-color: #e74c3c;
+  color: white;
+}
+.btn-success {
+  background-color: #27ae60;
+  color: white;
+}
+.btn-secondary {
+  background-color: #95a5a6;
+  color: white;
+}
+
+/* Textarea estándar */
+.input-textarea {
+  width: 100%;
+  height: 250px;
+  padding: 15px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  resize: vertical;
+  box-sizing: border-box;
+  font-family: inherit;
+}
+
+@media (prefers-color-scheme: dark) {
+  .divider {
+    border-top-color: #444;
+  }
+  .input-textarea {
+    background-color: #353b3e;
+    color: #fff;
+    border-color: #555;
+  }
+}
+</file>
+
+<file path="terapia_visual_app/src/therapies/overlay/index.ts">
+import type { TherapyModule } from "../../core/types";
+import { renderOverlayView } from "./view";
+import {
+  getOverlayConfig,
+  startOverlay,
+  stopOverlay,
+  resetOverlayConfig,
+  changeOverlayLayout,
+  updateOverlayZoneColor,
+  updateOverlayZoneOpacity,
+} from "../../core/services/overlay";
+import { renderZoneControls } from "../../ui/components/zone-controls";
+import { showStatus, showError } from "../../ui/components/status";
+import { goHome } from "../../ui/router";
+
+let cleanupFunctions: (() => void)[] = [];
+
+export const overlayTherapy: TherapyModule = {
+  mount: async (container: HTMLElement) => {
+    // Renderizar HTML
+    renderOverlayView(container);
+
+    const statusDiv = document.getElementById("status");
+    const layoutSelect = document.getElementById(
+      "layout-select",
+    ) as HTMLSelectElement;
+
+    // Cargar configuracion y renderizar controles
+    async function loadConfig() {
+      try {
+        const config = await getOverlayConfig();
+        renderZoneControls(config, (index, newColor, newOpacity) => {
+          updateZoneConfig(index, newColor, newOpacity);
+        });
+        if (layoutSelect) layoutSelect.value = config.layout;
+      } catch (error) {
+        console.error("Error loading overlay config:", error);
+        showError(String(error), statusDiv);
+      }
+    }
+
+    await loadConfig();
+
+    // Handlers de eventos
+    const startHandler = () => {
+      startOverlay(window.screen.width, window.screen.height)
+        .then(() => showStatus("status_started", statusDiv))
+        .catch((err) => showError(String(err), statusDiv));
+    };
+
+    const stopHandler = () => {
+      stopOverlay()
+        .then(() => showStatus("status_stopped", statusDiv))
+        .catch((err) => showError(String(err), statusDiv));
+    };
+
+    const resetHandler = async () => {
+      try {
+        await resetOverlayConfig(window.screen.width, window.screen.height);
+        await loadConfig();
+        showStatus("status_reset", statusDiv);
+      } catch (err) {
+        showError(String(err), statusDiv);
+      }
+    };
+
+    const layoutHandler = async (e: Event) => {
+      const newLayout = (e.target as HTMLSelectElement).value;
+      try {
+        await changeOverlayLayout(
+          newLayout,
+          window.screen.width,
+          window.screen.height,
+        );
+        await loadConfig();
+        showStatus("status_updated", statusDiv);
+      } catch (err) {
+        showError(String(err), statusDiv);
+      }
+    };
+
+    const startBtn = document.getElementById("btn-start");
+    const stopBtn = document.getElementById("btn-stop");
+    const resetBtn = document.getElementById("btn-reset");
+    const backBtn = document.getElementById("btn-back-overlay");
+
+    startBtn?.addEventListener("click", startHandler);
+    stopBtn?.addEventListener("click", stopHandler);
+    resetBtn?.addEventListener("click", resetHandler);
+    layoutSelect?.addEventListener("change", layoutHandler);
+    backBtn?.addEventListener("click", goHome);
+
+    // Guardar funciones de limpieza
+    cleanupFunctions = [
+      () => startBtn?.removeEventListener("click", startHandler),
+      () => stopBtn?.removeEventListener("click", stopHandler),
+      () => resetBtn?.removeEventListener("click", resetHandler),
+      () => layoutSelect?.removeEventListener("change", layoutHandler),
+      () => backBtn?.removeEventListener("click", goHome),
+    ];
+  },
+
+  unmount: async () => {
+    cleanupFunctions.forEach((fn) => fn());
+    cleanupFunctions = [];
+  },
+};
+
+// Funcion auxiliar para actualizar zonas
+async function updateZoneConfig(
+  index: number,
+  newColor: string | null,
+  newOpacity: number | null,
+) {
+  const statusDiv = document.getElementById("status");
+
+  try {
+    const screenWidth = window.screen.width;
+    const screenHeight = window.screen.height;
+
+    if (newColor !== null) {
+      await updateOverlayZoneColor(
+        index,
+        newColor.toUpperCase(),
+        screenWidth,
+        screenHeight,
+      );
+    }
+    if (newOpacity !== null) {
+      await updateOverlayZoneOpacity(
+        index,
+        newOpacity,
+        screenWidth,
+        screenHeight,
+      );
+    }
+
+    // Recargar configuracion para actualizar la UI
+    const config = await getOverlayConfig();
+    renderZoneControls(config, (i, c, o) => {
+      updateZoneConfig(i, c, o);
+    });
+    showStatus("status_updated", statusDiv);
+  } catch (err) {
+    showError(String(err), statusDiv);
+  }
+}
+</file>
+
+<file path="terapia_visual_app/src/therapies/overlay/view.ts">
+export function renderOverlayView(container: HTMLElement) {
+  container.innerHTML = `
+    <div class="therapy-view">
+      <button id="btn-back-overlay" class="btn-back" data-i18n="btn_back">← Volver al Menú</button>
+      <hr class="divider" />
+      
+      <div class="main-actions">
+        <button id="btn-start" class="btn-success" data-i18n="btn_start">Iniciar Terapia</button>
+        <button id="btn-stop" class="btn-danger" data-i18n="btn_stop">Detener Terapia</button>
+        <button id="btn-reset" class="btn-secondary" data-i18n="btn_reset">Restablecer</button>
+      </div>
+      
+      <div class="control-section">
+        <h3 data-i18n="layout_label">Disposición (Layout)</h3>
+        <select id="layout-select" class="layout-selector">
+          <option value="Vertical" data-i18n="layout_vertical">Vertical</option>
+          <option value="Horizontal" data-i18n="layout_horizontal">Horizontal</option>
+          <option value="Checkerboard" data-i18n="layout_checkerboard">Ajedrez</option>
+          <option value="Vertical4Columns" data-i18n="layout_vertical4">Vertical (4 Columnas)</option>
+        </select>
+      </div>
+      
+      <div class="control-section">
+        <div id="zones-container"></div>
+      </div>
+    </div>
+  `;
+}
+</file>
 
 <file path="terapia_visual_app/src/therapies/reading/index.ts">
 import type { TherapyModule } from "../../core/types";
@@ -136,7 +1106,7 @@ export const readingTherapy: TherapyModule = {
 };
 </file>
 
-<file path="terapia_visual_app/src/therapies/reading/reading-window.css">
+<file path="terapia_visual_app/src/therapies/reading/reader.css">
 /* Estilos base de la ventana de lectura (reading.html) */
 body {
   margin: 0;
@@ -179,8 +1149,8 @@ body {
   position: fixed;
   top: 20px;
   right: 20px;
-  z-index: 1000;
-  background: #34495e;
+  z-index: 998; /* Un poco menos que el panel */
+  background: #3498db; /* Color más acorde a la app */
   color: white;
   border: none;
   border-radius: 50%;
@@ -189,12 +1159,19 @@ body {
   font-size: 24px;
   cursor: pointer;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-  transition: 0.3s;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 #floating-btn:hover {
-  background: #2c3e50;
+  background: #297fb9;
   transform: scale(1.1);
+}
+
+/* Animación para esconder el botón cuando el panel se abre */
+#floating-btn.hidden {
+  transform: scale(0);
+  opacity: 0;
+  pointer-events: none;
 }
 
 /* Panel Lateral de Ajustes */
@@ -202,23 +1179,51 @@ body {
   position: fixed;
   top: 0;
   right: -350px;
-  width: 300px;
+  width: 320px;
   height: 100%;
-  background: #fdfdfd;
-  box-shadow: -4px 0 15px rgba(0, 0, 0, 0.2);
+  background-color: #f4f6f8; /* Mismo fondo claro que la app principal */
+  box-shadow: -4px 0 15px rgba(0, 0, 0, 0.15);
   z-index: 999;
-  transition: right 0.3s ease;
+  transition: right 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   padding: 20px;
   box-sizing: border-box;
   overflow-y: auto;
-  font-family: Arial, sans-serif;
-  color: #333;
+  font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
+  color: #2c3e50; /* Mismo texto que la app principal */
 }
 
 #settings-panel.open {
   right: 0;
 }
 
+/* Cabecera del Panel */
+.panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.panel-header h2 {
+  margin: 0;
+  font-size: 1.3rem;
+}
+
+.btn-close {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: #7f8c8d;
+  cursor: pointer;
+  transition: color 0.2s;
+  padding: 0 5px;
+}
+
+.btn-close:hover {
+  color: #e74c3c;
+}
+
+/* Controles */
 .control-group {
   margin-bottom: 15px;
 }
@@ -237,6 +1242,7 @@ body {
   border-radius: 4px;
   border: 1px solid #ccc;
   box-sizing: border-box;
+  font-family: inherit;
 }
 
 .control-group input[type="color"] {
@@ -245,38 +1251,82 @@ body {
   cursor: pointer;
 }
 
-.reading-divider {
+.control-group input[type="range"] {
+  padding: 0;
+  border: none;
+}
+
+hr.reading-divider {
   border: 0;
   border-top: 1px solid #ddd;
   margin: 20px 0;
 }
-</file>
 
-<file path="terapia_visual_app/src/therapies/reading/view.ts">
-export function renderReadingView(container: HTMLElement) {
-  container.innerHTML = `
-    <div class="therapy-view">
-      <button id="btn-back-reading" class="btn-back" data-i18n="btn_back">← Volver al Menú</button>
-      <hr class="divider" />
-      
-      <div class="main-actions">
-        <button id="btn-start-reading" class="btn-primary" data-i18n="btn_start_reading">
-          Abrir Ventana
-        </button>
-        <button id="btn-stop-reading" class="btn-danger" data-i18n="btn_stop_reading">
-          Cerrar Ventana
-        </button>
-      </div>
+/* Controles de Idioma */
+.panel-lang-controls {
+  display: flex;
+  gap: 5px;
+  margin-bottom: 20px;
+  justify-content: flex-end;
+}
 
-      <div class="control-section">
-        <textarea id="reading-input" class="input-textarea" data-i18n="reading_input_placeholder" placeholder="Pega aquí el contenido..."></textarea>
-      </div>
-    </div>
-  `;
+.lang-controls button {
+  background: none;
+  border: 1px solid #ddd;
+  box-shadow: none;
+  padding: 4px 8px;
+  font-size: 0.85rem;
+  margin-left: 5px;
+  color: inherit;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+/* Botón de Salir */
+.btn-danger-large {
+  width: 100%;
+  padding: 12px;
+  background-color: #e74c3c;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.btn-danger-large:hover {
+  opacity: 0.9;
+}
+
+/* MODO OSCURO */
+@media (prefers-color-scheme: dark) {
+  #settings-panel {
+    background-color: #2d3436;
+    color: #ecf0f1;
+    box-shadow: -4px 0 15px rgba(0, 0, 0, 0.5);
+  }
+  .control-group input,
+  .control-group select {
+    background-color: #353b3e;
+    color: #fff;
+    border-color: #555;
+  }
+  hr.reading-divider {
+    border-top-color: #444;
+  }
+  .btn-close {
+    color: #bdc3c7;
+  }
+  .lang-controls button {
+    border-color: #555;
+    color: white;
+  }
 }
 </file>
 
-<file path="terapia_visual_app/src/therapies/reading/window.html">
+<file path="terapia_visual_app/src/therapies/reading/reader.html">
 <!doctype html>
 <html lang="es">
   <head>
@@ -298,65 +1348,91 @@ export function renderReadingView(container: HTMLElement) {
     <!-- UI Flotante -->
     <button id="floating-btn">⚙️</button>
     <div id="settings-panel">
-      <h2 style="margin-top: 0">Ajustes de Lectura</h2>
+      <div class="panel-header">
+        <h2 style="margin-top: 0" data-i18n="reading_settings_title">
+          Ajustes de Lectura
+        </h2>
+        <button id="btn-close-panel" class="btn-close">✖</button>
+      </div>
+
+      <div class="panel-lang-controls lang-controls">
+        <button id="btn-es-reading" data-i18n="btn_spanish">Español</button>
+        <button id="btn-en-reading" data-i18n="btn_english">English</button>
+      </div>
 
       <div class="control-group">
-        <label>Tamaño de Fuente (px)</label>
+        <label data-i18n="font_size_label">Tamaño de Fuente (px)</label>
         <input type="number" id="inp-font-size" min="10" max="50" />
       </div>
       <div class="control-group">
-        <label>Color de Letra</label>
+        <label data-i18n="text_color_label">Color de Letra</label>
         <input type="color" id="inp-text-color" />
       </div>
       <div class="control-group">
-        <label>Color de Fondo</label>
+        <label data-i18n="bg_color_label">Color de Fondo</label>
         <input type="color" id="inp-bg-color" />
       </div>
       <hr class="reading-divider" />
       <div class="control-group">
-        <label>Layout de Terapia</label>
+        <label data-i18n="layout_label">Layout de Terapia</label>
         <select id="inp-layout">
-          <option value="Vertical">Vertical</option>
-          <option value="Horizontal">Horizontal</option>
-          <option value="Checkerboard">Ajedrez</option>
-          <option value="Vertical4Columns">Vertical (4 Columnas)</option>
+          <option value="Vertical" data-i18n="layout_vertical">Vertical</option>
+          <option value="Horizontal" data-i18n="layout_horizontal">
+            Horizontal
+          </option>
+          <option value="Checkerboard" data-i18n="layout_checkerboard">
+            Ajedrez
+          </option>
+          <option value="Vertical4Columns" data-i18n="layout_vertical4">
+            Vertical (4 Columnas)
+          </option>
         </select>
       </div>
       <div id="zones-controls"></div>
+
+      <hr class="reading-divider" />
+
+      <button
+        id="btn-close-reading-window"
+        class="btn-danger-large"
+        data-i18n="btn_close_window"
+      >
+        Cerrar Ventana
+      </button>
     </div>
 
-    <script type="module" src="window.ts"></script>
+    <script type="module" src="reader.ts"></script>
   </body>
 </html>
 </file>
 
-<file path="terapia_visual_app/src/therapies/reading/window.ts">
-// Imports
+<file path="terapia_visual_app/src/therapies/reading/reader.ts">
 import { invoke } from "@tauri-apps/api/core";
 import { listen } from "@tauri-apps/api/event";
-import "./reading-window.css";
+import "./reader.css";
+import { initSettingsPanel, updatePanelControls } from "./settings-panel";
+import { setLanguage, applyTranslations } from "../../core/localization/i18n";
+import {
+  CMD_GET_APP_SETTINGS,
+  CMD_READING_WINDOW_RESIZED,
+} from "../../core/commands";
 
-// Elementos del DOM
-const panel = document.getElementById("settings-panel")!;
-const btnToggle = document.getElementById("floating-btn")!;
 const contentDiv = document.getElementById("chaptercontent")!;
 const zonesContainer = document.getElementById("zones-container")!;
-
-const inpFontSize = document.getElementById(
-  "inp-font-size",
-) as HTMLInputElement;
-const inpTextColor = document.getElementById(
-  "inp-text-color",
-) as HTMLInputElement;
-const inpBgColor = document.getElementById("inp-bg-color") as HTMLInputElement;
-const inpLayout = document.getElementById("inp-layout") as HTMLSelectElement;
-const zonesControls = document.getElementById("zones-controls")!;
-
 let currentConfig: any = null;
 
-// Alternar Panel Lateral
-btnToggle.addEventListener("click", () => {
-  panel.classList.toggle("open");
+// Inicializar los listeners del panel lateral
+initSettingsPanel();
+
+// Preguntar a Rust el idioma actual al cargar la ventana
+window.addEventListener("DOMContentLoaded", async () => {
+  try {
+    const settings: any = await invoke(CMD_GET_APP_SETTINGS);
+    setLanguage(settings.language === "en" ? "en" : "es");
+    applyTranslations();
+  } catch (error) {
+    console.error("Error al cargar idioma:", error);
+  }
 });
 
 // Escuchar los eventos IPC que manda Rust
@@ -365,9 +1441,11 @@ listen("update-reading-view", (event: any) => {
   currentConfig = event.payload.config;
 
   contentDiv.innerHTML = event.payload.html_content;
+
   applyReadingSettings();
   renderZones();
-  renderPanelControls();
+  // Sincronizar con el panel
+  updatePanelControls(currentConfig);
 });
 
 // Aplicar colores y fuentes al texto
@@ -387,7 +1465,9 @@ function applyReadingSettings() {
 
 // Calcular y dibujar las zonas
 function renderZones() {
+  if (!currentConfig) return;
   zonesContainer.innerHTML = "";
+
   const w = window.innerWidth;
   const h = window.innerHeight;
   const layout = currentConfig.layout;
@@ -436,69 +1516,375 @@ function renderZones() {
   });
 }
 
-// Llenar el panel flotante
-function renderPanelControls() {
-  inpFontSize.value = currentConfig.reading_settings.font_size;
-  inpTextColor.value = currentConfig.reading_settings.text_color;
-  inpBgColor.value = currentConfig.reading_settings.bg_color;
-  inpLayout.value = currentConfig.layout;
+// Avisar a Rust cuando se redimensiona la ventana
+let resizeTimeout: number | undefined;
+window.addEventListener("resize", () => {
+  clearTimeout(resizeTimeout);
+  resizeTimeout = window.setTimeout(() => {
+    invoke(CMD_READING_WINDOW_RESIZED).catch(console.error);
+  }, 150);
+  // Redibujar instantaneamente en local para que no haya parpadeos
+  renderZones();
+});
+</file>
 
+<file path="terapia_visual_app/src/therapies/reading/settings-panel.ts">
+import { invoke } from "@tauri-apps/api/core";
+import {
+  setLanguage,
+  applyTranslations,
+  translate,
+  type Language,
+} from "../../core/localization/i18n";
+import {
+  CMD_CHANGE_READING_LAYOUT,
+  CMD_GET_READING_CONFIG,
+  CMD_STOP_READING_THERAPY,
+  CMD_UPDATE_APP_SETTINGS,
+  CMD_UPDATE_OVERLAY_ZONE_COLOR,
+  CMD_UPDATE_READING_SETTINGS,
+  CMD_UPDATE_READING_ZONE_OPACITY,
+} from "../../core/commands";
+
+export function initSettingsPanel() {
+  const panel = document.getElementById("settings-panel")!;
+  const btnToggle = document.getElementById("floating-btn")!;
+  const btnClose = document.getElementById("btn-close-panel")!;
+  const btnCloseReading = document.getElementById("btn-close-reading-window")!;
+  const btnEs = document.getElementById("btn-es-reading")!;
+  const btnEn = document.getElementById("btn-en-reading")!;
+
+  const inpFontSize = document.getElementById(
+    "inp-font-size",
+  ) as HTMLInputElement;
+  const inpTextColor = document.getElementById(
+    "inp-text-color",
+  ) as HTMLInputElement;
+  const inpBgColor = document.getElementById(
+    "inp-bg-color",
+  ) as HTMLInputElement;
+  const inpLayout = document.getElementById("inp-layout") as HTMLSelectElement;
+
+  // Abrir panel: Oculta el flotante y muestra el panel
+  btnToggle.addEventListener("click", () => {
+    panel.classList.add("open");
+    btnToggle.classList.add("hidden");
+  });
+
+  // Cerrar panel: Oculta el panel y devuelve el flotante
+  btnClose.addEventListener("click", () => {
+    panel.classList.remove("open");
+    btnToggle.classList.remove("hidden");
+  });
+
+  // Cerrar ventana de lectura
+  btnCloseReading.addEventListener("click", async () => {
+    try {
+      await invoke(CMD_STOP_READING_THERAPY);
+    } catch (e) {
+      console.error("Error al cerrar la ventana:", e);
+    }
+  });
+
+  // Logica de cambio de idioma
+  const changeLang = async (lang: Language) => {
+    await invoke(CMD_UPDATE_APP_SETTINGS, {
+      newSettings: { language: lang },
+    });
+    setLanguage(lang);
+    applyTranslations();
+
+    invoke(CMD_GET_READING_CONFIG).then((config: any) =>
+      updatePanelControls(config),
+    );
+  };
+
+  btnEs.addEventListener("click", () => changeLang("es"));
+  btnEn.addEventListener("click", () => changeLang("en"));
+
+  // Enviar cambios globales a Rust
+  const saveReadingSettings = async () => {
+    const newSettings = {
+      font_size: parseInt(inpFontSize.value),
+      text_color: inpTextColor.value.toUpperCase(),
+      bg_color: inpBgColor.value.toUpperCase(),
+      line_height: "1.65",
+    };
+    await invoke(CMD_UPDATE_READING_SETTINGS, { newSettings });
+  };
+
+  inpFontSize.addEventListener("change", saveReadingSettings);
+  inpTextColor.addEventListener("change", saveReadingSettings);
+  inpBgColor.addEventListener("change", saveReadingSettings);
+
+  inpLayout.addEventListener("change", (e) => {
+    invoke(CMD_CHANGE_READING_LAYOUT, {
+      newLayout: (e.target as HTMLSelectElement).value,
+    });
+  });
+}
+
+export function updatePanelControls(config: any) {
+  const inpFontSize = document.getElementById(
+    "inp-font-size",
+  ) as HTMLInputElement;
+  const inpTextColor = document.getElementById(
+    "inp-text-color",
+  ) as HTMLInputElement;
+  const inpBgColor = document.getElementById(
+    "inp-bg-color",
+  ) as HTMLInputElement;
+  const inpLayout = document.getElementById("inp-layout") as HTMLSelectElement;
+  const zonesControls = document.getElementById("zones-controls")!;
+
+  // Sincronizar valores visuales globales
+  inpFontSize.value = config.reading_settings.font_size;
+  inpTextColor.value = config.reading_settings.text_color;
+  inpBgColor.value = config.reading_settings.bg_color;
+  inpLayout.value = config.layout;
+
+  // Dibujar y conectar controles de zonas dinámicamente
   zonesControls.innerHTML = "";
-  currentConfig.zones_config.forEach((zone: any, index: number) => {
+  config.zones_config.forEach((zone: any, index: number) => {
     const group = document.createElement("div");
     group.className = "control-group";
+
+    // Calcular porcentaje para mostrarlo
+    const percentage = Math.round(zone.opacity * 100);
+
     group.innerHTML = `
-      <label>Zona ${index + 1} - Color y Opacidad</label>
-      <div style="display: flex; gap: 5px;">
+      <label id="z-lbl-${index}">${translate("zone_title")} ${index + 1} - ${translate("opacity_label")} (${percentage}%)</label>
+      <div style="display: flex; gap: 10px; align-items: center;">
         <input type="color" value="${zone.color}" id="z-color-${index}" style="flex: 1;">
         <input type="range" min="0" max="0.8" step="0.01" value="${zone.opacity}" id="z-op-${index}" style="flex: 2;">
       </div>
     `;
     zonesControls.appendChild(group);
 
+    // Eventos del color
     document
       .getElementById(`z-color-${index}`)
       ?.addEventListener("change", (e) => {
-        invoke("cmd_update_reading_zone_color", {
+        invoke(CMD_UPDATE_OVERLAY_ZONE_COLOR, {
           zoneIndex: index,
           newColor: (e.target as HTMLInputElement).value.toUpperCase(),
         });
       });
-    document
-      .getElementById(`z-op-${index}`)
-      ?.addEventListener("change", (e) => {
-        invoke("cmd_update_reading_zone_opacity", {
-          zoneIndex: index,
-          newOpacity: parseFloat((e.target as HTMLInputElement).value),
-        });
+
+    // Eventos de la opacidad
+    const opInput = document.getElementById(
+      `z-op-${index}`,
+    ) as HTMLInputElement;
+    const opLabel = document.getElementById(`z-lbl-${index}`)!;
+
+    // El evento 'input' actualiza el texto EN TIEMPO REAL mientras arrastras
+    opInput?.addEventListener("input", (e) => {
+      const val = parseFloat((e.target as HTMLInputElement).value);
+      opLabel.innerText = `${translate("zone_title")} ${index + 1} - ${translate("opacity_label")} (${Math.round(val * 100)}%)`;
+    });
+
+    // El evento 'change' envía el valor a Rust cuando sueltas el click
+    opInput?.addEventListener("change", (e) => {
+      invoke(CMD_UPDATE_READING_ZONE_OPACITY, {
+        zoneIndex: index,
+        newOpacity: parseFloat((e.target as HTMLInputElement).value),
       });
+    });
   });
 }
+</file>
 
-// Enviar cambios a Rust
-async function saveReadingSettings() {
-  const newSettings = {
-    font_size: parseInt(inpFontSize.value),
-    text_color: inpTextColor.value.toUpperCase(),
-    bg_color: inpBgColor.value.toUpperCase(),
-    line_height: "1.65",
-  };
-  await invoke("cmd_update_reading_settings", { newSettings });
+<file path="terapia_visual_app/src/therapies/reading/view.ts">
+export function renderReadingView(container: HTMLElement) {
+  container.innerHTML = `
+    <div class="therapy-view">
+      <button id="btn-back-reading" class="btn-back" data-i18n="btn_back">← Volver al Menú</button>
+      <hr class="divider" />
+      
+      <div class="main-actions">
+        <button id="btn-start-reading" class="btn-primary" data-i18n="btn_start_reading">
+          Abrir Ventana
+        </button>
+        <button id="btn-stop-reading" class="btn-danger" data-i18n="btn_stop_reading">
+          Cerrar Ventana
+        </button>
+      </div>
+
+      <div class="control-section">
+        <textarea id="reading-input" class="input-textarea" data-i18n="reading_input_placeholder" placeholder="Pega aquí el contenido..."></textarea>
+      </div>
+    </div>
+  `;
+}
+</file>
+
+<file path="terapia_visual_app/src/ui/components/status.ts">
+import { translate } from "../../core/localization/i18n";
+
+let statusTimeout: number | undefined;
+
+export function showStatus(
+  messageKey: keyof typeof import("../../core/localization/i18n").translations.es,
+  statusDiv: HTMLElement | null,
+) {
+  if (!statusDiv) return;
+
+  statusDiv.classList.remove("status-error");
+  statusDiv.innerText = translate(messageKey);
+
+  clearTimeout(statusTimeout);
+  statusTimeout = window.setTimeout(() => {
+    statusDiv.innerText = "";
+  }, 3000);
 }
 
-inpFontSize.addEventListener("change", saveReadingSettings);
-inpTextColor.addEventListener("change", saveReadingSettings);
-inpBgColor.addEventListener("change", saveReadingSettings);
-inpLayout.addEventListener("change", (e) => {
-  invoke("cmd_change_reading_layout", {
-    newLayout: (e.target as HTMLSelectElement).value,
-  });
-});
+export function showError(errorMsg: string, statusDiv: HTMLElement | null) {
+  if (!statusDiv) return;
 
-// Redimensionar ventana
-window.addEventListener("resize", () => {
-  if (currentConfig) renderZones();
-});
+  statusDiv.classList.add("status-error");
+  statusDiv.innerText = `${translate("error_generic")}: ${errorMsg}`;
+
+  clearTimeout(statusTimeout);
+  statusTimeout = window.setTimeout(() => {
+    statusDiv.innerText = "";
+    statusDiv.classList.remove("status-error");
+  }, 3000);
+}
+</file>
+
+<file path="terapia_visual_app/src/ui/components/zone-controls.ts">
+import { translate } from "../../core/localization/i18n";
+
+export function renderZoneControls(
+  config: any,
+  onUpdate: (
+    index: number,
+    newColor: string | null,
+    newOpacity: number | null,
+  ) => void,
+) {
+  const container = document.getElementById("zones-container");
+  if (!container) return;
+
+  container.innerHTML = "";
+
+  config.zones_config.forEach((zone: any, index: number) => {
+    const card = document.createElement("div");
+    card.className = "zone-card";
+
+    // Titulo de la zona
+    const title = document.createElement("h4");
+    title.innerText = `${translate("zone_title")} ${index + 1}`;
+    card.appendChild(title);
+
+    // Control de color
+    const colorGroup = document.createElement("div");
+    colorGroup.className = "control-group";
+
+    const colorLabel = document.createElement("label");
+    colorLabel.innerText = translate("color_label");
+
+    const colorInput = document.createElement("input");
+    colorInput.type = "color";
+    colorInput.value = zone.color;
+
+    colorInput.addEventListener("change", (e) => {
+      const newColor = (e.target as HTMLInputElement).value;
+      onUpdate(index, newColor, null);
+    });
+
+    colorGroup.appendChild(colorLabel);
+    colorGroup.appendChild(colorInput);
+    card.appendChild(colorGroup);
+
+    // Control de opacidad
+    const opacityGroup = document.createElement("div");
+    opacityGroup.className = "control-group";
+
+    const opacityLabel = document.createElement("label");
+    opacityLabel.innerText = `${translate("opacity_label")} (${Math.round(zone.opacity * 100)}%)`;
+
+    const opacityInput = document.createElement("input");
+    opacityInput.type = "range";
+    opacityInput.min = "0";
+    opacityInput.max = "0.8";
+    opacityInput.step = "0.01";
+    opacityInput.value = zone.opacity;
+
+    opacityInput.addEventListener("change", (e) => {
+      const val = parseFloat((e.target as HTMLInputElement).value);
+      opacityLabel.innerText = `${translate("opacity_label")} (${Math.round(val * 100)}%)`;
+      onUpdate(index, null, val);
+    });
+
+    opacityGroup.appendChild(opacityLabel);
+    opacityGroup.appendChild(opacityInput);
+    card.appendChild(opacityGroup);
+
+    container.appendChild(card);
+  });
+}
+</file>
+
+<file path="terapia_visual_app/src/ui/router.ts">
+import type { TherapyModule } from "../core/types";
+import { overlayTherapy } from "../therapies/overlay";
+import { readingTherapy } from "../therapies/reading";
+import { applyTranslations } from "../core/localization/i18n";
+
+const therapyMap: Record<string, TherapyModule> = {
+  overlay: overlayTherapy,
+  reading: readingTherapy,
+};
+
+let currentTherapy: TherapyModule | null = null;
+
+export async function switchTherapy(therapyId: "overlay" | "reading") {
+  const container = document.getElementById("app-content");
+  const homeView = document.getElementById("view-home");
+  if (!container) return;
+
+  // Limpiar módulo anterior
+  if (currentTherapy) {
+    await currentTherapy.unmount();
+  }
+
+  // Ocultar menu principal
+  if (homeView) homeView.style.display = "none";
+
+  // Limpiar DOM
+  container.innerHTML = "";
+
+  // Cargar nuevo modulo
+  const module = therapyMap[therapyId];
+  if (!module) return;
+
+  currentTherapy = module;
+  await module.mount(container);
+
+  applyTranslations();
+}
+
+export function goHome() {
+  const container = document.getElementById("app-content");
+  const homeView = document.getElementById("view-home");
+
+  // Limpiar módulo actual
+  if (currentTherapy) {
+    currentTherapy.unmount();
+    currentTherapy = null;
+  }
+
+  // Mostrar el menú principal
+  if (homeView) homeView.style.display = "block";
+
+  // Limpiar el contenedor de contenido
+  if (container) container.innerHTML = "";
+}
+</file>
+
+<file path="terapia_visual_app/src/vite-env.d.ts">
+/// <reference types="vite/client" />
 </file>
 
 </files>

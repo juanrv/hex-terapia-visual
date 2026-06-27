@@ -2,13 +2,29 @@ import { invoke } from "@tauri-apps/api/core";
 import { listen } from "@tauri-apps/api/event";
 import "./reader.css";
 import { initSettingsPanel, updatePanelControls } from "./settings-panel";
+import { setLanguage, applyTranslations } from "../../core/localization/i18n";
+import {
+  CMD_GET_APP_SETTINGS,
+  CMD_READING_WINDOW_RESIZED,
+} from "../../core/commands";
 
 const contentDiv = document.getElementById("chaptercontent")!;
 const zonesContainer = document.getElementById("zones-container")!;
 let currentConfig: any = null;
 
-// Inicializamos los "oídos" de nuestro panel lateral
+// Inicializar los listeners del panel lateral
 initSettingsPanel();
+
+// Preguntar a Rust el idioma actual al cargar la ventana
+window.addEventListener("DOMContentLoaded", async () => {
+  try {
+    const settings: any = await invoke(CMD_GET_APP_SETTINGS);
+    setLanguage(settings.language === "en" ? "en" : "es");
+    applyTranslations();
+  } catch (error) {
+    console.error("Error al cargar idioma:", error);
+  }
+});
 
 // Escuchar los eventos IPC que manda Rust
 listen("update-reading-view", (event: any) => {
@@ -96,7 +112,7 @@ let resizeTimeout: number | undefined;
 window.addEventListener("resize", () => {
   clearTimeout(resizeTimeout);
   resizeTimeout = window.setTimeout(() => {
-    invoke("cmd_reading_window_resized").catch(console.error);
+    invoke(CMD_READING_WINDOW_RESIZED).catch(console.error);
   }, 150);
   // Redibujar instantaneamente en local para que no haya parpadeos
   renderZones();
