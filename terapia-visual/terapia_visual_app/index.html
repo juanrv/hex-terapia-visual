@@ -3,8 +3,8 @@
   <head>
     <meta charset="UTF-8" />
     <title data-i18n="app_title">Terapia Visual</title>
-    <link rel="icon" type="image/png" href="src-tauri/icons/32x32.png" />
-    <link rel="stylesheet" href="src/styles.css" />
+    <link rel="icon" type="image/png" href="/src-tauri/icons/32x32.png" />
+    <link rel="stylesheet" href="./src/styles.css" />
   </head>
   <body>
     <div class="app-container">
@@ -16,48 +16,26 @@
         </div>
       </header>
 
-      <!-- ================= VISTA 1: MENÚ PRINCIPAL ================= -->
+      <!-- MENÚ PRINCIPAL (siempre visible por defecto) -->
       <div id="view-home" class="view">
-        <div
-          style="
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            margin-top: 20px;
-          "
-        >
+        <div class="menu-container">
           <button
             id="btn-nav-color"
-            style="
-              padding: 20px;
-              font-size: 1.1rem;
-              background-color: #3498db;
-              color: white;
-            "
+            class="menu-btn menu-btn-color"
             data-i18n="menu_color_division"
           >
             Terapia de División de Color
           </button>
           <button
             id="btn-nav-reading"
-            style="
-              padding: 20px;
-              font-size: 1.1rem;
-              background-color: #9b59b6;
-              color: white;
-            "
+            class="menu-btn menu-btn-reading"
             data-i18n="menu_reading"
           >
             Terapia de Lectura
           </button>
           <button
             id="btn-exit"
-            style="
-              padding: 15px;
-              margin-top: 20px;
-              background-color: #e74c3c;
-              color: white;
-            "
+            class="menu-btn menu-btn-exit"
             data-i18n="btn_exit"
           >
             Salir de la Aplicación
@@ -65,83 +43,12 @@
         </div>
       </div>
 
-      <!-- ================= VISTA 2: DIVISIÓN DE COLOR ================= -->
-      <div id="view-color" class="view" style="display: none">
-        <button class="btn-back" data-i18n="btn_back">← Volver al Menú</button>
-        <hr style="border: 0; border-top: 1px solid #eee; margin: 15px 0" />
-
-        <div class="main-actions">
-          <button id="btn-start" data-i18n="btn_start">Iniciar Terapia</button>
-          <button id="btn-stop" data-i18n="btn_stop">Detener Terapia</button>
-          <button id="btn-reset" data-i18n="btn_reset">Restablecer</button>
-        </div>
-
-        <div class="control-section">
-          <h3 data-i18n="layout_label">Disposición (Layout)</h3>
-          <select id="layout-select" class="layout-selector">
-            <option value="Vertical" data-i18n="layout_vertical">
-              Vertical
-            </option>
-            <option value="Horizontal" data-i18n="layout_horizontal">
-              Horizontal
-            </option>
-            <option value="Checkerboard" data-i18n="layout_checkerboard">
-              Ajedrez
-            </option>
-            <option value="Vertical4Columns" data-i18n="layout_vertical4">
-              Vertical (4 Columnas)
-            </option>
-          </select>
-        </div>
-
-        <div class="control-section">
-          <div id="zones-container"></div>
-        </div>
-      </div>
-
-      <!-- ================= VISTA 3: LECTURA ================= -->
-      <div id="view-reading" class="view" style="display: none">
-        <button class="btn-back" data-i18n="btn_back">← Volver al Menú</button>
-        <hr style="border: 0; border-top: 1px solid #eee; margin: 15px 0" />
-
-        <div class="main-actions">
-          <button
-            id="btn-start-reading"
-            style="background-color: #9b59b6; color: white"
-            data-i18n="btn_start_reading"
-          >
-            Abrir Ventana
-          </button>
-          <button
-            id="btn-stop-reading"
-            style="background-color: #e74c3c; color: white"
-            data-i18n="btn_stop_reading"
-          >
-            Cerrar Ventana
-          </button>
-        </div>
-
-        <div class="control-section">
-          <textarea
-            id="reading-input"
-            style="
-              width: 100%;
-              height: 250px;
-              padding: 15px;
-              border-radius: 8px;
-              border: 1px solid #ddd;
-              resize: vertical;
-              box-sizing: border-box;
-              font-family: inherit;
-            "
-            data-i18n="reading_input_placeholder"
-            placeholder="Pega aquí el contenido..."
-          ></textarea>
-        </div>
-      </div>
+      <!-- CONTENEDOR DINÁMICO PARA TERAPIAS -->
+      <div id="app-content"></div>
 
       <div id="status"></div>
     </div>
-    <script type="module" src="/src/main.ts"></script>
+    <!-- Ruta corregida -->
+    <script type="module" src="./src/main.ts"></script>
   </body>
 </html>

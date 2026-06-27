@@ -9,6 +9,13 @@ export const translations = {
     menu_color_division: "Terapia de División de Color",
     menu_reading: "Terapia de Lectura",
 
+    // Panel Lateral
+    reading_settings_title: "Ajustes de Lectura",
+    font_size_label: "Tamaño de Fuente (px)",
+    text_color_label: "Color de Letra",
+    bg_color_label: "Color de Fondo",
+    btn_close_window: "Cerrar Ventana",
+
     // Botones
     btn_start: "Iniciar Terapia",
     btn_stop: "Detener Terapia",
@@ -52,6 +59,13 @@ export const translations = {
     // Menu
     menu_color_division: "Color Division Therapy",
     menu_reading: "Reading Therapy",
+
+    // Panel lateral
+    reading_settings_title: "Reading Settings",
+    font_size_label: "Font Size (px)",
+    text_color_label: "Text Color",
+    bg_color_label: "Background Color",
+    btn_close_window: "Close Window",
 
     // Botones
     btn_start: "Start Therapy",

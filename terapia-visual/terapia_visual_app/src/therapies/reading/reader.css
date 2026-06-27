@@ -1,0 +1,217 @@
+/* Estilos base de la ventana de lectura (reading.html) */
+body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  transition: background-color 0.3s;
+}
+
+#zones-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+}
+
+#content-wrapper {
+  position: relative;
+  z-index: 1;
+  background-color: rgba(0, 0, 0, 0.4);
+  min-height: 100vh;
+  width: 100%;
+  padding: 40px 20px;
+  box-sizing: border-box;
+}
+
+#chaptercontent {
+  margin: 0 auto;
+  max-width: 900px;
+}
+
+#chaptercontent p {
+  margin-bottom: 1.2rem;
+}
+
+/* Botón Flotante */
+#floating-btn {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 998; /* Un poco menos que el panel */
+  background: #3498db; /* Color más acorde a la app */
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  font-size: 24px;
+  cursor: pointer;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+#floating-btn:hover {
+  background: #297fb9;
+  transform: scale(1.1);
+}
+
+/* Animación para esconder el botón cuando el panel se abre */
+#floating-btn.hidden {
+  transform: scale(0);
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Panel Lateral de Ajustes */
+#settings-panel {
+  position: fixed;
+  top: 0;
+  right: -350px;
+  width: 320px;
+  height: 100%;
+  background-color: #f4f6f8; /* Mismo fondo claro que la app principal */
+  box-shadow: -4px 0 15px rgba(0, 0, 0, 0.15);
+  z-index: 999;
+  transition: right 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  padding: 20px;
+  box-sizing: border-box;
+  overflow-y: auto;
+  font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
+  color: #2c3e50; /* Mismo texto que la app principal */
+}
+
+#settings-panel.open {
+  right: 0;
+}
+
+/* Cabecera del Panel */
+.panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.panel-header h2 {
+  margin: 0;
+  font-size: 1.3rem;
+}
+
+.btn-close {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: #7f8c8d;
+  cursor: pointer;
+  transition: color 0.2s;
+  padding: 0 5px;
+}
+
+.btn-close:hover {
+  color: #e74c3c;
+}
+
+/* Controles */
+.control-group {
+  margin-bottom: 15px;
+}
+
+.control-group label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+  font-size: 0.9rem;
+}
+
+.control-group input,
+.control-group select {
+  width: 100%;
+  padding: 8px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+  font-family: inherit;
+}
+
+.control-group input[type="color"] {
+  padding: 0;
+  height: 35px;
+  cursor: pointer;
+}
+
+.control-group input[type="range"] {
+  padding: 0;
+  border: none;
+}
+
+hr.reading-divider {
+  border: 0;
+  border-top: 1px solid #ddd;
+  margin: 20px 0;
+}
+
+/* Controles de Idioma */
+.panel-lang-controls {
+  display: flex;
+  gap: 5px;
+  margin-bottom: 20px;
+  justify-content: flex-end;
+}
+
+.lang-controls button {
+  background: none;
+  border: 1px solid #ddd;
+  box-shadow: none;
+  padding: 4px 8px;
+  font-size: 0.85rem;
+  margin-left: 5px;
+  color: inherit;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+/* Botón de Salir */
+.btn-danger-large {
+  width: 100%;
+  padding: 12px;
+  background-color: #e74c3c;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.btn-danger-large:hover {
+  opacity: 0.9;
+}
+
+/* MODO OSCURO */
+@media (prefers-color-scheme: dark) {
+  #settings-panel {
+    background-color: #2d3436;
+    color: #ecf0f1;
+    box-shadow: -4px 0 15px rgba(0, 0, 0, 0.5);
+  }
+  .control-group input,
+  .control-group select {
+    background-color: #353b3e;
+    color: #fff;
+    border-color: #555;
+  }
+  hr.reading-divider {
+    border-top-color: #444;
+  }
+  .btn-close {
+    color: #bdc3c7;
+  }
+  .lang-controls button {
+    border-color: #555;
+    color: white;
+  }
+}

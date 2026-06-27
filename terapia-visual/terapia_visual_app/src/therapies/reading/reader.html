@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Terapia de Lectura</title>
+  </head>
+  <body>
+    <div id="zones-container"></div>
+
+    <div id="content-wrapper">
+      <div id="chaptercontent">
+        <h2 style="text-align: center; color: #7f8c8d; margin-top: 20vh">
+          Cargando lectura...
+        </h2>
+      </div>
+    </div>
+
+    <!-- UI Flotante -->
+    <button id="floating-btn">⚙️</button>
+    <div id="settings-panel">
+      <div class="panel-header">
+        <h2 style="margin-top: 0" data-i18n="reading_settings_title">
+          Ajustes de Lectura
+        </h2>
+        <button id="btn-close-panel" class="btn-close">✖</button>
+      </div>
+
+      <div class="panel-lang-controls lang-controls">
+        <button id="btn-es-reading" data-i18n="btn_spanish">Español</button>
+        <button id="btn-en-reading" data-i18n="btn_english">English</button>
+      </div>
+
+      <div class="control-group">
+        <label data-i18n="font_size_label">Tamaño de Fuente (px)</label>
+        <input type="number" id="inp-font-size" min="10" max="50" />
+      </div>
+      <div class="control-group">
+        <label data-i18n="text_color_label">Color de Letra</label>
+        <input type="color" id="inp-text-color" />
+      </div>
+      <div class="control-group">
+        <label data-i18n="bg_color_label">Color de Fondo</label>
+        <input type="color" id="inp-bg-color" />
+      </div>
+      <hr class="reading-divider" />
+      <div class="control-group">
+        <label data-i18n="layout_label">Layout de Terapia</label>
+        <select id="inp-layout">
+          <option value="Vertical" data-i18n="layout_vertical">Vertical</option>
+          <option value="Horizontal" data-i18n="layout_horizontal">
+            Horizontal
+          </option>
+          <option value="Checkerboard" data-i18n="layout_checkerboard">
+            Ajedrez
+          </option>
+          <option value="Vertical4Columns" data-i18n="layout_vertical4">
+            Vertical (4 Columnas)
+          </option>
+        </select>
+      </div>
+      <div id="zones-controls"></div>
+
+      <hr class="reading-divider" />
+
+      <button
+        id="btn-close-reading-window"
+        class="btn-danger-large"
+        data-i18n="btn_close_window"
+      >
+        Cerrar Ventana
+      </button>
+    </div>
+
+    <script type="module" src="reader.ts"></script>
+  </body>
+</html>

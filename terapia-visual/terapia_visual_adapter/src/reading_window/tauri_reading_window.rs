@@ -78,7 +78,7 @@ impl ReadingWindowPort for TauriReadingWindow {
         let window = WebviewWindowBuilder::new(
             &self.app_handle,
             "reading_window",
-            WebviewUrl::App("src/reading.html".into()),
+            WebviewUrl::App("src/therapies/reading/reader.html".into()),
         )
         .title("Terapia de Lectura")
         .inner_size(1024.0, 768.0)
@@ -88,10 +88,16 @@ impl ReadingWindowPort for TauriReadingWindow {
 
         // Escuchar cuando el usuario cierra la ventana con la "X"
         let is_active_clone = self.is_active.clone();
+        let window_clone = window.clone();
+
         window.on_window_event(move |event| {
-            if let tauri::WindowEvent::Destroyed = event {
+            if let tauri::WindowEvent::CloseRequested { api, .. } = event {
+                // Evitar destruccion
+                api.prevent_close();
+                // Solo se oculta
+                let _ = window_clone.hide();
                 is_active_clone.store(false, Ordering::SeqCst);
-                tracing::info!("Reading window destroyed by user");
+                tracing::info!("Reading window hidden by user (CloseRequested)");
             }
         });
 
