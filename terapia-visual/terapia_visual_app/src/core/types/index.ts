@@ -25,6 +25,26 @@ export interface AppSettings {
   language: string;
 }
 
+export interface ZoneRect {
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+}
+
+export interface Zone {
+  rect: ZoneRect;
+  color: string;
+  opacity: number;
+}
+
+// Así es exactamente la estructura del JSON que manda el "emit_update" de Rust
+export interface ReadingPayload {
+  config: ReadingConfig;
+  zones: Zone[];
+  html_content: string;
+}
+
 export interface TherapyModule {
   mount: (container: HTMLElement) => void | Promise<void>;
   unmount: () => void | Promise<void>;

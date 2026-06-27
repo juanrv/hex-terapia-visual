@@ -20,6 +20,8 @@
 //! assert_eq!(rect.height, 100);
 //! ```
 
+use serde::{Deserialize, Serialize};
+
 /// Representa un rectángulo que define el área de una zona en la pantalla.
 ///
 /// Almacena las coordenadas (`x`, `y`) y las dimensiones (`width`, `height`)
@@ -48,7 +50,7 @@
 /// // Crear un rectángulo para una zona pequeña en el centro de la pantalla
 /// let center_zone = ZoneRect::new(500, 300, 920, 480);
 /// ```
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
 pub struct ZoneRect {
     pub x: u32,
     pub y: u32,

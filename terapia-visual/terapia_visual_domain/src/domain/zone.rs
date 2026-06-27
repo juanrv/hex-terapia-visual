@@ -33,6 +33,8 @@
 //! assert!(!zone.contains(1000, 500)); // fuera de la mitad izquierda
 //! ```
 
+use serde::{Deserialize, Serialize};
+
 use crate::domain::{Color, Opacity, ZoneRect};
 
 /// Representa una zona de color en la pantalla durante la terapia visual.
@@ -59,7 +61,7 @@ use crate::domain::{Color, Opacity, ZoneRect};
 ///
 /// let zone = Zone::new(rect, color, opacity);
 /// ```
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct Zone {
     rect: ZoneRect,
     color: Color,

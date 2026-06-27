@@ -7,11 +7,13 @@ import {
   getAppSettings,
   notifyReadingWindowResized,
 } from "../../core/services";
-import { ReadingConfig } from "../../core/types";
+import { ReadingConfig, ReadingPayload, Zone } from "../../core/types";
 
 const contentDiv = document.getElementById("chaptercontent")!;
 const zonesContainer = document.getElementById("zones-container")!;
+
 let currentConfig: ReadingConfig | null = null;
+let currentZones: Zone[] = [];
 
 // Inicializar los listeners del panel lateral
 initSettingsPanel();
@@ -28,9 +30,11 @@ window.addEventListener("DOMContentLoaded", async () => {
 });
 
 // Escuchar los eventos IPC que manda Rust
-listen("update-reading-view", (event: any) => {
+listen<ReadingPayload>("update-reading-view", (event) => {
   console.log("Datos recibidos de Rust:", event.payload);
+
   currentConfig = event.payload.config as ReadingConfig;
+  currentZones = event.payload.zones as Zone[];
 
   contentDiv.innerHTML = event.payload.html_content;
 
@@ -44,6 +48,7 @@ listen("update-reading-view", (event: any) => {
 // Aplicar colores y fuentes al texto
 function applyReadingSettings() {
   if (!currentConfig) return;
+
   const settings = currentConfig.reading_settings;
   document.body.style.backgroundColor = settings.bg_color;
 
@@ -59,53 +64,19 @@ function applyReadingSettings() {
 
 // Calcular y dibujar las zonas
 function renderZones() {
-  if (!currentConfig) return;
+  if (!currentConfig || currentZones.length === 0) return;
   zonesContainer.innerHTML = "";
 
-  const w = window.innerWidth;
-  const h = window.innerHeight;
-  const layout = currentConfig.layout;
-  const zones = currentConfig.zones_config;
-
-  let rects: { x: number; y: number; w: number; h: number }[] = [];
-
-  if (layout === "Vertical") {
-    rects = [
-      { x: 0, y: 0, w: w / 2, h: h },
-      { x: w / 2, y: 0, w: w / 2, h: h },
-    ];
-  } else if (layout === "Horizontal") {
-    rects = [
-      { x: 0, y: 0, w: w, h: h / 2 },
-      { x: 0, y: h / 2, w: w, h: h / 2 },
-    ];
-  } else if (layout === "Checkerboard") {
-    rects = [
-      { x: 0, y: 0, w: w / 2, h: h / 2 },
-      { x: w / 2, y: 0, w: w / 2, h: h / 2 },
-      { x: 0, y: h / 2, w: w / 2, h: h / 2 },
-      { x: w / 2, y: h / 2, w: w / 2, h: h / 2 },
-    ];
-  } else if (layout === "Vertical4Columns") {
-    const col = w / 4;
-    rects = [
-      { x: 0, y: 0, w: col, h },
-      { x: col, y: 0, w: col, h },
-      { x: col * 2, y: 0, w: col, h },
-      { x: col * 3, y: 0, w: col, h },
-    ];
-  }
-
-  rects.forEach((rect, i) => {
-    if (!zones[i]) return;
+  currentZones.forEach((zone: Zone) => {
     const div = document.createElement("div");
     div.style.position = "absolute";
-    div.style.left = `${rect.x}px`;
-    div.style.top = `${rect.y}px`;
-    div.style.width = `${rect.w}px`;
-    div.style.height = `${rect.h}px`;
-    div.style.backgroundColor = zones[i].color;
-    div.style.opacity = zones[i].opacity.toString();
+    div.style.left = `${zone.rect.x}px`;
+    div.style.top = `${zone.rect.y}px`;
+    div.style.width = `${zone.rect.width}px`;
+    div.style.height = `${zone.rect.height}px`;
+    div.style.backgroundColor = zone.color;
+    div.style.opacity = zone.opacity.toString();
+
     zonesContainer.appendChild(div);
   });
 }

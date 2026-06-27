@@ -7,7 +7,7 @@ use async_trait::async_trait;
 use serde::Serialize;
 use tauri::{Emitter, WebviewUrl, WebviewWindow, WebviewWindowBuilder};
 use terapia_visual_domain::{
-    domain::reading_therapy_config::ReadingTherapyConfig,
+    domain::{Zone, reading_therapy_config::ReadingTherapyConfig},
     ports::{ReadingWindowError, ReadingWindowPort},
 };
 use tracing::info;
@@ -16,6 +16,7 @@ use tracing::info;
 #[derive(Serialize, Clone)]
 struct ReadingPayload {
     config: ReadingTherapyConfig,
+    zones: Vec<Zone>,
     html_content: String,
 }
 
@@ -36,12 +37,27 @@ impl TauriReadingWindow {
         }
     }
 
+    /// Transforma los píxeles físicos de Tauri a píxeles lógicos de CSS
+    fn get_logical_size(window: &WebviewWindow) -> (u32, u32) {
+        if let Ok(size) = window.inner_size() {
+            let scale_factor = window.scale_factor().unwrap_or(1.0);
+            let logical_size = size.to_logical::<f64>(scale_factor);
+            return (logical_size.width as u32, logical_size.height as u32);
+        }
+        (1024, 768)
+    }
+
     /// Emite los datos actualizados a la ventana de lectura de forma segura.
     fn emit_update(&self, config: &ReadingTherapyConfig) -> Result<(), ReadingWindowError> {
         if let Some(window) = &self.window {
             let content = self.current_html.clone().unwrap_or_default();
+
+            let (width, height) = Self::get_logical_size(window);
+            let calculated_zones = config.generate_zones(width, height);
+
             let payload = ReadingPayload {
                 config: config.clone(),
+                zones: calculated_zones,
                 html_content: content,
             };
 
