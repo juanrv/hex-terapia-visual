@@ -98,26 +98,32 @@
 <a href=#98 id=98 data-nosnippet>98</a>
 <a href=#99 id=99 data-nosnippet>99</a><span class="doccomment">/// Cierra la aplicación de forma segura guardando la configuración de todas las terapias.
 <a href=#100 id=100 data-nosnippet>100</a></span><span class="attr">#[tauri::command]
-<a href=#101 id=101 data-nosnippet>101</a></span><span class="kw">pub async fn </span>cmd_exit_app(state: State&lt;<span class="lifetime">'_</span>, AppState&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;(), String&gt; {
-<a href=#102 id=102 data-nosnippet>102</a>    <span class="comment">// Guardar configuracion del overlay
-<a href=#103 id=103 data-nosnippet>103</a>    </span><span class="kw">let </span>overlay_config = state.overlay_config.read().<span class="kw">await</span>;
-<a href=#104 id=104 data-nosnippet>104</a>    <span class="kw">if let </span><span class="prelude-val">Err</span>(e) = state.overlay_storage.save(<span class="kw-2">&amp;*</span>overlay_config).<span class="kw">await </span>{
-<a href=#105 id=105 data-nosnippet>105</a>        <span class="macro">eprintln!</span>(<span class="string">"Error saving overlay config: {}"</span>, e);
-<a href=#106 id=106 data-nosnippet>106</a>    }
-<a href=#107 id=107 data-nosnippet>107</a>
-<a href=#108 id=108 data-nosnippet>108</a>    <span class="comment">// Guardar configuracion de lectura
-<a href=#109 id=109 data-nosnippet>109</a>    </span><span class="kw">let </span>reading_config = state.reading_config.read().<span class="kw">await</span>;
-<a href=#110 id=110 data-nosnippet>110</a>    <span class="kw">if let </span><span class="prelude-val">Err</span>(e) = state.reading_storage.save(<span class="kw-2">&amp;*</span>reading_config).<span class="kw">await </span>{
-<a href=#111 id=111 data-nosnippet>111</a>        <span class="macro">eprintln!</span>(<span class="string">"Error saving reading config: {}"</span>, e);
-<a href=#112 id=112 data-nosnippet>112</a>    }
-<a href=#113 id=113 data-nosnippet>113</a>
-<a href=#114 id=114 data-nosnippet>114</a>    <span class="comment">// Guardar la configuracion de la app
-<a href=#115 id=115 data-nosnippet>115</a>    </span><span class="kw">let </span>app_settings: AppSettings = state.app_storage.load().<span class="kw">await</span>.unwrap_or_default();
-<a href=#116 id=116 data-nosnippet>116</a>    <span class="kw">if let </span><span class="prelude-val">Err</span>(e) = state.app_storage.save(<span class="kw-2">&amp;</span>app_settings).<span class="kw">await </span>{
-<a href=#117 id=117 data-nosnippet>117</a>        <span class="macro">eprintln!</span>(<span class="string">"Error saving app config: {}"</span>, e);
-<a href=#118 id=118 data-nosnippet>118</a>    }
-<a href=#119 id=119 data-nosnippet>119</a>
-<a href=#120 id=120 data-nosnippet>120</a>    <span class="comment">// Termina el proceso de forma limpia
-<a href=#121 id=121 data-nosnippet>121</a>    </span>std::process::exit(<span class="number">0</span>);
-<a href=#122 id=122 data-nosnippet>122</a>}
+<a href=#101 id=101 data-nosnippet>101</a></span><span class="kw">pub async fn </span>cmd_exit_app&lt;R: tauri::Runtime&gt;(
+<a href=#102 id=102 data-nosnippet>102</a>    state: State&lt;<span class="lifetime">'_</span>, AppState&gt;,
+<a href=#103 id=103 data-nosnippet>103</a>    app_handle: tauri::AppHandle&lt;R&gt;,
+<a href=#104 id=104 data-nosnippet>104</a>) -&gt; <span class="prelude-ty">Result</span>&lt;(), String&gt; {
+<a href=#105 id=105 data-nosnippet>105</a>    <span class="comment">// Guardar todo
+<a href=#106 id=106 data-nosnippet>106</a>    </span><span class="kw">let </span>overlay_config = state.overlay_config.read().<span class="kw">await</span>;
+<a href=#107 id=107 data-nosnippet>107</a>    <span class="kw">if let </span><span class="prelude-val">Err</span>(e) = state.overlay_storage.save(<span class="kw-2">&amp;*</span>overlay_config).<span class="kw">await </span>{
+<a href=#108 id=108 data-nosnippet>108</a>        <span class="macro">eprintln!</span>(<span class="string">"Error saving overlay config: {}"</span>, e);
+<a href=#109 id=109 data-nosnippet>109</a>    }
+<a href=#110 id=110 data-nosnippet>110</a>
+<a href=#111 id=111 data-nosnippet>111</a>    <span class="kw">let </span>reading_config = state.reading_config.read().<span class="kw">await</span>;
+<a href=#112 id=112 data-nosnippet>112</a>    <span class="kw">if let </span><span class="prelude-val">Err</span>(e) = state.reading_storage.save(<span class="kw-2">&amp;*</span>reading_config).<span class="kw">await </span>{
+<a href=#113 id=113 data-nosnippet>113</a>        <span class="macro">eprintln!</span>(<span class="string">"Error saving reading config: {}"</span>, e);
+<a href=#114 id=114 data-nosnippet>114</a>    }
+<a href=#115 id=115 data-nosnippet>115</a>
+<a href=#116 id=116 data-nosnippet>116</a>    <span class="kw">let </span>app_settings: AppSettings = state.app_storage.load().<span class="kw">await</span>.unwrap_or_default();
+<a href=#117 id=117 data-nosnippet>117</a>    <span class="kw">if let </span><span class="prelude-val">Err</span>(e) = state.app_storage.save(<span class="kw-2">&amp;</span>app_settings).<span class="kw">await </span>{
+<a href=#118 id=118 data-nosnippet>118</a>        <span class="macro">eprintln!</span>(<span class="string">"Error saving app config: {}"</span>, e);
+<a href=#119 id=119 data-nosnippet>119</a>    }
+<a href=#120 id=120 data-nosnippet>120</a>
+<a href=#121 id=121 data-nosnippet>121</a>    <span class="comment">// Apagado en segundo plano con micro-retraso
+<a href=#122 id=122 data-nosnippet>122</a>    </span>tauri::async_runtime::spawn(<span class="kw">async move </span>{
+<a href=#123 id=123 data-nosnippet>123</a>        tokio::time::sleep(std::time::Duration::from_millis(<span class="number">50</span>)).<span class="kw">await</span>;
+<a href=#124 id=124 data-nosnippet>124</a>        app_handle.exit(<span class="number">0</span>);
+<a href=#125 id=125 data-nosnippet>125</a>    });
+<a href=#126 id=126 data-nosnippet>126</a>
+<a href=#127 id=127 data-nosnippet>127</a>    <span class="prelude-val">Ok</span>(())
+<a href=#128 id=128 data-nosnippet>128</a>}
 </code></pre></div></section></main></body></html>
