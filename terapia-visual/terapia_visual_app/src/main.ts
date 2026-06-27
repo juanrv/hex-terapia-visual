@@ -34,12 +34,14 @@ async function init() {
     await updateAppSettings("es");
     setLanguage("es");
     applyTranslations();
+    window.dispatchEvent(new Event("language-changed"));
   });
 
   document.getElementById("btn-en")?.addEventListener("click", async () => {
     await updateAppSettings("en");
     setLanguage("en");
     applyTranslations();
+    window.dispatchEvent(new Event("language-changed"));
   });
 
   // Salir de la aplicación

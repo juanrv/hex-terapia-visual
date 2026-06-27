@@ -90,6 +90,11 @@ export const overlayTherapy: TherapyModule = {
     layoutSelect?.addEventListener("change", layoutHandler);
     backBtn?.addEventListener("click", goHome);
 
+    const langChangedHandler = () => {
+      loadConfig(); // Esto vuelve a pedir la config a Rust y redibuja las zonas con el nuevo idioma
+    };
+    window.addEventListener("language-changed", langChangedHandler);
+
     // Guardar funciones de limpieza
     cleanupFunctions = [
       () => startBtn?.removeEventListener("click", startHandler),

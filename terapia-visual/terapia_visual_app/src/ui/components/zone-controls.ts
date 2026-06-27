@@ -33,6 +33,7 @@ export function renderZoneControls(
     colorInput.type = "color";
     colorInput.value = zone.color;
 
+    // El color se actualiza al soltar/cerrar el selector
     colorInput.addEventListener("change", (e) => {
       const newColor = (e.target as HTMLInputElement).value;
       onUpdate(index, newColor, null);
@@ -47,6 +48,8 @@ export function renderZoneControls(
     opacityGroup.className = "control-group";
 
     const opacityLabel = document.createElement("label");
+    // Añadimos un ID dinámico a la etiqueta para poder encontrarla y cambiar su texto
+    opacityLabel.id = `overlay-z-lbl-${index}`;
     opacityLabel.innerText = `${translate("opacity_label")} (${Math.round(zone.opacity * 100)}%)`;
 
     const opacityInput = document.createElement("input");
@@ -56,9 +59,15 @@ export function renderZoneControls(
     opacityInput.step = "0.01";
     opacityInput.value = zone.opacity;
 
-    opacityInput.addEventListener("change", (e) => {
+    // EVENTO 1: 'input' -> Actualiza el porcentaje en el texto EN TIEMPO REAL al arrastrar
+    opacityInput.addEventListener("input", (e) => {
       const val = parseFloat((e.target as HTMLInputElement).value);
       opacityLabel.innerText = `${translate("opacity_label")} (${Math.round(val * 100)}%)`;
+    });
+
+    // EVENTO 2: 'change' -> Envía el dato a Rust y renderiza solo al soltar el clic
+    opacityInput.addEventListener("change", (e) => {
+      const val = parseFloat((e.target as HTMLInputElement).value);
       onUpdate(index, null, val);
     });
 
