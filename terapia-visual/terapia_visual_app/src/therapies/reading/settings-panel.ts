@@ -1,19 +1,19 @@
-import { invoke } from "@tauri-apps/api/core";
 import {
   setLanguage,
   applyTranslations,
   translate,
   type Language,
 } from "../../core/localization/i18n";
+
 import {
-  CMD_CHANGE_READING_LAYOUT,
-  CMD_GET_READING_CONFIG,
-  CMD_STOP_READING_THERAPY,
-  CMD_UPDATE_APP_SETTINGS,
-  CMD_UPDATE_READING_SETTINGS,
-  CMD_UPDATE_READING_ZONE_COLOR,
-  CMD_UPDATE_READING_ZONE_OPACITY,
-} from "../../core/commands";
+  changeReadingLayout,
+  getReadingConfig,
+  stopReading,
+  updateAppSettings,
+  updateReadingSettings,
+  updateReadingZoneColor,
+  updateReadingZoneOpacity,
+} from "../../core/services";
 
 export function initSettingsPanel() {
   const panel = document.getElementById("settings-panel")!;
@@ -49,7 +49,7 @@ export function initSettingsPanel() {
   // Cerrar ventana de lectura
   btnCloseReading.addEventListener("click", async () => {
     try {
-      await invoke(CMD_STOP_READING_THERAPY);
+      await stopReading();
     } catch (e) {
       console.error("Error al cerrar la ventana:", e);
     }
@@ -57,15 +57,11 @@ export function initSettingsPanel() {
 
   // Logica de cambio de idioma
   const changeLang = async (lang: Language) => {
-    await invoke(CMD_UPDATE_APP_SETTINGS, {
-      newSettings: { language: lang },
-    });
+    await updateAppSettings(lang);
     setLanguage(lang);
     applyTranslations();
 
-    invoke(CMD_GET_READING_CONFIG).then((config: any) =>
-      updatePanelControls(config),
-    );
+    getReadingConfig().then((config) => updatePanelControls(config));
   };
 
   btnEs.addEventListener("click", () => changeLang("es"));
@@ -79,7 +75,7 @@ export function initSettingsPanel() {
       bg_color: inpBgColor.value.toUpperCase(),
       line_height: "1.65",
     };
-    await invoke(CMD_UPDATE_READING_SETTINGS, { newSettings });
+    await updateReadingSettings(newSettings);
   };
 
   inpFontSize.addEventListener("change", saveReadingSettings);
@@ -87,9 +83,7 @@ export function initSettingsPanel() {
   inpBgColor.addEventListener("change", saveReadingSettings);
 
   inpLayout.addEventListener("change", (e) => {
-    invoke(CMD_CHANGE_READING_LAYOUT, {
-      newLayout: (e.target as HTMLSelectElement).value,
-    });
+    changeReadingLayout((e.target as HTMLSelectElement).value);
   });
 }
 
@@ -134,10 +128,10 @@ export function updatePanelControls(config: any) {
     document
       .getElementById(`z-color-${index}`)
       ?.addEventListener("change", (e) => {
-        invoke(CMD_UPDATE_READING_ZONE_COLOR, {
-          zoneIndex: index,
-          newColor: (e.target as HTMLInputElement).value.toUpperCase(),
-        });
+        updateReadingZoneColor(
+          index,
+          (e.target as HTMLInputElement).value.toUpperCase(),
+        );
       });
 
     // Eventos de la opacidad
@@ -154,10 +148,10 @@ export function updatePanelControls(config: any) {
 
     // El evento 'change' envía el valor a Rust cuando sueltas el click
     opInput?.addEventListener("change", (e) => {
-      invoke(CMD_UPDATE_READING_ZONE_OPACITY, {
-        zoneIndex: index,
-        newOpacity: parseFloat((e.target as HTMLInputElement).value),
-      });
+      updateReadingZoneOpacity(
+        index,
+        parseFloat((e.target as HTMLInputElement).value),
+      );
     });
   });
 }

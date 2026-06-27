@@ -1,12 +1,12 @@
-import { invoke } from "@tauri-apps/api/core";
 import { listen } from "@tauri-apps/api/event";
 import "./reader.css";
 import { initSettingsPanel, updatePanelControls } from "./settings-panel";
 import { setLanguage, applyTranslations } from "../../core/localization/i18n";
+
 import {
-  CMD_GET_APP_SETTINGS,
-  CMD_READING_WINDOW_RESIZED,
-} from "../../core/commands";
+  getAppSettings,
+  notifyReadingWindowResized,
+} from "../../core/services";
 
 const contentDiv = document.getElementById("chaptercontent")!;
 const zonesContainer = document.getElementById("zones-container")!;
@@ -18,7 +18,7 @@ initSettingsPanel();
 // Preguntar a Rust el idioma actual al cargar la ventana
 window.addEventListener("DOMContentLoaded", async () => {
   try {
-    const settings: any = await invoke(CMD_GET_APP_SETTINGS);
+    const settings = await getAppSettings();
     setLanguage(settings.language === "en" ? "en" : "es");
     applyTranslations();
   } catch (error) {
@@ -112,7 +112,7 @@ let resizeTimeout: number | undefined;
 window.addEventListener("resize", () => {
   clearTimeout(resizeTimeout);
   resizeTimeout = window.setTimeout(() => {
-    invoke(CMD_READING_WINDOW_RESIZED).catch(console.error);
+    notifyReadingWindowResized().catch(console.error);
   }, 150);
   // Redibujar instantaneamente en local para que no haya parpadeos
   renderZones();
