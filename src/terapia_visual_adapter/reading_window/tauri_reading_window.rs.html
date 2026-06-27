@@ -78,7 +78,7 @@
 <a href=#78 id=78 data-nosnippet>78</a>        </span><span class="kw">let </span>window = WebviewWindowBuilder::new(
 <a href=#79 id=79 data-nosnippet>79</a>            <span class="kw-2">&amp;</span><span class="self">self</span>.app_handle,
 <a href=#80 id=80 data-nosnippet>80</a>            <span class="string">"reading_window"</span>,
-<a href=#81 id=81 data-nosnippet>81</a>            WebviewUrl::App(<span class="string">"src/reading.html"</span>.into()),
+<a href=#81 id=81 data-nosnippet>81</a>            WebviewUrl::App(<span class="string">"src/therapies/reading/reader.html"</span>.into()),
 <a href=#82 id=82 data-nosnippet>82</a>        )
 <a href=#83 id=83 data-nosnippet>83</a>        .title(<span class="string">"Terapia de Lectura"</span>)
 <a href=#84 id=84 data-nosnippet>84</a>        .inner_size(<span class="number">1024.0</span>, <span class="number">768.0</span>)
@@ -88,47 +88,53 @@
 <a href=#88 id=88 data-nosnippet>88</a>
 <a href=#89 id=89 data-nosnippet>89</a>        <span class="comment">// Escuchar cuando el usuario cierra la ventana con la "X"
 <a href=#90 id=90 data-nosnippet>90</a>        </span><span class="kw">let </span>is_active_clone = <span class="self">self</span>.is_active.clone();
-<a href=#91 id=91 data-nosnippet>91</a>        window.on_window_event(<span class="kw">move </span>|event| {
-<a href=#92 id=92 data-nosnippet>92</a>            <span class="kw">if let </span>tauri::WindowEvent::Destroyed = event {
-<a href=#93 id=93 data-nosnippet>93</a>                is_active_clone.store(<span class="bool-val">false</span>, Ordering::SeqCst);
-<a href=#94 id=94 data-nosnippet>94</a>                <span class="macro">tracing::info!</span>(<span class="string">"Reading window destroyed by user"</span>);
-<a href=#95 id=95 data-nosnippet>95</a>            }
-<a href=#96 id=96 data-nosnippet>96</a>        });
-<a href=#97 id=97 data-nosnippet>97</a>
-<a href=#98 id=98 data-nosnippet>98</a>        <span class="self">self</span>.window = <span class="prelude-val">Some</span>(window);
-<a href=#99 id=99 data-nosnippet>99</a>        <span class="self">self</span>.is_active.store(<span class="bool-val">true</span>, Ordering::SeqCst);
-<a href=#100 id=100 data-nosnippet>100</a>
-<a href=#101 id=101 data-nosnippet>101</a>        <span class="comment">// Esperar un instante a que el fronten cargue antes de emitir los datos
-<a href=#102 id=102 data-nosnippet>102</a>        </span>tokio::time::sleep(tokio::time::Duration::from_millis(<span class="number">500</span>)).<span class="kw">await</span>;
-<a href=#103 id=103 data-nosnippet>103</a>        <span class="self">self</span>.emit_udpate(config)<span class="question-mark">?</span>;
-<a href=#104 id=104 data-nosnippet>104</a>
-<a href=#105 id=105 data-nosnippet>105</a>        <span class="macro">info!</span>(<span class="string">"Reading window created and shown"</span>);
-<a href=#106 id=106 data-nosnippet>106</a>        <span class="prelude-val">Ok</span>(())
-<a href=#107 id=107 data-nosnippet>107</a>    }
-<a href=#108 id=108 data-nosnippet>108</a>
-<a href=#109 id=109 data-nosnippet>109</a>    <span class="kw">async fn </span>hide(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;(), ReadingWindowError&gt; {
-<a href=#110 id=110 data-nosnippet>110</a>        <span class="kw">if let </span><span class="prelude-val">Some</span>(window) = <span class="kw-2">&amp;</span><span class="self">self</span>.window {
-<a href=#111 id=111 data-nosnippet>111</a>            window
-<a href=#112 id=112 data-nosnippet>112</a>                .hide()
-<a href=#113 id=113 data-nosnippet>113</a>                .map_err(|e| ReadingWindowError::CloseError(e.to_string()))<span class="question-mark">?</span>;
+<a href=#91 id=91 data-nosnippet>91</a>        <span class="kw">let </span>window_clone = window.clone();
+<a href=#92 id=92 data-nosnippet>92</a>
+<a href=#93 id=93 data-nosnippet>93</a>        window.on_window_event(<span class="kw">move </span>|event| {
+<a href=#94 id=94 data-nosnippet>94</a>            <span class="kw">if let </span>tauri::WindowEvent::CloseRequested { api, .. } = event {
+<a href=#95 id=95 data-nosnippet>95</a>                <span class="comment">// Evitar destruccion
+<a href=#96 id=96 data-nosnippet>96</a>                </span>api.prevent_close();
+<a href=#97 id=97 data-nosnippet>97</a>                <span class="comment">// Solo se oculta
+<a href=#98 id=98 data-nosnippet>98</a>                </span><span class="kw">let _ </span>= window_clone.hide();
+<a href=#99 id=99 data-nosnippet>99</a>                is_active_clone.store(<span class="bool-val">false</span>, Ordering::SeqCst);
+<a href=#100 id=100 data-nosnippet>100</a>                <span class="macro">tracing::info!</span>(<span class="string">"Reading window hidden by user (CloseRequested)"</span>);
+<a href=#101 id=101 data-nosnippet>101</a>            }
+<a href=#102 id=102 data-nosnippet>102</a>        });
+<a href=#103 id=103 data-nosnippet>103</a>
+<a href=#104 id=104 data-nosnippet>104</a>        <span class="self">self</span>.window = <span class="prelude-val">Some</span>(window);
+<a href=#105 id=105 data-nosnippet>105</a>        <span class="self">self</span>.is_active.store(<span class="bool-val">true</span>, Ordering::SeqCst);
+<a href=#106 id=106 data-nosnippet>106</a>
+<a href=#107 id=107 data-nosnippet>107</a>        <span class="comment">// Esperar un instante a que el fronten cargue antes de emitir los datos
+<a href=#108 id=108 data-nosnippet>108</a>        </span>tokio::time::sleep(tokio::time::Duration::from_millis(<span class="number">500</span>)).<span class="kw">await</span>;
+<a href=#109 id=109 data-nosnippet>109</a>        <span class="self">self</span>.emit_udpate(config)<span class="question-mark">?</span>;
+<a href=#110 id=110 data-nosnippet>110</a>
+<a href=#111 id=111 data-nosnippet>111</a>        <span class="macro">info!</span>(<span class="string">"Reading window created and shown"</span>);
+<a href=#112 id=112 data-nosnippet>112</a>        <span class="prelude-val">Ok</span>(())
+<a href=#113 id=113 data-nosnippet>113</a>    }
 <a href=#114 id=114 data-nosnippet>114</a>
-<a href=#115 id=115 data-nosnippet>115</a>            <span class="self">self</span>.is_active.store(<span class="bool-val">false</span>, Ordering::SeqCst);
-<a href=#116 id=116 data-nosnippet>116</a>            <span class="macro">info!</span>(<span class="string">"Reading window hidded"</span>);
-<a href=#117 id=117 data-nosnippet>117</a>            <span class="prelude-val">Ok</span>(())
-<a href=#118 id=118 data-nosnippet>118</a>        } <span class="kw">else </span>{
-<a href=#119 id=119 data-nosnippet>119</a>            <span class="prelude-val">Err</span>(ReadingWindowError::NotActive)
-<a href=#120 id=120 data-nosnippet>120</a>        }
-<a href=#121 id=121 data-nosnippet>121</a>    }
-<a href=#122 id=122 data-nosnippet>122</a>
-<a href=#123 id=123 data-nosnippet>123</a>    <span class="kw">async fn </span>update_config(
-<a href=#124 id=124 data-nosnippet>124</a>        <span class="kw-2">&amp;mut </span><span class="self">self</span>,
-<a href=#125 id=125 data-nosnippet>125</a>        config: <span class="kw-2">&amp;</span>ReadingTherapyConfig,
-<a href=#126 id=126 data-nosnippet>126</a>    ) -&gt; <span class="prelude-ty">Result</span>&lt;(), ReadingWindowError&gt; {
-<a href=#127 id=127 data-nosnippet>127</a>        <span class="self">self</span>.emit_udpate(config)
-<a href=#128 id=128 data-nosnippet>128</a>    }
-<a href=#129 id=129 data-nosnippet>129</a>
-<a href=#130 id=130 data-nosnippet>130</a>    <span class="kw">fn </span>is_active(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
-<a href=#131 id=131 data-nosnippet>131</a>        <span class="self">self</span>.is_active.load(Ordering::SeqCst)
-<a href=#132 id=132 data-nosnippet>132</a>    }
-<a href=#133 id=133 data-nosnippet>133</a>}
+<a href=#115 id=115 data-nosnippet>115</a>    <span class="kw">async fn </span>hide(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;(), ReadingWindowError&gt; {
+<a href=#116 id=116 data-nosnippet>116</a>        <span class="kw">if let </span><span class="prelude-val">Some</span>(window) = <span class="kw-2">&amp;</span><span class="self">self</span>.window {
+<a href=#117 id=117 data-nosnippet>117</a>            window
+<a href=#118 id=118 data-nosnippet>118</a>                .hide()
+<a href=#119 id=119 data-nosnippet>119</a>                .map_err(|e| ReadingWindowError::CloseError(e.to_string()))<span class="question-mark">?</span>;
+<a href=#120 id=120 data-nosnippet>120</a>
+<a href=#121 id=121 data-nosnippet>121</a>            <span class="self">self</span>.is_active.store(<span class="bool-val">false</span>, Ordering::SeqCst);
+<a href=#122 id=122 data-nosnippet>122</a>            <span class="macro">info!</span>(<span class="string">"Reading window hidded"</span>);
+<a href=#123 id=123 data-nosnippet>123</a>            <span class="prelude-val">Ok</span>(())
+<a href=#124 id=124 data-nosnippet>124</a>        } <span class="kw">else </span>{
+<a href=#125 id=125 data-nosnippet>125</a>            <span class="prelude-val">Err</span>(ReadingWindowError::NotActive)
+<a href=#126 id=126 data-nosnippet>126</a>        }
+<a href=#127 id=127 data-nosnippet>127</a>    }
+<a href=#128 id=128 data-nosnippet>128</a>
+<a href=#129 id=129 data-nosnippet>129</a>    <span class="kw">async fn </span>update_config(
+<a href=#130 id=130 data-nosnippet>130</a>        <span class="kw-2">&amp;mut </span><span class="self">self</span>,
+<a href=#131 id=131 data-nosnippet>131</a>        config: <span class="kw-2">&amp;</span>ReadingTherapyConfig,
+<a href=#132 id=132 data-nosnippet>132</a>    ) -&gt; <span class="prelude-ty">Result</span>&lt;(), ReadingWindowError&gt; {
+<a href=#133 id=133 data-nosnippet>133</a>        <span class="self">self</span>.emit_udpate(config)
+<a href=#134 id=134 data-nosnippet>134</a>    }
+<a href=#135 id=135 data-nosnippet>135</a>
+<a href=#136 id=136 data-nosnippet>136</a>    <span class="kw">fn </span>is_active(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
+<a href=#137 id=137 data-nosnippet>137</a>        <span class="self">self</span>.is_active.load(Ordering::SeqCst)
+<a href=#138 id=138 data-nosnippet>138</a>    }
+<a href=#139 id=139 data-nosnippet>139</a>}
 </code></pre></div></section></main></body></html>
