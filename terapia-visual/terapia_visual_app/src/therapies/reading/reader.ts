@@ -7,10 +7,11 @@ import {
   getAppSettings,
   notifyReadingWindowResized,
 } from "../../core/services";
+import { ReadingConfig } from "../../core/types";
 
 const contentDiv = document.getElementById("chaptercontent")!;
 const zonesContainer = document.getElementById("zones-container")!;
-let currentConfig: any = null;
+let currentConfig: ReadingConfig | null = null;
 
 // Inicializar los listeners del panel lateral
 initSettingsPanel();
@@ -29,18 +30,20 @@ window.addEventListener("DOMContentLoaded", async () => {
 // Escuchar los eventos IPC que manda Rust
 listen("update-reading-view", (event: any) => {
   console.log("Datos recibidos de Rust:", event.payload);
-  currentConfig = event.payload.config;
+  currentConfig = event.payload.config as ReadingConfig;
 
   contentDiv.innerHTML = event.payload.html_content;
 
-  applyReadingSettings();
-  renderZones();
-  // Sincronizar con el panel
-  updatePanelControls(currentConfig);
+  if (currentConfig) {
+    applyReadingSettings();
+    renderZones();
+    updatePanelControls(currentConfig);
+  }
 });
 
 // Aplicar colores y fuentes al texto
 function applyReadingSettings() {
+  if (!currentConfig) return;
   const settings = currentConfig.reading_settings;
   document.body.style.backgroundColor = settings.bg_color;
 

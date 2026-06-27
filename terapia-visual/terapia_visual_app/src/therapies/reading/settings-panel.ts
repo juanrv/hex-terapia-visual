@@ -14,6 +14,7 @@ import {
   updateReadingZoneColor,
   updateReadingZoneOpacity,
 } from "../../core/services";
+import { ReadingConfig } from "../../core/types";
 
 export function initSettingsPanel() {
   const panel = document.getElementById("settings-panel")!;
@@ -87,7 +88,7 @@ export function initSettingsPanel() {
   });
 }
 
-export function updatePanelControls(config: any) {
+export function updatePanelControls(config: ReadingConfig) {
   const inpFontSize = document.getElementById(
     "inp-font-size",
   ) as HTMLInputElement;
@@ -101,7 +102,7 @@ export function updatePanelControls(config: any) {
   const zonesControls = document.getElementById("zones-controls")!;
 
   // Sincronizar valores visuales globales
-  inpFontSize.value = config.reading_settings.font_size;
+  inpFontSize.value = config.reading_settings.font_size.toString();
   inpTextColor.value = config.reading_settings.text_color;
   inpBgColor.value = config.reading_settings.bg_color;
   inpLayout.value = config.layout;

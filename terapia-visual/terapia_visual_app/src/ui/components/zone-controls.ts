@@ -1,7 +1,8 @@
 import { translate } from "../../core/localization/i18n";
+import { OverlayConfig, ReadingConfig, ZoneConfig } from "../../core/types";
 
 export function renderZoneControls(
-  config: any,
+  config: OverlayConfig | ReadingConfig,
   onUpdate: (
     index: number,
     newColor: string | null,
@@ -13,7 +14,7 @@ export function renderZoneControls(
 
   container.innerHTML = "";
 
-  config.zones_config.forEach((zone: any, index: number) => {
+  config.zones_config.forEach((zone: ZoneConfig, index: number) => {
     const card = document.createElement("div");
     card.className = "zone-card";
 
@@ -57,7 +58,7 @@ export function renderZoneControls(
     opacityInput.min = "0";
     opacityInput.max = "0.8";
     opacityInput.step = "0.01";
-    opacityInput.value = zone.opacity;
+    opacityInput.value = zone.opacity.toString();
 
     // EVENTO 1: 'input' -> Actualiza el porcentaje en el texto EN TIEMPO REAL al arrastrar
     opacityInput.addEventListener("input", (e) => {
