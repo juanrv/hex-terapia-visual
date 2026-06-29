@@ -43,6 +43,10 @@ export const translations = {
     reading_input_placeholder:
       "Pega aquí el contenido de tu novela, artículo o documento HTML...",
 
+    // Atajos de teclado
+    shortcuts_info:
+      "Atajos de Teclado:\n• Ctrl+Shift+T : Alternar Overlay\n• Ctrl+Shift+R : Alternar Lectura",
+
     // Estados
     status_started: "Terapia iniciada",
     status_stopped: "Terapia detenida",
@@ -94,6 +98,10 @@ export const translations = {
     // Placeholders
     reading_input_placeholder:
       "Paste your novel, article or HTML document here...",
+
+    // Atajos de teclado
+    shortcuts_info:
+      "Keyboard Shortcuts:\n• Ctrl+Shift+T : Toggle Overlay\n• Ctrl+Shift+R : Toggle Reading",
 
     // Estados
     status_started: "Therapy started",
