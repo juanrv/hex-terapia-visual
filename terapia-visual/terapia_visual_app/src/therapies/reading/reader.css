@@ -173,6 +173,24 @@ hr.reading-divider {
   border-radius: 4px;
 }
 
+/* Botón de Reset */
+.btn-secondary-large {
+  width: 100%;
+  padding: 12px;
+  background-color: #95a5a6;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.2s;
+  margin-bottom: 10px;
+}
+.btn-secondary-large:hover {
+  opacity: 0.9;
+}
+
 /* Botón de Salir */
 .btn-danger-large {
   width: 100%;

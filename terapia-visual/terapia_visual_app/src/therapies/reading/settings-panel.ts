@@ -8,6 +8,7 @@ import {
 import {
   changeReadingLayout,
   getReadingConfig,
+  resetReadingConfig,
   stopReading,
   updateAppSettings,
   updateReadingSettings,
@@ -19,6 +20,7 @@ import { ReadingConfig } from "../../core/types";
 export function initSettingsPanel() {
   const panel = document.getElementById("settings-panel")!;
   const btnToggle = document.getElementById("floating-btn")!;
+  const btnReset = document.getElementById("btn-reset-reading-panel")!;
   const btnClose = document.getElementById("btn-close-panel")!;
   const btnCloseReading = document.getElementById("btn-close-reading-window")!;
   const btnEs = document.getElementById("btn-es-reading")!;
@@ -45,6 +47,15 @@ export function initSettingsPanel() {
   btnClose.addEventListener("click", () => {
     panel.classList.remove("open");
     btnToggle.classList.remove("hidden");
+  });
+
+  // Restablecer valor por defecto
+  btnReset.addEventListener("click", async () => {
+    try {
+      await resetReadingConfig();
+    } catch (err) {
+      console.error("Error al restablecer", err);
+    }
   });
 
   // Cerrar ventana de lectura
