@@ -123,5 +123,9 @@ messages!(
     tooltip_therapy_inactive: "Terapia Inactiva", "Therapy Inactive";
     tooltip_app_name: "Terapia Visual", "Visual Therapy";
 
+    tray_overlay: "Terapia de División de Color", "Color Division Therapy";
+    tray_reading: "Terapia de Lectura", "Reading Therapy";
+    tray_quit: "Salir", "Exit";
+
     error_generic: "Ha ocurrido un error inesperado", "An unexpected error ocurrred";
 );

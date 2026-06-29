@@ -30,7 +30,7 @@
 use std::str::FromStr;
 use std::sync::atomic::{AtomicBool, Ordering};
 
-use tauri::async_runtime;
+use tauri::{async_runtime, Emitter};
 use tauri::{App, AppHandle, Manager};
 use tauri_plugin_global_shortcut::{GlobalShortcutExt, Shortcut, ShortcutEvent, ShortcutState};
 use terapia_visual_adapter::TauriReadingWindow;
@@ -42,7 +42,7 @@ use terapia_visual_adapter::messages::{self, init_language};
 use terapia_visual_adapter::notifier::TauriSystemNotifier;
 use terapia_visual_adapter::overlay::TauriOverlay;
 use terapia_visual_domain::domain::{AppSettings, OverlayTherapyConfig};
-use terapia_visual_domain::ports::{ConfigStorage, SystemNotifier};
+use terapia_visual_domain::ports::{ConfigStorage, OverlayPort, ReadingWindowPort, SystemNotifier};
 
 use crate::state::AppState;
 use crate::tray::create_tray;
@@ -132,8 +132,10 @@ pub fn init(app: &mut App) -> Result<(), Box<dyn std::error::Error>> {
     create_tray(app)?;
 
     // Registrar atajo de teclado
-    let therapy_shortcut = Shortcut::from_str("Ctrl+Shift+T")?;
-    app.handle().global_shortcut().register(therapy_shortcut)?;
+    let overlay_shortcut = Shortcut::from_str("Ctrl+Shift+T")?;
+    let reading_shortcut = Shortcut::from_str("Ctrl+Shift+R")?;
+    app.handle().global_shortcut().register(overlay_shortcut)?;
+    app.handle().global_shortcut().register(reading_shortcut)?;
 
     // Inyectar estado a Tauri
     let state = AppState {
@@ -182,36 +184,38 @@ pub fn init(app: &mut App) -> Result<(), Box<dyn std::error::Error>> {
 /// ```
 pub fn global_shortcut_handler(app: &AppHandle, shortcut: &Shortcut, event: ShortcutEvent) {
     if event.state() == ShortcutState::Pressed {
-        let therapy_shortcut = Shortcut::from_str("Ctrl+Shift+T").unwrap();
+        let overlay_shortcut = Shortcut::from_str("Ctrl+Shift+T").unwrap();
+        let reading_shortcut = Shortcut::from_str("Ctrl+Shift+R").unwrap();
 
-        if shortcut == &therapy_shortcut {
-            let app_handle = app.clone();
+        // 1. Evaluamos QUÉ atajo se presionó ANTES de entrar al bloque asíncrono
+        // is_overlay y is_reading son simples booleanos (Copy), no referencias.
+        let is_overlay = shortcut == &overlay_shortcut;
+        let is_reading = shortcut == &reading_shortcut;
 
-            // Lanzar tarea asincrona para no bloquear el teclado
-            tauri::async_runtime::spawn(async move {
-                let state = app_handle.state::<AppState>();
+        let app_handle = app.clone();
 
-                if state.is_toggling.swap(true, Ordering::SeqCst) {
-                    tracing::warn!("El usuario presiono el atajo demasiado rapido, ignorando.");
-                    return;
-                }
+        // 2. Tarea en segundo plano (Solo le pasamos los booleanos)
+        tauri::async_runtime::spawn(async move {
+            let state = app_handle.state::<AppState>();
 
+            if state.is_toggling.swap(true, Ordering::SeqCst) {
+                return;
+            }
+
+            // Usamos los booleanos en lugar de la referencia 'shortcut'
+            if is_overlay {
                 let mut overlay = state.overlay.lock().await;
-
-                // Si esta activa, se detiene
-                if terapia_visual_domain::use_cases::stop_overlay_therapy(&mut *overlay)
-                    .await
-                    .is_ok()
-                {
-                    let _ = state.notifier.set_tray_state(false).await;
-                }
-                // Si esta detenida, se inicia
-                else {
-                    // Calcular tamaño de pantlla
+                if overlay.is_active() {
+                    if terapia_visual_domain::use_cases::stop_overlay_therapy(&mut *overlay)
+                        .await
+                        .is_ok()
+                    {
+                        let _ = state.notifier.set_tray_state(false).await;
+                    }
+                } else {
                     if let Ok(Some(monitor)) = app_handle.primary_monitor() {
                         let size = monitor.size();
                         let config = state.overlay_config.read().await;
-
                         if terapia_visual_domain::use_cases::start_overlay_therapy(
                             &mut *overlay,
                             &config,
@@ -225,14 +229,25 @@ pub fn global_shortcut_handler(app: &AppHandle, shortcut: &Shortcut, event: Shor
                         }
                     }
                 }
+            } else if is_reading {
+                let mut reading_window = state.reading_window.lock().await;
+                if reading_window.is_active() {
+                    if terapia_visual_domain::use_cases::stop_reading_therapy(&mut *reading_window)
+                        .await
+                        .is_ok()
+                    {
+                        let _ = state.notifier.set_tray_state(false).await;
+                    }
+                } else {
+                    // Como necesitamos el texto, le decimos al frontend que extraiga el texto y lance la orden
+                    let _ = app_handle.emit("trigger-start-reading", ());
+                }
+            }
 
-                // Cambiar la flag
-                state.is_toggling.store(false, Ordering::SeqCst);
-            });
-        }
+            state.is_toggling.store(false, Ordering::SeqCst);
+        });
     }
 }
-
 /// Guarda la configuración actual en el almacenamiento.
 ///
 /// Esta función se llama:

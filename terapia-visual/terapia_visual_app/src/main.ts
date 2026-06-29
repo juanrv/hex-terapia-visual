@@ -30,6 +30,22 @@ async function init() {
     window.dispatchEvent(new Event("language-changed"));
   });
 
+  // Escuchar a la bandeja del sistema para navegar
+  listen("navigate-view", (event: any) => {
+    const view = event.payload;
+
+    if (view === "overlay" || view === "reading") {
+      switchTherapy(view);
+    }
+  });
+
+  // Escuchar al atajo de teclado para abrir lectura
+  listen("trigger-start-reading", () => {
+    // Simulamos un click en el botón de abrir para que extraiga el texto y valide
+    const btn = document.getElementById("btn-start-reading");
+    if (btn) btn.click();
+  });
+
   // Configurar eventos de navegación
   document.getElementById("btn-nav-color")?.addEventListener("click", () => {
     switchTherapy("overlay");

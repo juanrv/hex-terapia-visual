@@ -45,7 +45,7 @@ pub mod setup;
 pub mod state;
 pub mod tray;
 
-use tauri::Manager;
+use tauri::{Emitter, Manager};
 
 /// Punto de entrada de la aplicación Tauri.
 ///
@@ -103,9 +103,30 @@ pub fn run() {
         })
         // Evento de menú de la bandeja
         .on_menu_event(|app, event| {
-            if event.id.as_ref() == "quit" {
-                setup::save_configs(app);
-                std::process::exit(0);
+            match event.id.as_ref() {
+                "quit" => {
+                    setup::save_configs(app);
+                    std::process::exit(0);
+                }
+                "nav_overlay" => {
+                    if let Some(window) = app.get_webview_window("main") {
+                        let _ = window.show();
+                        let _ = window.unminimize();
+                        let _ = window.set_focus();
+                        // CAMBIO AQUÍ: Enviamos "overlay"
+                        let _ = window.emit("navigate-view", "overlay");
+                    }
+                }
+                "nav_reading" => {
+                    if let Some(window) = app.get_webview_window("main") {
+                        let _ = window.show();
+                        let _ = window.unminimize();
+                        let _ = window.set_focus();
+                        // CAMBIO AQUÍ: Enviamos "reading"
+                        let _ = window.emit("navigate-view", "reading");
+                    }
+                }
+                _ => {}
             }
         })
         // Iniciar la aplicación

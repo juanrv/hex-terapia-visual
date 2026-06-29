@@ -72,7 +72,25 @@ pub fn create_tray(app: &App) -> Result<(), Box<dyn std::error::Error>> {
         .build(app)?;
 
     let menu = Menu::new(app)?;
-    let quit_item = MenuItem::with_id(app, "quit", "Salir", true, None::<&str>)?;
+
+    let overlay_item = MenuItem::with_id(
+        app,
+        "nav_overlay",
+        messages::tray_overlay(),
+        true,
+        None::<&str>,
+    )?;
+    let reading_item = MenuItem::with_id(
+        app,
+        "nav_reading",
+        messages::tray_reading(),
+        true,
+        None::<&str>,
+    )?;
+    let quit_item = MenuItem::with_id(app, "quit", messages::tray_quit(), true, None::<&str>)?;
+
+    menu.append(&overlay_item)?;
+    menu.append(&reading_item)?;
     menu.append(&quit_item)?;
     tray.set_menu(Some(menu))?;
 
