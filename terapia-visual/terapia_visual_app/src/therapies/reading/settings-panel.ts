@@ -1,13 +1,7 @@
-import {
-  setLanguage,
-  applyTranslations,
-  translate,
-  type Language,
-} from "../../core/localization/i18n";
+import { translate, type Language } from "../../core/localization/i18n";
 
 import {
   changeReadingLayout,
-  getReadingConfig,
   resetReadingConfig,
   stopReading,
   updateAppSettings,
@@ -70,10 +64,6 @@ export function initSettingsPanel() {
   // Logica de cambio de idioma
   const changeLang = async (lang: Language) => {
     await updateAppSettings(lang);
-    setLanguage(lang);
-    applyTranslations();
-
-    getReadingConfig().then((config) => updatePanelControls(config));
   };
 
   btnEs.addEventListener("click", () => changeLang("es"));

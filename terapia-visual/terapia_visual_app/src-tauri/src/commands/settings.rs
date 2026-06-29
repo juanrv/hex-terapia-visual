@@ -23,7 +23,7 @@
 //! await invoke('cmd_update_app_settings', { newSettings: { language: 'en' } });
 //! ```
 
-use tauri::State;
+use tauri::{Emitter, State};
 use terapia_visual_adapter::messages::{self, init_language};
 use terapia_visual_domain::domain::AppSettings;
 use terapia_visual_domain::ports::ConfigStorage;
@@ -92,6 +92,8 @@ pub async fn cmd_update_app_settings<R: tauri::Runtime>(
             .set_title(messages::window_title())
             .map_err(|e| e.to_string())?;
     }
+
+    let _ = app_handle.emit("app-language-changed", new_settings.language.as_str());
 
     Ok(())
 }

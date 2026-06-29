@@ -7,6 +7,7 @@ import {
 } from "./core/services/settings";
 import { switchTherapy } from "./ui/router";
 import { showError } from "./ui/components/status";
+import { listen } from "@tauri-apps/api/event";
 
 async function init() {
   const statusDiv = document.getElementById("status");
@@ -20,6 +21,15 @@ async function init() {
     showError(String(err), statusDiv);
   }
 
+  // Listener para el cambio de idioma global
+  listen("app-language-changed", (event: any) => {
+    const lang = event.payload;
+    setLanguage(lang);
+    applyTranslations();
+
+    window.dispatchEvent(new Event("language-changed"));
+  });
+
   // Configurar eventos de navegación
   document.getElementById("btn-nav-color")?.addEventListener("click", () => {
     switchTherapy("overlay");
@@ -32,16 +42,10 @@ async function init() {
   // Cambio de idioma
   document.getElementById("btn-es")?.addEventListener("click", async () => {
     await updateAppSettings("es");
-    setLanguage("es");
-    applyTranslations();
-    window.dispatchEvent(new Event("language-changed"));
   });
 
   document.getElementById("btn-en")?.addEventListener("click", async () => {
     await updateAppSettings("en");
-    setLanguage("en");
-    applyTranslations();
-    window.dispatchEvent(new Event("language-changed"));
   });
 
   // Salir de la aplicación
