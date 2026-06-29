@@ -50,6 +50,7 @@ export const translations = {
     status_reset: "Valores por defecto restaurados",
     status_reading_started: "Ventana de lectura abierta",
     status_reading_stopped: "Ventana de lectura cerrada",
+    error_empty_text: "Por favor, pega algún texto o HTML primero.",
     error_generic: "Ha ocurrido un error inesperado",
   },
   en: {
@@ -101,6 +102,7 @@ export const translations = {
     status_reset: "Default values restored",
     status_reading_started: "Reading window opened",
     status_reading_stopped: "Reading window closed",
+    error_empty_text: "Please paste some text or HTML first.",
     error_generic: "An unexpected error occurred",
   },
 };

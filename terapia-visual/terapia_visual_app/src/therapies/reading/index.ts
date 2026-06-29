@@ -5,7 +5,7 @@ import {
   startReading,
   stopReading,
 } from "../../core/services/reading";
-import { showStatus, showError } from "../../ui/components/status";
+import { showStatus, showError, showWarning } from "../../ui/components/status";
 import { goHome } from "../../ui/router";
 import { processReadingText } from "../../core/utils/text";
 
@@ -26,7 +26,22 @@ export const readingTherapy: TherapyModule = {
         "reading-input",
       ) as HTMLTextAreaElement;
       if (!textarea || !textarea.value.trim()) {
-        showError("Por favor, pega algún texto o HTML primero.", statusDiv);
+        showWarning("error_empty_text", statusDiv);
+
+        // Aplicar efecto visual
+        textarea.classList.add("input-warning");
+
+        // Quitar la alerta en cuanto el usuario empiece a escribir
+        textarea.addEventListener("input", function removeWarning() {
+          textarea.classList.remove("input-warning");
+          textarea.removeEventListener("input", removeWarning);
+        });
+
+        // Quitar la alerta en 3 segundos
+        setTimeout(() => {
+          textarea.classList.remove("input-warning");
+        }, 3000);
+
         return;
       }
       try {

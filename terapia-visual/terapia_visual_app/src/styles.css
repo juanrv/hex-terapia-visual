@@ -146,6 +146,7 @@ input[type="range"] {
   width: 100px;
 }
 
+/* Estatus */
 #status {
   text-align: center;
   margin-top: 20px;
@@ -154,9 +155,37 @@ input[type="range"] {
   min-height: 20px;
 }
 
+.status-warning {
+  color: #e67e22 !important; /* Naranja/Ámbar */
+  font-weight: 600;
+}
+
 .status-error {
   color: #e74c3c !important; /* Rojo fuerte */
   font-weight: 600;
+}
+
+/* Animaciones y feedback visual*/
+.input-warning {
+  border: 2px solid #e67e22 !important; /* Naranja/Ámbar */
+  box-shadow: 0 0 10px rgba(230, 126, 34, 0.4) !important;
+  animation: shake 0.4s ease-in-out;
+}
+
+@keyframes shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-5px);
+  }
+  50% {
+    transform: translateX(5px);
+  }
+  75% {
+    transform: translateX(-5px);
+  }
 }
 
 /* Modo oscuro */

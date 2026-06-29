@@ -17,6 +17,22 @@ export function showStatus(
   }, 3000);
 }
 
+export function showWarning(
+  messageKey: keyof typeof import("../../core/localization/i18n").translations.es,
+  statusDiv: HTMLElement | null,
+) {
+  if (!statusDiv) return;
+  statusDiv.classList.remove("status-error");
+  statusDiv.classList.add("status-warning");
+  statusDiv.innerText = translate(messageKey); // Solo el mensaje amable
+
+  clearTimeout(statusTimeout);
+  statusTimeout = window.setTimeout(() => {
+    statusDiv.innerText = "";
+    statusDiv.classList.remove("status-warning");
+  }, 4000);
+}
+
 export function showError(errorMsg: string, statusDiv: HTMLElement | null) {
   if (!statusDiv) return;
 
