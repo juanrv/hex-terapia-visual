@@ -45,7 +45,7 @@ export const translations = {
 
     // Atajos de teclado
     shortcuts_info:
-      "Atajos de Teclado:\n• Ctrl+Shift+T : Alternar Overlay\n• Ctrl+Shift+R : Alternar Lectura",
+      "Atajos de Teclado:\n• Ctrl+Shift+T : Alternar Overlay\n• Ctrl+Shift+L : Alternar Lectura",
 
     // Estados
     status_started: "Terapia iniciada",
@@ -101,7 +101,7 @@ export const translations = {
 
     // Atajos de teclado
     shortcuts_info:
-      "Keyboard Shortcuts:\n• Ctrl+Shift+T : Toggle Overlay\n• Ctrl+Shift+R : Toggle Reading",
+      "Keyboard Shortcuts:\n• Ctrl+Shift+T : Toggle Overlay\n• Ctrl+Shift+L : Toggle Reading",
 
     // Estados
     status_started: "Therapy started",

@@ -133,7 +133,7 @@ pub fn init(app: &mut App) -> Result<(), Box<dyn std::error::Error>> {
 
     // Registrar atajo de teclado
     let overlay_shortcut = Shortcut::from_str("Ctrl+Shift+T")?;
-    let reading_shortcut = Shortcut::from_str("Ctrl+Shift+R")?;
+    let reading_shortcut = Shortcut::from_str("Ctrl+Shift+L")?;
     app.handle().global_shortcut().register(overlay_shortcut)?;
     app.handle().global_shortcut().register(reading_shortcut)?;
 
@@ -185,7 +185,7 @@ pub fn init(app: &mut App) -> Result<(), Box<dyn std::error::Error>> {
 pub fn global_shortcut_handler(app: &AppHandle, shortcut: &Shortcut, event: ShortcutEvent) {
     if event.state() == ShortcutState::Pressed {
         let overlay_shortcut = Shortcut::from_str("Ctrl+Shift+T").unwrap();
-        let reading_shortcut = Shortcut::from_str("Ctrl+Shift+R").unwrap();
+        let reading_shortcut = Shortcut::from_str("Ctrl+Shift+L").unwrap();
 
         // 1. Evaluamos QUÉ atajo se presionó ANTES de entrar al bloque asíncrono
         // is_overlay y is_reading son simples booleanos (Copy), no referencias.

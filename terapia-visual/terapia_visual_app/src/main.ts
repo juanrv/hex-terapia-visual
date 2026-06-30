@@ -40,10 +40,22 @@ async function init() {
   });
 
   // Escuchar al atajo de teclado para abrir lectura
-  listen("trigger-start-reading", () => {
+  listen("trigger-start-reading", async () => {
+    await switchTherapy("reading");
     // Simulamos un click en el botón de abrir para que extraiga el texto y valide
-    const btn = document.getElementById("btn-start-reading");
-    if (btn) btn.click();
+    setTimeout(() => {
+      const textarea = document.getElementById(
+        "reading-input",
+      ) as HTMLTextAreaElement;
+
+      if (textarea && textarea.value.trim() !== "") {
+        // Si ya hay texto, se simula el click para abrir la lectura
+        const btn = document.getElementById("btn-start-reading");
+        if (btn) btn.click();
+      } else if (textarea) {
+        textarea.focus();
+      }
+    }, 50);
   });
 
   // Configurar eventos de navegación
