@@ -1,7 +1,7 @@
 use tauri::State;
 use terapia_visual_domain::domain::reading_therapy_config::ReadingTherapyConfig;
 use terapia_visual_domain::domain::{Color, Layout, Opacity, ReadingSettings};
-use terapia_visual_domain::ports::{ReadingWindowPort, SystemNotifier};
+use terapia_visual_domain::ports::{ReadingWindowError, ReadingWindowPort, SystemNotifier};
 use terapia_visual_domain::use_cases::{
     start_reading_therapy, stop_reading_therapy, update_reading_therapy,
 };
@@ -37,9 +37,14 @@ pub async fn cmd_start_reading_therapy(
 #[tauri::command]
 pub async fn cmd_stop_reading_therapy(state: State<'_, AppState>) -> Result<(), String> {
     let mut window = state.reading_window.lock().await;
-    stop_reading_therapy(&mut *window)
-        .await
-        .map_err(|e| e.to_string())?;
+
+    // Evaluar el resultado en lugar de devolver el error a ciegas
+    match stop_reading_therapy(&mut *window).await {
+        Ok(_) | Err(ReadingWindowError::NotActive) => {
+            // Si se cerró bien, o ya estaba cerrada, lo tratamos como éxito absoluto
+        }
+        Err(e) => return Err(e.to_string()), // Solo avisamos si es un error grave real
+    }
 
     let _ = state.notifier.set_tray_state(false).await;
     Ok(())
