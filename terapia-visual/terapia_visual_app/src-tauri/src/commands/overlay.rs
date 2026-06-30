@@ -33,7 +33,7 @@
 
 use tauri::State;
 use terapia_visual_domain::domain::{Color, Layout, Opacity, OverlayTherapyConfig};
-use terapia_visual_domain::ports::SystemNotifier;
+use terapia_visual_domain::ports::{OverlayError, SystemNotifier};
 use terapia_visual_domain::use_cases::{
     start_overlay_therapy, stop_overlay_therapy, update_overlay_therapy,
 };
@@ -123,15 +123,13 @@ pub async fn cmd_start_overlay(
 #[tauri::command]
 pub async fn cmd_stop_overlay(state: State<'_, AppState>) -> Result<(), String> {
     let mut overlay = state.overlay.lock().await;
-    stop_overlay_therapy(&mut *overlay)
-        .await
-        .map_err(|e| e.to_string())?;
 
-    state
-        .notifier
-        .set_tray_state(false)
-        .await
-        .map_err(|e| e.to_string())?;
+    match stop_overlay_therapy(&mut *overlay).await {
+        Ok(_) | Err(OverlayError::NotActive) => {}
+        Err(e) => return Err(e.to_string()),
+    }
+
+    let _ = state.notifier.set_tray_state(false).await;
     Ok(())
 }
 
