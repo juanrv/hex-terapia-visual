@@ -133,7 +133,7 @@ pub fn init(app: &mut App) -> Result<(), Box<dyn std::error::Error>> {
 
     // Registrar atajo de teclado
     let overlay_shortcut = Shortcut::from_str("Ctrl+Shift+T")?;
-    let reading_shortcut = Shortcut::from_str("Ctrl+Shift+L")?;
+    let reading_shortcut = Shortcut::from_str("Ctrl+Shift+Alt+L")?;
     app.handle().global_shortcut().register(overlay_shortcut)?;
     app.handle().global_shortcut().register(reading_shortcut)?;
 
@@ -185,16 +185,14 @@ pub fn init(app: &mut App) -> Result<(), Box<dyn std::error::Error>> {
 pub fn global_shortcut_handler(app: &AppHandle, shortcut: &Shortcut, event: ShortcutEvent) {
     if event.state() == ShortcutState::Pressed {
         let overlay_shortcut = Shortcut::from_str("Ctrl+Shift+T").unwrap();
-        let reading_shortcut = Shortcut::from_str("Ctrl+Shift+L").unwrap();
+        let reading_shortcut = Shortcut::from_str("Ctrl+Shift+Alt+L").unwrap();
 
-        // 1. Evaluamos QUÉ atajo se presionó ANTES de entrar al bloque asíncrono
-        // is_overlay y is_reading son simples booleanos (Copy), no referencias.
         let is_overlay = shortcut == &overlay_shortcut;
         let is_reading = shortcut == &reading_shortcut;
 
         let app_handle = app.clone();
 
-        // 2. Tarea en segundo plano (Solo le pasamos los booleanos)
+        // 2. Tarea en segundo plano
         tauri::async_runtime::spawn(async move {
             let state = app_handle.state::<AppState>();
 
@@ -239,6 +237,11 @@ pub fn global_shortcut_handler(app: &AppHandle, shortcut: &Shortcut, event: Shor
                         let _ = state.notifier.set_tray_state(false).await;
                     }
                 } else {
+                    if let Some(main_window) = app_handle.get_webview_window("main") {
+                        let _ = main_window.show();
+                        let _ = main_window.unminimize();
+                        let _ = main_window.set_focus();
+                    }
                     // Como necesitamos el texto, le decimos al frontend que extraiga el texto y lance la orden
                     let _ = app_handle.emit("trigger-start-reading", ());
                 }

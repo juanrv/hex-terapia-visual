@@ -126,6 +126,7 @@ messages!(
     tray_overlay: "Terapia de División de Color", "Color Division Therapy";
     tray_reading: "Terapia de Lectura", "Reading Therapy";
     tray_quit: "Salir", "Exit";
+    tray_open: "Abrir Menú Principal", "Open Main Menu";
 
     error_generic: "Ha ocurrido un error inesperado", "An unexpected error ocurrred";
 );

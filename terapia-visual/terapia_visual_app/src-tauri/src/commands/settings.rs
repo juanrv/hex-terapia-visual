@@ -23,7 +23,6 @@
 //! await invoke('cmd_update_app_settings', { newSettings: { language: 'en' } });
 //! ```
 
-use tauri::menu::{Menu, MenuItem};
 use tauri::{Emitter, State};
 use terapia_visual_adapter::messages::{self, init_language};
 use terapia_visual_domain::domain::AppSettings;
@@ -87,8 +86,20 @@ pub async fn cmd_update_app_settings<R: tauri::Runtime>(
         let _ = tray.set_tooltip(Some(messages::tooltip_app_name()));
 
         // Recrear el menu de la bandeja
-        if let Ok(menu) = Menu::new(&app_handle) {
-            if let Ok(overlay_item) = MenuItem::with_id(
+        if let Ok(menu) = tauri::menu::Menu::new(&app_handle) {
+            if let Ok(open_item) = tauri::menu::MenuItem::with_id(
+                &app_handle,
+                "open_main",
+                messages::tray_open(),
+                true,
+                None::<&str>,
+            ) {
+                let _ = menu.append(&open_item);
+            }
+            if let Ok(sep1) = tauri::menu::PredefinedMenuItem::separator(&app_handle) {
+                let _ = menu.append(&sep1);
+            }
+            if let Ok(overlay_item) = tauri::menu::MenuItem::with_id(
                 &app_handle,
                 "nav_overlay",
                 messages::tray_overlay(),
@@ -97,7 +108,7 @@ pub async fn cmd_update_app_settings<R: tauri::Runtime>(
             ) {
                 let _ = menu.append(&overlay_item);
             }
-            if let Ok(reading_item) = MenuItem::with_id(
+            if let Ok(reading_item) = tauri::menu::MenuItem::with_id(
                 &app_handle,
                 "nav_reading",
                 messages::tray_reading(),
@@ -106,7 +117,10 @@ pub async fn cmd_update_app_settings<R: tauri::Runtime>(
             ) {
                 let _ = menu.append(&reading_item);
             }
-            if let Ok(quit_item) = MenuItem::with_id(
+            if let Ok(sep2) = tauri::menu::PredefinedMenuItem::separator(&app_handle) {
+                let _ = menu.append(&sep2);
+            }
+            if let Ok(quit_item) = tauri::menu::MenuItem::with_id(
                 &app_handle,
                 "quit",
                 messages::tray_quit(),
@@ -115,7 +129,6 @@ pub async fn cmd_update_app_settings<R: tauri::Runtime>(
             ) {
                 let _ = menu.append(&quit_item);
             }
-            // Asignamos el nuevo menú
             let _ = tray.set_menu(Some(menu));
         }
     }
