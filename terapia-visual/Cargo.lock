@@ -4146,7 +4146,7 @@ dependencies = [
 
 [[package]]
 name = "terapia_visual_adapter"
-version = "1.1.0"
+version = "1.1.1"
 dependencies = [
  "anyhow",
  "async-trait",
@@ -4168,7 +4168,7 @@ dependencies = [
 
 [[package]]
 name = "terapia_visual_app"
-version = "1.1.0"
+version = "1.1.1"
 dependencies = [
  "serde",
  "serde_json",
@@ -4189,7 +4189,7 @@ dependencies = [
 
 [[package]]
 name = "terapia_visual_domain"
-version = "1.1.0"
+version = "1.1.1"
 dependencies = [
  "async-trait",
  "serde",

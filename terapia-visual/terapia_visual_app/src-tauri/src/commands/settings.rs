@@ -23,7 +23,7 @@
 //! await invoke('cmd_update_app_settings', { newSettings: { language: 'en' } });
 //! ```
 
-use tauri::State;
+use tauri::{Emitter, State};
 use terapia_visual_adapter::messages::{self, init_language};
 use terapia_visual_domain::domain::AppSettings;
 use terapia_visual_domain::ports::ConfigStorage;
@@ -83,8 +83,54 @@ pub async fn cmd_update_app_settings<R: tauri::Runtime>(
     init_language(&new_settings);
 
     if let Some(tray) = app_handle.tray_by_id("main") {
-        tray.set_tooltip(Some(messages::tooltip_app_name()))
-            .map_err(|e| e.to_string())?;
+        let _ = tray.set_tooltip(Some(messages::tooltip_app_name()));
+
+        // Recrear el menu de la bandeja
+        if let Ok(menu) = tauri::menu::Menu::new(&app_handle) {
+            if let Ok(open_item) = tauri::menu::MenuItem::with_id(
+                &app_handle,
+                "open_main",
+                messages::tray_open(),
+                true,
+                None::<&str>,
+            ) {
+                let _ = menu.append(&open_item);
+            }
+            if let Ok(sep1) = tauri::menu::PredefinedMenuItem::separator(&app_handle) {
+                let _ = menu.append(&sep1);
+            }
+            if let Ok(overlay_item) = tauri::menu::MenuItem::with_id(
+                &app_handle,
+                "nav_overlay",
+                messages::tray_overlay(),
+                true,
+                None::<&str>,
+            ) {
+                let _ = menu.append(&overlay_item);
+            }
+            if let Ok(reading_item) = tauri::menu::MenuItem::with_id(
+                &app_handle,
+                "nav_reading",
+                messages::tray_reading(),
+                true,
+                None::<&str>,
+            ) {
+                let _ = menu.append(&reading_item);
+            }
+            if let Ok(sep2) = tauri::menu::PredefinedMenuItem::separator(&app_handle) {
+                let _ = menu.append(&sep2);
+            }
+            if let Ok(quit_item) = tauri::menu::MenuItem::with_id(
+                &app_handle,
+                "quit",
+                messages::tray_quit(),
+                true,
+                None::<&str>,
+            ) {
+                let _ = menu.append(&quit_item);
+            }
+            let _ = tray.set_menu(Some(menu));
+        }
     }
 
     if let Some(main_window) = app_handle.get_webview_window("main") {
@@ -92,6 +138,8 @@ pub async fn cmd_update_app_settings<R: tauri::Runtime>(
             .set_title(messages::window_title())
             .map_err(|e| e.to_string())?;
     }
+
+    let _ = app_handle.emit("app-language-changed", new_settings.language.as_str());
 
     Ok(())
 }

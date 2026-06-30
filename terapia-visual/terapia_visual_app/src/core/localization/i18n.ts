@@ -43,6 +43,10 @@ export const translations = {
     reading_input_placeholder:
       "Pega aquí el contenido de tu novela, artículo o documento HTML...",
 
+    // Atajos de teclado
+    shortcuts_info:
+      "Atajos de Teclado:\n• Ctrl+Shift+T : Alternar Overlay\n• Ctrl+Shift+Alt+L : Alternar Lectura",
+
     // Estados
     status_started: "Terapia iniciada",
     status_stopped: "Terapia detenida",
@@ -50,6 +54,7 @@ export const translations = {
     status_reset: "Valores por defecto restaurados",
     status_reading_started: "Ventana de lectura abierta",
     status_reading_stopped: "Ventana de lectura cerrada",
+    error_empty_text: "Por favor, pega algún texto o HTML primero.",
     error_generic: "Ha ocurrido un error inesperado",
   },
   en: {
@@ -94,6 +99,10 @@ export const translations = {
     reading_input_placeholder:
       "Paste your novel, article or HTML document here...",
 
+    // Atajos de teclado
+    shortcuts_info:
+      "Keyboard Shortcuts:\n• Ctrl+Shift+T : Toggle Overlay\n• Ctrl+Shift+Alt+L : Toggle Reading",
+
     // Estados
     status_started: "Therapy started",
     status_stopped: "Therapy stopped",
@@ -101,6 +110,7 @@ export const translations = {
     status_reset: "Default values restored",
     status_reading_started: "Reading window opened",
     status_reading_stopped: "Reading window closed",
+    error_empty_text: "Please paste some text or HTML first.",
     error_generic: "An unexpected error occurred",
   },
 };

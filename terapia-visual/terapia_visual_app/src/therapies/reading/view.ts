@@ -11,6 +11,9 @@ export function renderReadingView(container: HTMLElement) {
         <button id="btn-stop-reading" class="btn-danger" data-i18n="btn_stop_reading">
           Cerrar Ventana
         </button>
+        <button id="btn-reset-reading" class="btn-secondary" data-i18n="btn_reset">
+          Restablecer
+       </button>
       </div>
 
       <div class="control-section">

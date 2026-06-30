@@ -45,6 +45,17 @@ listen<ReadingPayload>("update-reading-view", (event) => {
   }
 });
 
+// Escuchar cambios de idioma
+listen("app-language-changed", (event: any) => {
+  const lang = event.payload;
+  setLanguage(lang);
+  applyTranslations();
+
+  if (currentConfig) {
+    updatePanelControls(currentConfig);
+  }
+});
+
 // Aplicar colores y fuentes al texto
 function applyReadingSettings() {
   if (!currentConfig) return;

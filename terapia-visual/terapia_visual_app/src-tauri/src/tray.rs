@@ -29,7 +29,7 @@
 //! # }
 //! ```
 
-use tauri::menu::{Menu, MenuItem};
+use tauri::menu::{Menu, MenuItem, PredefinedMenuItem};
 use tauri::tray::{TrayIconBuilder, TrayIconEvent};
 use tauri::{App, Manager};
 use terapia_visual_adapter::messages;
@@ -72,7 +72,35 @@ pub fn create_tray(app: &App) -> Result<(), Box<dyn std::error::Error>> {
         .build(app)?;
 
     let menu = Menu::new(app)?;
-    let quit_item = MenuItem::with_id(app, "quit", "Salir", true, None::<&str>)?;
+
+    let open_item = MenuItem::with_id(app, "open_main", messages::tray_open(), true, None::<&str>)?;
+
+    let separator1 = PredefinedMenuItem::separator(app)?;
+
+    let overlay_item = MenuItem::with_id(
+        app,
+        "nav_overlay",
+        messages::tray_overlay(),
+        true,
+        None::<&str>,
+    )?;
+    let reading_item = MenuItem::with_id(
+        app,
+        "nav_reading",
+        messages::tray_reading(),
+        true,
+        None::<&str>,
+    )?;
+
+    let separator2 = PredefinedMenuItem::separator(app)?;
+
+    let quit_item = MenuItem::with_id(app, "quit", messages::tray_quit(), true, None::<&str>)?;
+
+    menu.append(&open_item)?;
+    menu.append(&separator1)?;
+    menu.append(&overlay_item)?;
+    menu.append(&reading_item)?;
+    menu.append(&separator2)?;
     menu.append(&quit_item)?;
     tray.set_menu(Some(menu))?;
 

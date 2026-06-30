@@ -1,13 +1,8 @@
-import {
-  setLanguage,
-  applyTranslations,
-  translate,
-  type Language,
-} from "../../core/localization/i18n";
+import { translate, type Language } from "../../core/localization/i18n";
 
 import {
   changeReadingLayout,
-  getReadingConfig,
+  resetReadingConfig,
   stopReading,
   updateAppSettings,
   updateReadingSettings,
@@ -19,6 +14,7 @@ import { ReadingConfig } from "../../core/types";
 export function initSettingsPanel() {
   const panel = document.getElementById("settings-panel")!;
   const btnToggle = document.getElementById("floating-btn")!;
+  const btnReset = document.getElementById("btn-reset-reading-panel")!;
   const btnClose = document.getElementById("btn-close-panel")!;
   const btnCloseReading = document.getElementById("btn-close-reading-window")!;
   const btnEs = document.getElementById("btn-es-reading")!;
@@ -47,6 +43,15 @@ export function initSettingsPanel() {
     btnToggle.classList.remove("hidden");
   });
 
+  // Restablecer valor por defecto
+  btnReset.addEventListener("click", async () => {
+    try {
+      await resetReadingConfig();
+    } catch (err) {
+      console.error("Error al restablecer", err);
+    }
+  });
+
   // Cerrar ventana de lectura
   btnCloseReading.addEventListener("click", async () => {
     try {
@@ -59,10 +64,6 @@ export function initSettingsPanel() {
   // Logica de cambio de idioma
   const changeLang = async (lang: Language) => {
     await updateAppSettings(lang);
-    setLanguage(lang);
-    applyTranslations();
-
-    getReadingConfig().then((config) => updatePanelControls(config));
   };
 
   btnEs.addEventListener("click", () => changeLang("es"));
