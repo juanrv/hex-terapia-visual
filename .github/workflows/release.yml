@@ -46,9 +46,9 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tagName: v1.0.0
-          releaseName: 'Terapia Visual v1.0.0'
-          releaseBody: 'Versión 1.0.0 oficial de Terapia Visual. (Ejecutable autogenerado)'
+          tagName: ${{ github.ref_name }}
+          releaseName: 'Terapia Visual ${{ github.ref_name }}'
+          releaseBody: 'Versión ${{ github.ref_name }} oficial de Terapia Visual. (Ejecutable autogenerado)'
           releaseDraft: false
           prerelease: false
           projectPath: ./terapia-visual/terapia_visual_app
